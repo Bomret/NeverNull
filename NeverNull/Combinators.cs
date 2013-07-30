@@ -40,5 +40,19 @@ namespace NeverNull {
                        ? option
                        : elseOption;
         }
+
+        public static IOption<T> Recover<T>(this IOption<T> option,
+                                            T recoverValue) {
+            return option.HasValue
+                       ? option
+                       : new Some<T>(recoverValue);
+        }
+
+        public static IOption<T> Recover<T>(this IOption<T> option,
+                                            Func<T> recoverFunc) {
+            return option.HasValue
+                       ? option
+                       : new Some<T>(recoverFunc());
+        }
     }
 }

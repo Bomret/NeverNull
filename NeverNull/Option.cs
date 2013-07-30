@@ -1,4 +1,6 @@
-﻿namespace NeverNull {
+﻿using System;
+
+namespace NeverNull {
     public static class Option {
         public static IOption<T> Create<T>(T value) {
             // only reference and Nullable types can be null.
@@ -10,6 +12,10 @@
 
             return new Some<T>(value);
             // ReSharper restore CompareNonConstrainedGenericWithNull
+        }
+
+        public static IOption<T> Create<T>(Func<T> func) {
+            return Create(func());
         }
     }
 }
