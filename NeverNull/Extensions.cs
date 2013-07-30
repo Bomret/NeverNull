@@ -33,7 +33,7 @@ namespace NeverNull {
 
         public static void WhenNone<T>(this IOption<T> option,
                                        Action action) {
-            if (option.HasValue) {
+            if (!option.HasValue) {
                 action();
             }
         }
