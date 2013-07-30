@@ -89,12 +89,12 @@ This library provides a growing number of combinators that empowers you to write
 #### OrElse
 ```csharp
 var result = Option.Create(() => null)
-				   .OrElse(new Success<int>(-1));
+				   .OrElse(new Some<int>(-1));
 
 // or
 
 var result = Option.Create(() => null)
-				   .OrElse(() => new Success<int>(-1));
+				   .OrElse(() => new Some<int>(-1));
 ```
 
 In the above examples `null` would been returned and `result` would be a `None`. The 
