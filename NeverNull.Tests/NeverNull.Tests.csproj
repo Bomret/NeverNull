@@ -40,6 +40,8 @@
     <Compile Include="Combinators\When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_map.cs" />
     <Compile Include="Combinators\When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_flatmap.cs" />
     <Compile Include="Combinators\When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_map.cs" />
+    <Compile Include="Combinators\When_I_create_an_option_from_three_and_then_check_if_it_is_empty.cs" />
+    <Compile Include="Combinators\When_I_have_a_none_and_then_check_if_it_is_empty.cs" />
     <Compile Include="Combinators\When_I_have_a_some_with_value_two_and_would_return_a_some_with_value_zero_if_it_would_be_a_none.cs" />
     <Compile Include="Combinators\When_I_filter_a_none_by_checking_if_it_contains_two.cs" />
     <Compile Include="Combinators\When_I_filter_a_some_with_value_two_by_checking_if_it_contains_three.cs" />
@@ -60,7 +62,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_null.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_true.cs" />
+    <Compile Include="When_I_create_an_option_from_hello.cs" />
     <Compile Include="When_I_create_an_option_from_null.cs" />
+    <Compile Include="When_I_create_an_option_from_three.cs" />
+    <Compile Include="When_I_create_an_option_from_zero.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
