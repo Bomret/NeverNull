@@ -18,13 +18,13 @@ Option.Create(() => WebRequest.Create(Url) as HttpWebRequest)
 ------
 
 ## Basics
-`Option` represents the absence or presence of `null`. If the `Create` function receives a reference to `null` or a `Func<T>` that produces `null`, a `None` is returned, otherwise a `Some`.
+`Option` represents the absence or presence of `null`. If the `Create` function receives a reference to `null` or a `Func<T>` that produces `null`, a `None<T>` is returned, otherwise a `Some<T>`.
 
 ```csharp
 var result = Option.Create(() => 2 + 4);
 ```
 
-The above example would evaluate the anonymous function `() => 2 + 4` and, since a valid integer will be returned, return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
+The above example would evaluate the anonymous function `() => 2 + 4` and - since a valid integer will be returned - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
 
 ```csharp
 var six = result.Value;
@@ -34,6 +34,23 @@ To find out if `result` represents a `Some` or `None` it provides a boolean prop
 
 ```csharp
 result.WhenSome(i => _six = i);
+```
+
+## Recommended usage
+Every method that could return `null` should return an `IOption<T>` instead of the result directly. That way, eventual `null` references can be handled by applying combinators and extensions to the return value.
+
+So instead of this:
+
+```csharp
+private string DoSomethingThatCouldReturnNull(string a) { //... };
+private int? CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
+```
+
+write this:
+
+```csharp
+private IOption<string> DoSomethingThatCouldReturnNull(string a) { //... };
+private IOption<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 
 ## Extensions and Combinators
@@ -73,7 +90,7 @@ Option.Create(() => 2 + 3)
 var five = Option.Create(() => 2 + 3).Get();
 ```
 
-`Get` is the most straight forward extension. It returns the value if the result is a `Some` or throws a NotSupportedException if it is a `None`. In the above example `five` would be *5*.
+`Get` is the most straight forward extension. It returns the value if the result is a `Some` or throws a `NotSupportedException` if it is a `None`. In the above example `five` would be *5*.
 
 #### GetOrElse
 ```csharp
@@ -84,7 +101,7 @@ var five = Option.Create(() => 2 + 3).GetOrElse(-1);
 
 ### Combinators
 A combinator always returns a `Some` or `None` and thus lets you combine it with other combinators and allows function composition.
-This library provides a growing number of combinators that empowers you to write concise and bloat-free code for error handling. Some of them, like `Map` and `Filter` have already been shown in the topmost example.
+This library provides a growing number of combinators that empowers you to write concise and bloat-free code for handling `null`. Some of them, like `Map` and `Filter` have already been shown in the topmost example.
 
 #### OrElse
 ```csharp
@@ -97,8 +114,19 @@ var result = Option.Create(() => null)
 				   .OrElse(() => new Some<int>(-1));
 ```
 
-In the above examples `null` would been returned and `result` would be a `None`. The 
+In the above examples `null` would have been returned and `result` would be a `None`. The 
 `OrElse` combinator makes it possible to return a different `Option` in case of a `None`. In both cases above `result` would be a `Some<int>` with the Value *-1*.
+
+#### AndThen
+```csharp
+var result = Option.Create(() => Server.GetLoggedOnUserName())
+                   .AndThen(FormatResponse);
+```
+Allows chaining and conversion of multiple Options. If an option returns `null`, the chain will be interrupted and return immediately with a `None`. In the above example `result` would be a `Some<string>`. Here is the signature of the method `FormatResponse`:
+
+```csharp
+IOption<string> FormatResponse(IOption<string> arg)
+```
 
 #### Map
 ```csharp
