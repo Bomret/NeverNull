@@ -2,7 +2,7 @@
 
 namespace NeverNull {
     public static class Extensions {
-        public static T Get<T>(this IOption<T> option) {
+        public static TValue Get<TValue>(this IOption<TValue> option) {
             if (option.HasValue) {
                 return option.Value;
             }
@@ -10,37 +10,37 @@ namespace NeverNull {
             throw new NotSupportedException("The given option does not have a value.");
         }
 
-        public static T GetOrElse<T>(this IOption<T> option,
-                                     T elseValue) {
+        public static TValue GetOrElse<TValue>(this IOption<TValue> option,
+                                               TValue elseValue) {
             return option.HasValue
                        ? option.Value
                        : elseValue;
         }
 
-        public static T GetOrElse<T>(this IOption<T> option,
-                                     Func<T> elseFunc) {
+        public static TValue GetOrElse<TValue>(this IOption<TValue> option,
+                                               Func<TValue> elseFunc) {
             return option.HasValue
                        ? option.Value
                        : elseFunc();
         }
 
-        public static void WhenSome<T>(this IOption<T> option,
-                                       Action<T> action) {
+        public static void WhenSome<TValue>(this IOption<TValue> option,
+                                            Action<TValue> action) {
             if (option.HasValue) {
                 action(option.Value);
             }
         }
 
-        public static void WhenNone<T>(this IOption<T> option,
-                                       Action action) {
-            if (!option.HasValue) {
+        public static void WhenNone<TValue>(this IOption<TValue> option,
+                                            Action action) {
+            if (option.IsEmpty) {
                 action();
             }
         }
 
-        public static void Match<T>(this IOption<T> option,
-                                    Action<T> whenSome,
-                                    Action whenNone) {
+        public static void Match<TValue>(this IOption<TValue> option,
+                                         Action<TValue> whenSome,
+                                         Action whenNone) {
             if (option.HasValue) {
                 whenSome(option.Value);
             } else {

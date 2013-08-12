@@ -14,8 +14,11 @@ namespace NeverNull.Tests {
         private Because of =
             () => _sut = Option.Create(_null);
 
-        private It should_return_a_none =
+        private It should_return_an_option_that_has_no_value =
             () => _sut.HasValue.ShouldBeFalse();
+
+        private It should_return_an_option_that_is_empty =
+            () => _sut.IsEmpty.ShouldBeTrue();
 
         private It should_throw_a_NotSupportedException_when_trying_to_access_the_value =
             () => Catch.Exception(() => _value = _sut.Value).ShouldBeOfType<NotSupportedException>();

@@ -8,6 +8,10 @@
             get { return true; }
         }
 
+        public bool IsEmpty {
+            get { return false; }
+        }
+
         public T Value { get; private set; }
     }
 }

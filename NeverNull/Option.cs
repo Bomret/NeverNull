@@ -2,19 +2,19 @@
 
 namespace NeverNull {
     public static class Option {
-        public static IOption<T> Create<T>(T value) {
+        public static IOption<TValue> Create<TValue>(TValue value) {
             // only reference and Nullable types can be null.
 
-// ReSharper disable CompareNonConstrainedGenericWithNull
+            // ReSharper disable CompareNonConstrainedGenericWithNull
             if (value == null) {
-                return new None<T>();
+                return new None<TValue>();
             }
 
-            return new Some<T>(value);
+            return new Some<TValue>(value);
             // ReSharper restore CompareNonConstrainedGenericWithNull
         }
 
-        public static IOption<T> Create<T>(Func<T> func) {
+        public static IOption<TValue> Create<TValue>(Func<TValue> func) {
             return Create(func());
         }
     }

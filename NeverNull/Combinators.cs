@@ -2,43 +2,51 @@
 
 namespace NeverNull {
     public static class Combinators {
-        public static IOption<TNewValue> Map<T, TNewValue>(this IOption<T> option,
-                                                           Func<T, TNewValue> func) {
-            return option.HasValue
-                       ? Option.Create(func(option.Value))
-                       : new None<TNewValue>();
+        public static IOption<TNextValue> AndThen<TValue, TNextValue>(this IOption<TValue> option,
+                                                                      Func<IOption<TValue>, IOption<TNextValue>>
+                                                                          continueWith) {
+            return option.IsEmpty
+                       ? new None<TNextValue>()
+                       : continueWith(option);
         }
 
-        public static IOption<TNextValue> FlatMap<T, TNextValue>(this IOption<T> option,
-                                                                 Func<T, IOption<TNextValue>> func) {
+        public static IOption<TNextValue> Map<TValue, TNextValue>(this IOption<TValue> option,
+                                                                  Func<TValue, TNextValue> applyTo) {
             return option.HasValue
-                       ? func(option.Value)
+                       ? Option.Create(applyTo(option.Value))
                        : new None<TNextValue>();
         }
 
-        public static IOption<T> Filter<T>(this IOption<T> option,
-                                           Func<T, bool> predicate) {
-            if (!option.HasValue) {
+        public static IOption<TNextValue> FlatMap<TValue, TNextValue>(this IOption<TValue> option,
+                                                                      Func<TValue, IOption<TNextValue>> applyTo) {
+            return option.HasValue
+                       ? applyTo(option.Value)
+                       : new None<TNextValue>();
+        }
+
+        public static IOption<TValue> Filter<TValue>(this IOption<TValue> option,
+                                                     Func<TValue, bool> predicate) {
+            if (option.IsEmpty) {
                 return option;
             }
 
             return predicate(option.Value)
                        ? option
-                       : new None<T>();
+                       : new None<TValue>();
         }
 
-        public static IOption<T> OrElse<T>(this IOption<T> option,
-                                           Func<IOption<T>> elseFunc) {
+        public static IOption<TValue> OrElse<TValue>(this IOption<TValue> option,
+                                                     Func<IOption<TValue>> orElse) {
             return option.HasValue
                        ? option
-                       : elseFunc();
+                       : orElse();
         }
 
-        public static IOption<T> OrElse<T>(this IOption<T> option,
-                                           IOption<T> elseOption) {
+        public static IOption<TValue> OrElse<TValue>(this IOption<TValue> option,
+                                                     IOption<TValue> orElse) {
             return option.HasValue
                        ? option
-                       : elseOption;
+                       : orElse;
         }
 
         public static IOption<T> Recover<T>(this IOption<T> option,

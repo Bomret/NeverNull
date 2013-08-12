@@ -15,7 +15,10 @@ namespace NeverNull.Tests {
         private It should_contain_true_in_the_some =
             () => _sut.Value.Value.ShouldBeTrue();
 
-        private It should_return_a_some =
+        private It should_return_an_option_that_has_a_value =
             () => _sut.HasValue.ShouldBeTrue();
+
+        private It should_return_an_option_that_is_not_empty =
+            () => _sut.IsEmpty.ShouldBeFalse();
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System;
 
 namespace NeverNull {
-    public class None<T> : IOption<T> {
+    public class None<TValue> : IOption<TValue> {
         public bool HasValue {
             get { return false; }
         }
 
-        public T Value {
+        public bool IsEmpty {
+            get { return true; }
+        }
+
+        public TValue Value {
             get { throw new NotSupportedException("None does not have a value."); }
         }
     }

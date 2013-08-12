@@ -1,6 +1,7 @@
 ﻿namespace NeverNull {
-    public interface IOption<out T> {
+    public interface IOption<out TValue> {
         bool HasValue { get; }
-        T Value { get; }
+        bool IsEmpty { get; }
+        TValue Value { get; }
     }
 }
