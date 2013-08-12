@@ -1,6 +1,8 @@
 # NeverNull
 A Option type that prevents using null in your code, inspired by its counterpart in the Scala programming language (http://www.scala-lang.org/).
 
+Also available on NuGet (https://www.nuget.org/packages/NeverNull/).
+
 Licensed under the Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html).
 
 ## Example
