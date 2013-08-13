@@ -1,7 +1,7 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators))]
+    [Subject(typeof (NeverNull.Combinators), "OrElse")]
     public class When_I_have_a_some_with_value_two_and_would_return_a_some_with_value_zero_if_it_would_be_a_none {
         private static IOption<int> _two;
         private static IOption<int> _result;

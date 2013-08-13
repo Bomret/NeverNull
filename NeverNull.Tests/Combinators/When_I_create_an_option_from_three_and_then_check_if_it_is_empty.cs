@@ -2,7 +2,7 @@ using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators))]
+    [Subject(typeof (NeverNull.Combinators), "AndThen")]
     public class When_I_create_an_option_from_three_and_then_check_if_it_is_empty {
         private static Func<IOption<int>, IOption<bool>> _checkIfEmpty;
         private static IOption<bool> _result;

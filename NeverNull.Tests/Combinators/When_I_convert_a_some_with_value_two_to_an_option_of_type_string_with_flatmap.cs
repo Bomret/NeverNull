@@ -2,7 +2,7 @@ using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators))]
+    [Subject(typeof (NeverNull.Combinators), "FlatMap")]
     public class When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_flatmap {
         private static IOption<int> _two;
         private static Func<int, IOption<string>> _toString;

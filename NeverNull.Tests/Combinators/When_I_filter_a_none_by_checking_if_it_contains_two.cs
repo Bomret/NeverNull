@@ -2,7 +2,7 @@ using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators))]
+    [Subject(typeof (NeverNull.Combinators), "Filter")]
     public class When_I_filter_a_none_by_checking_if_it_contains_two {
         private static IOption<int> _none;
         private static IOption<int> _result;

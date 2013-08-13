@@ -2,7 +2,7 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Extensions {
-    [Subject(typeof (NeverNull.Extensions))]
+    [Subject(typeof (NeverNull.Extensions),"Get")]
     internal class When_I_get_the_value_of_a_none {
         private static IOption<int> _none;
         private static Exception _error;

@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Option))]
+    [Subject(typeof (Option), "Create")]
     public class When_I_create_an_option_from_a_nullable_boolean_that_is_true {
         private static IOption<bool?> _sut;
         private static bool? _true;

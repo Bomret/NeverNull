@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Option))]
+    [Subject(typeof (Option), "Create")]
     public class When_I_create_an_option_from_hello {
         private static IOption<string> _sut;
 

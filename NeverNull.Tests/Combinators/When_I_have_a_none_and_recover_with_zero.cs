@@ -1,7 +1,7 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators))]
+    [Subject(typeof (NeverNull.Combinators), "Recover")]
     public class When_I_have_a_none_and_recover_with_zero {
         private static IOption<int> _none;
         private static IOption<int> _result;

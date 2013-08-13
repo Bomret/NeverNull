@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests.Extensions {
-    [Subject(typeof (NeverNull.Extensions))]
+    [Subject(typeof (NeverNull.Extensions),"WhenSome")]
     internal class When_I_attach_a_WhenSome_callback_to_a_some_that_contains_two {
         private static IOption<int> _some;
         private static int _two;

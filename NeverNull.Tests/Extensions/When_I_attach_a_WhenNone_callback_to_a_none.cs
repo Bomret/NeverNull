@@ -1,7 +1,7 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests.Extensions {
-    [Subject(typeof (NeverNull.Extensions))]
+    [Subject(typeof (NeverNull.Extensions),"WhenNone")]
     internal class When_I_attach_a_WhenNone_callback_to_a_none {
         private static IOption<int> _none;
         private static bool _callbackExecuted;
