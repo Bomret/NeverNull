@@ -4,19 +4,19 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "FlatMap")]
     public class When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_flatmap {
-        private static IOption<int> _none;
-        private static Func<int, IOption<string>> _toString;
-        private static IOption<string> _anotherNone;
+        static IMaybe<int> _none;
+        static Func<int, IMaybe<string>> _toString;
+        static IMaybe<string> _anotherNone;
 
-        private Establish context = () => {
+        Establish context = () => {
             _none = new None<int>();
 
-            _toString = i => Option.Create(i.ToString());
+            _toString = i => Maybe.From(i.ToString());
         };
 
-        private Because of = () => _anotherNone = _none.FlatMap(_toString);
+        Because of = () => _anotherNone = _none.FlatMap(_toString);
 
-        private It should_return_a_none =
+        It should_return_a_none =
             () => _anotherNone.HasValue.ShouldBeFalse();
     }
 }

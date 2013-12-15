@@ -2,65 +2,36 @@
 
 namespace NeverNull {
     public static class Combinators {
-        public static IOption<TNextValue> AndThen<TValue, TNextValue>(this IOption<TValue> option,
-                                                                      Func<IOption<TValue>, IOption<TNextValue>>
-                                                                          continueWith) {
-            return option.IsEmpty
-                       ? new None<TNextValue>()
-                       : continueWith(option);
+        public static IMaybe<B> Then<A, B>(this IMaybe<A> maybe, Func<IMaybe<A>, IMaybe<B>> f) {
+            return maybe.FlatMap(_ => f(maybe));
         }
 
-        public static IOption<TNextValue> Map<TValue, TNextValue>(this IOption<TValue> option,
-                                                                  Func<TValue, TNextValue> applyTo) {
-            return option.HasValue
-                       ? Option.Create(applyTo(option.Value))
-                       : new None<TNextValue>();
+        public static IMaybe<B> Map<A, B>(this IMaybe<A> maybe, Func<A, B> f) {
+            return maybe.FlatMap(a => Maybe.From(f(a)));
         }
 
-        public static IOption<TNextValue> FlatMap<TValue, TNextValue>(this IOption<TValue> option,
-                                                                      Func<TValue, IOption<TNextValue>> applyTo) {
-            return option.HasValue
-                       ? applyTo(option.Value)
-                       : new None<TNextValue>();
+        public static IMaybe<B> FlatMap<A, B>(this IMaybe<A> maybe, Func<A, IMaybe<B>> f) {
+            return maybe.HasValue ? f(maybe.Value) : new None<B>();
         }
 
-        public static IOption<TValue> Filter<TValue>(this IOption<TValue> option,
-                                                     Func<TValue, bool> predicate) {
-            if (option.IsEmpty) {
-                return option;
-            }
-
-            return predicate(option.Value)
-                       ? option
-                       : new None<TValue>();
+        public static IMaybe<T> Filter<T>(this IMaybe<T> maybe, Func<T, bool> predicate) {
+            return maybe.FlatMap(a => predicate(a) ? maybe : new None<T>());
         }
 
-        public static IOption<TValue> OrElse<TValue>(this IOption<TValue> option,
-                                                     Func<IOption<TValue>> orElse) {
-            return option.HasValue
-                       ? option
-                       : orElse();
+        public static IMaybe<T> OrElse<T>(this IMaybe<T> maybe, Func<IMaybe<T>> orElse) {
+            return OrElse(maybe, orElse());
         }
 
-        public static IOption<TValue> OrElse<TValue>(this IOption<TValue> option,
-                                                     IOption<TValue> orElse) {
-            return option.HasValue
-                       ? option
-                       : orElse;
+        public static IMaybe<T> OrElse<T>(this IMaybe<T> maybe, IMaybe<T> orElse) {
+            return maybe.HasValue ? maybe : orElse;
         }
 
-        public static IOption<T> Recover<T>(this IOption<T> option,
-                                            T recoverValue) {
-            return option.HasValue
-                       ? option
-                       : new Some<T>(recoverValue);
+        public static IMaybe<T> Recover<T>(this IMaybe<T> maybe, T recoverValue) {
+            return maybe.OrElse(Maybe.From(recoverValue));
         }
 
-        public static IOption<T> Recover<T>(this IOption<T> option,
-                                            Func<T> recoverFunc) {
-            return option.HasValue
-                       ? option
-                       : new Some<T>(recoverFunc());
+        public static IMaybe<T> Recover<T>(this IMaybe<T> maybe, Func<T> recoverFunc) {
+            return maybe.OrElse(Maybe.From(recoverFunc()));
         }
     }
 }

@@ -4,22 +4,22 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "Map")]
     public class When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_map {
-        private static IOption<int> _two;
-        private static Func<int, string> _toString;
-        private static IOption<string> _twoAsString;
+        static IMaybe<int> _two;
+        static Func<int, string> _toString;
+        static IMaybe<string> _twoAsString;
 
-        private Establish context = () => {
-            _two = Option.Create(2);
+        Establish context = () => {
+            _two = Maybe.From(2);
 
             _toString = i => i.ToString();
         };
 
-        private Because of = () => _twoAsString = _two.Map(_toString);
+        Because of = () => _twoAsString = _two.Map(_toString);
 
-        private It should_contain_two_as_string_in_the_some =
+        It should_contain_two_as_string_in_the_some =
             () => _twoAsString.Value.ShouldEqual("2");
 
-        private It should_return_a_some =
+        It should_return_a_some =
             () => _twoAsString.HasValue.ShouldBeTrue();
     }
 }

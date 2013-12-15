@@ -1,24 +1,24 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Option), "Create")]
+    [Subject(typeof (Maybe), "Create")]
     public class When_I_create_an_option_from_a_nullable_boolean_that_is_true {
-        private static IOption<bool?> _sut;
-        private static bool? _true;
+        static IMaybe<bool?> _sut;
+        static bool? _true;
 
-        private Establish context =
+        Establish context =
             () => _true = true;
 
-        private Because of =
-            () => _sut = Option.Create(_true);
+        Because of =
+            () => _sut = Maybe.From(_true);
 
-        private It should_contain_true_in_the_some =
+        It should_contain_true_in_the_some =
             () => _sut.Value.Value.ShouldBeTrue();
 
-        private It should_return_an_option_that_has_a_value =
+        It should_return_an_option_that_has_a_value =
             () => _sut.HasValue.ShouldBeTrue();
 
-        private It should_return_an_option_that_is_not_empty =
+        It should_return_an_option_that_is_not_empty =
             () => _sut.IsEmpty.ShouldBeFalse();
     }
 }

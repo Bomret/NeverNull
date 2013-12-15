@@ -1,5 +1,5 @@
 ﻿namespace NeverNull {
-    public class Some<T> : IOption<T> {
+    public sealed class Some<T> : IMaybe<T> {
         public Some(T value) {
             Value = value;
         }

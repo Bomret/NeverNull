@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace NeverNull {
-    public class None<TValue> : IOption<TValue> {
+    public struct None<T> : IMaybe<T> {
         public bool HasValue {
             get { return false; }
         }
@@ -10,7 +10,7 @@ namespace NeverNull {
             get { return true; }
         }
 
-        public TValue Value {
+        public T Value {
             get { throw new NotSupportedException("None does not have a value."); }
         }
     }

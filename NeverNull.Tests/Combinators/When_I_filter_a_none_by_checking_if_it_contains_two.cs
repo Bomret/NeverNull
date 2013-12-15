@@ -4,20 +4,20 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "Filter")]
     public class When_I_filter_a_none_by_checking_if_it_contains_two {
-        private static IOption<int> _none;
-        private static IOption<int> _result;
-        private static Func<int, bool> _isTwo;
+        static IMaybe<int> _none;
+        static IMaybe<int> _result;
+        static Func<int, bool> _isTwo;
 
-        private Establish context = () => {
+        Establish context = () => {
             _none = new None<int>();
 
             _isTwo = i => i == 3;
         };
 
-        private Because of =
+        Because of =
             () => _result = _none.Filter(_isTwo);
 
-        private It should_return_the_original_none =
+        It should_return_the_original_none =
             () => _result.ShouldEqual(_none);
     }
 }
