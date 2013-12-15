@@ -18,12 +18,12 @@ namespace NeverNull {
             return maybe.FlatMap(a => predicate(a) ? maybe : new None<T>());
         }
 
-        public static IMaybe<T> OrElse<T>(this IMaybe<T> maybe, Func<IMaybe<T>> orElse) {
+        public static IMaybe<B> OrElse<A, B>(this IMaybe<A> maybe, Func<IMaybe<B>> orElse) where A : B {
             return OrElse(maybe, orElse());
         }
 
-        public static IMaybe<T> OrElse<T>(this IMaybe<T> maybe, IMaybe<T> orElse) {
-            return maybe.HasValue ? maybe : orElse;
+        public static IMaybe<B> OrElse<A, B>(this IMaybe<A> maybe, IMaybe<B> orElse) where A : B {
+            return maybe.HasValue ? new Some<B>(maybe.Value) : orElse;
         }
 
         public static IMaybe<T> Recover<T>(this IMaybe<T> maybe, T recoverValue) {

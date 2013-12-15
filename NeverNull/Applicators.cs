@@ -6,11 +6,11 @@ namespace NeverNull {
             return maybe.Value;
         }
 
-        public static T GetOrElse<T>(this IMaybe<T> maybe, T elseValue) {
+        public static B GetOrElse<A, B>(this IMaybe<A> maybe, B elseValue) where A : B {
             return maybe.HasValue ? maybe.Value : elseValue;
         }
 
-        public static T GetOrElse<T>(this IMaybe<T> maybe, Func<T> elseFunc) {
+        public static B GetOrElse<A, B>(this IMaybe<A> maybe, Func<B> elseFunc) where A : B {
             return GetOrElse(maybe, elseFunc());
         }
 
