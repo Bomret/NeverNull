@@ -3,13 +3,13 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "OrElse")]
     public class When_I_have_a_some_with_value_two_and_would_return_a_some_with_value_zero_if_it_would_be_a_none {
-        static IMaybe<int> _two;
-        static IMaybe<int> _result;
+        static Option<int> _two;
+        static Option<int> _result;
 
-        Establish context = () => _two = new Some<int>(2);
+        Establish context = () => _two = Option.Some(2);
 
         Because of =
-            () => _result = _two.OrElse(new Some<int>(0));
+            () => _result = _two.OrElse(Option.Some(0));
 
         It should_contain_two_in_the_some =
             () => _result.Value.ShouldEqual(2);

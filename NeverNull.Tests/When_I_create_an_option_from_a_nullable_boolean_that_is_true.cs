@@ -1,16 +1,16 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Maybe), "Create")]
+    [Subject(typeof (Option), "Create")]
     public class When_I_create_an_option_from_a_nullable_boolean_that_is_true {
-        static IMaybe<bool?> _sut;
+        static Option<bool?> _sut;
         static bool? _true;
 
         Establish context =
             () => _true = true;
 
         Because of =
-            () => _sut = Maybe.From(_true);
+            () => _sut = Option.From(_true);
 
         It should_contain_true_in_the_some =
             () => _sut.Value.Value.ShouldBeTrue();

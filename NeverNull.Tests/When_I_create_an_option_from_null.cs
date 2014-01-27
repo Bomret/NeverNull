@@ -2,9 +2,9 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Maybe), "Create")]
+    [Subject(typeof (Option), "Create")]
     public class When_I_create_an_option_from_null {
-        static IMaybe<object> _sut;
+        static Option<object> _sut;
         static object _null;
         static object _value;
 
@@ -12,7 +12,7 @@ namespace NeverNull.Tests {
             () => _null = null;
 
         Because of =
-            () => _sut = Maybe.From(_null);
+            () => _sut = Option.From(_null);
 
         It should_return_an_option_that_has_no_value =
             () => _sut.HasValue.ShouldBeFalse();
@@ -21,6 +21,6 @@ namespace NeverNull.Tests {
             () => _sut.IsEmpty.ShouldBeTrue();
 
         It should_throw_a_NotSupportedException_when_trying_to_access_the_value =
-            () => Catch.Exception(() => _value = _sut.Value).ShouldBeOfType<NotSupportedException>();
+            () => Catch.Exception(() => _value = _sut.Value).ShouldBeOfType<InvalidOperationException>();
     }
 }

@@ -2,29 +2,35 @@
 
 namespace NeverNull {
     public static class Applicators {
-        public static T Get<T>(this IMaybe<T> maybe) {
-            return maybe.Value;
+        public static T Get<T>(this Option<T> option) {
+            return option;
         }
 
-        public static B GetOrElse<A, B>(this IMaybe<A> maybe, B elseValue) where A : B {
-            return maybe.HasValue ? maybe.Value : elseValue;
+        public static T GetOrElse<T>(this Option<T> option, T elseValue) {
+            return option.HasValue ? option.Value : elseValue;
         }
 
-        public static B GetOrElse<A, B>(this IMaybe<A> maybe, Func<B> elseFunc) where A : B {
-            return GetOrElse(maybe, elseFunc());
+        public static T GetOrDefault<T>(this Option<T> option) {
+            return option.HasValue ? option.Value : default(T);
         }
 
-        public static void WhenSome<T>(this IMaybe<T> maybe, Action<T> action) {
-            if (maybe.HasValue) action(maybe.Value);
+        public static void IfSome<T>(this Option<T> option, Action<T> action) {
+            if (option.HasValue) action(option);
         }
 
-        public static void WhenNone<T>(this IMaybe<T> maybe, Action action) {
-            if (maybe.IsEmpty) action();
+        public static void IfNone<T>(this Option<T> option, Action action) {
+            if (option.IsEmpty) action();
         }
 
-        public static void Match<T>(this IMaybe<T> maybe, Action<T> whenSome, Action whenNone) {
-            if (maybe.HasValue) whenSome(maybe.Value);
-            else whenNone();
+        public static void Match<T>(this Option<T> option, Action<T> ifSome, Action ifNone) {
+            if (option.HasValue)
+                ifSome(option);
+            else
+                ifNone();
+        }
+
+        public static B Match<A, B>(this Option<A> option, Func<A, B> ifSome, Func<B> ifNone) {
+            return option.HasValue ? ifSome(option) : ifNone();
         }
     }
 }

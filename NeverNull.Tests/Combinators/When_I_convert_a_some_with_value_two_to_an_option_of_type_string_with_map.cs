@@ -4,12 +4,12 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "Map")]
     public class When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_map {
-        static IMaybe<int> _two;
+        static Option<int> _two;
         static Func<int, string> _toString;
-        static IMaybe<string> _twoAsString;
+        static Option<string> _twoAsString;
 
         Establish context = () => {
-            _two = Maybe.From(2);
+            _two = Option.From(2);
 
             _toString = i => i.ToString();
         };

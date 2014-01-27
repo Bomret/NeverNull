@@ -2,36 +2,36 @@
 
 namespace NeverNull {
     public static class Combinators {
-        public static IMaybe<B> Then<A, B>(this IMaybe<A> maybe, Func<IMaybe<A>, IMaybe<B>> f) {
-            return maybe.FlatMap(_ => f(maybe));
+        public static Option<B> Then<A, B>(this Option<A> option, Func<Option<A>, Option<B>> f) {
+            return option.FlatMap(_ => f(option));
         }
 
-        public static IMaybe<B> Map<A, B>(this IMaybe<A> maybe, Func<A, B> f) {
-            return maybe.FlatMap(a => Maybe.From(f(a)));
+        public static Option<B> Map<A, B>(this Option<A> option, Func<A, B> f) {
+            return option.FlatMap(a => Option.From(f(a)));
         }
 
-        public static IMaybe<B> FlatMap<A, B>(this IMaybe<A> maybe, Func<A, IMaybe<B>> f) {
-            return maybe.HasValue ? f(maybe.Value) : new None<B>();
+        public static Option<B> FlatMap<A, B>(this Option<A> option, Func<A, Option<B>> f) {
+            return option.HasValue ? f(option) : Option.None;
         }
 
-        public static IMaybe<T> Filter<T>(this IMaybe<T> maybe, Func<T, bool> predicate) {
-            return maybe.FlatMap(a => predicate(a) ? maybe : new None<T>());
+        public static Option<T> Filter<T>(this Option<T> option, Func<T, bool> predicate) {
+            return option.FlatMap(a => predicate(a) ? option : Option.None);
         }
 
-        public static IMaybe<B> OrElse<A, B>(this IMaybe<A> maybe, Func<IMaybe<B>> orElse) where A : B {
-            return OrElse(maybe, orElse());
+        public static Option<T> OrElse<T>(this Option<T> option, Func<T> orElse) {
+            return OrElse(option, orElse());
         }
 
-        public static IMaybe<B> OrElse<A, B>(this IMaybe<A> maybe, IMaybe<B> orElse) where A : B {
-            return maybe.HasValue ? new Some<B>(maybe.Value) : orElse;
+        public static Option<T> OrElse<T>(this Option<T> option, T orElse) {
+            return option.HasValue ? option.Value : orElse;
         }
 
-        public static IMaybe<T> Recover<T>(this IMaybe<T> maybe, T recoverValue) {
-            return maybe.OrElse(Maybe.From(recoverValue));
+        public static Option<T> Recover<T>(this Option<T> option, T recoverValue) {
+            return option.OrElse(recoverValue);
         }
 
-        public static IMaybe<T> Recover<T>(this IMaybe<T> maybe, Func<T> recoverFunc) {
-            return maybe.OrElse(Maybe.From(recoverFunc()));
+        public static Option<T> Recover<T>(this Option<T> option, Func<T> recoverFunc) {
+            return option.OrElse(recoverFunc());
         }
     }
 }

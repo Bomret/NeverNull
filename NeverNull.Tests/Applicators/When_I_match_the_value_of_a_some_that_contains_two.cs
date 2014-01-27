@@ -4,7 +4,7 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Applicators {
     [Subject(typeof (NeverNull.Applicators), "Match")]
     internal class When_I_match_the_value_of_a_some_that_contains_two {
-        static IMaybe<int> _some;
+        static Option<int> _some;
         static int _two;
 
         static Action<int> _whenSome;
@@ -12,7 +12,7 @@ namespace NeverNull.Tests.Applicators {
         static Action _whenNone;
 
         Establish context = () => {
-            _some = new Some<int>(2);
+            _some = Option.Some(2);
 
             _whenSome = i => _two = i;
             _whenNone = () => _isNone = true;

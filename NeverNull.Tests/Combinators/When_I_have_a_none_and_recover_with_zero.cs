@@ -3,10 +3,10 @@ using Machine.Specifications;
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "Recover")]
     public class When_I_have_a_none_and_recover_with_zero {
-        static IMaybe<int> _none;
-        static IMaybe<int> _result;
+        static Option<int> _none;
+        static Option<int> _result;
 
-        Establish context = () => _none = new None<int>();
+        Establish context = () => _none = Option.None;
 
         Because of =
             () => _result = _none.Recover(0);

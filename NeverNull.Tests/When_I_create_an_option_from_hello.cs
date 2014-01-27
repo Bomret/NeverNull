@@ -1,12 +1,12 @@
 ﻿using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Maybe), "Create")]
+    [Subject(typeof (Option), "Create")]
     public class When_I_create_an_option_from_hello {
-        static IMaybe<string> _sut;
+        static Option<string> _sut;
 
         Because of =
-            () => _sut = Maybe.From("hello");
+            () => _sut = Option.From("hello");
 
         It should_return_an_option_that_has_a_value =
             () => _sut.HasValue.ShouldBeTrue();
