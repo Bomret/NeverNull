@@ -1,15 +1,12 @@
-using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
     [Subject(typeof (NeverNull.Combinators), "AndThen")]
     public class When_I_create_an_option_from_three_and_then_check_if_it_is_empty {
-        static Func<Option<int>, Option<bool>> _checkIfEmpty;
         static Option<bool> _result;
-        Establish context = () => _checkIfEmpty = option => Option.From(option.IsEmpty);
 
         Because of = () => _result = Option.From(3)
-                                          .Then(_checkIfEmpty);
+                                           .ThenWith(o => Option.Some(o.IsEmpty));
 
         It should_contain_false_in_the_result =
             () => _result.Value.ShouldBeFalse();

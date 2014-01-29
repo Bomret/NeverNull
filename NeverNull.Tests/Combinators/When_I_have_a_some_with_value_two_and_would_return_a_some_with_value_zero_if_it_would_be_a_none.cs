@@ -6,10 +6,9 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _two;
         static Option<int> _result;
 
-        Establish context = () => _two = Option.Some(2);
+        Establish context = () => _two = 2;
 
-        Because of =
-            () => _result = _two.OrElse(Option.Some(0));
+        Because of = () => _result = _two.OrElse(0);
 
         It should_contain_two_in_the_some =
             () => _result.Value.ShouldEqual(2);

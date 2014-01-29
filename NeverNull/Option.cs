@@ -1,19 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NeverNull {
-    public abstract class Option<T> {
-        static readonly Option<T> _none = new None<T>();
+    public abstract class Option<T> : IEquatable<Option<T>>,
+                                      IEquatable<None> {
+        static readonly Option<T> None = new None<T>();
         public abstract bool HasValue { get; }
         public abstract bool IsEmpty { get; }
-
-        public static Option<T> None {
-            get { return _none; }
-        }
-
         public abstract T Value { get; }
 
-        public static implicit operator T(Option<T> option) {
-            return option.Value;
+        public bool Equals(None other) {
+            return IsEmpty;
+        }
+
+        public bool Equals(Option<T> other) {
+            if (other == null) return false;
+
+            if (other.HasValue && HasValue)
+                return EqualityComparer<T>.Default.Equals(other.Value, Value);
+
+            return other.IsEmpty == IsEmpty;
         }
 
         public static implicit operator Option<T>(T value) {
@@ -42,10 +48,6 @@ namespace NeverNull {
             // ReSharper disable CompareNonConstrainedGenericWithNull
             return value == null ? None : Some(value);
             // ReSharper restore CompareNonConstrainedGenericWithNull
-        }
-
-        public static Option<TValue> From<TValue>(Func<TValue> func) {
-            return From(func());
         }
     }
 }

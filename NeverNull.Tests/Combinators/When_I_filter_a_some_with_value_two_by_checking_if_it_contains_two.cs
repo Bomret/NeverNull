@@ -8,14 +8,9 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _result;
         static Func<int, bool> _isTwo;
 
-        Establish context = () => {
-            _two = Option.From(2);
+        Establish context = () => _two = 2;
 
-            _isTwo = i => i == 2;
-        };
-
-        Because of =
-            () => _result = _two.Filter(_isTwo);
+        Because of = () => _result = _two.Filter(i => i == 2);
 
         It should_contain_two_in_the_some =
             () => _result.Value.ShouldEqual(2);

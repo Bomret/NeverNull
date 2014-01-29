@@ -53,9 +53,7 @@
     <Compile Include="Combinators\When_I_filter_a_none_by_checking_if_it_contains_two.cs" />
     <Compile Include="Combinators\When_I_filter_a_some_with_value_two_by_checking_if_it_contains_three.cs" />
     <Compile Include="Combinators\When_I_filter_a_some_with_value_two_by_checking_if_it_contains_two.cs" />
-    <Compile Include="Combinators\When_I_have_a_none_and_recover_with_zero.cs" />
     <Compile Include="Combinators\When_I_have_a_none_and_return_a_some_with_value_zero_because_it_is_a_none.cs" />
-    <Compile Include="Combinators\When_I_have_a_some_with_value_two_and_would_recover_with_zero.cs" />
     <Compile Include="Applicators\When_I_attach_a_WhenNone_callback_to_a_none.cs" />
     <Compile Include="Applicators\When_I_attach_a_WhenNone_callback_to_a_some_that_contains_two.cs" />
     <Compile Include="Applicators\When_I_attach_a_WhenSome_callback_to_a_none.cs" />
@@ -67,6 +65,8 @@
     <Compile Include="Applicators\When_I_match_the_value_of_a_none.cs" />
     <Compile Include="Applicators\When_I_match_the_value_of_a_some_that_contains_two.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_I_check_the_equality_of_hello_with_some_and_none.cs" />
+    <Compile Include="When_I_check_the_equality_of_null_with_some_and_none.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_null.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_true.cs" />
     <Compile Include="When_I_create_an_option_from_hello.cs" />

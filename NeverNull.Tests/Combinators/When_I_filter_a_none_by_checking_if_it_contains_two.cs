@@ -1,4 +1,3 @@
-using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -6,16 +5,11 @@ namespace NeverNull.Tests.Combinators {
     public class When_I_filter_a_none_by_checking_if_it_contains_two {
         static Option<int> _none;
         static Option<int> _result;
-        static Func<int, bool> _isTwo;
 
-        Establish context = () => {
-            _none = Option.None;
-
-            _isTwo = i => i == 3;
-        };
+        Establish context = () => _none = Option.None;
 
         Because of =
-            () => _result = _none.Filter(_isTwo);
+            () => _result = _none.Filter(i => i == 3);
 
         It should_return_the_original_none =
             () => _result.ShouldEqual(_none);

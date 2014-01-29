@@ -6,11 +6,10 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _none;
         static Option<int> _result;
 
-        Establish context =
-            () => _none = Option.None;
+        Establish context = () => _none = Option.None;
 
         Because of =
-            () => _result = _none.OrElse(Option.Some(0));
+            () => _result = _none.OrElse(0);
 
         It should_contain_zero_in_the_some =
             () => _result.Value.ShouldEqual(0);

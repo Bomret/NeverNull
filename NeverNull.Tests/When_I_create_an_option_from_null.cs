@@ -2,7 +2,7 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests {
-    [Subject(typeof (Option), "Create")]
+    [Subject(typeof (Option), "From")]
     public class When_I_create_an_option_from_null {
         static Option<object> _sut;
         static object _null;
@@ -13,6 +13,12 @@ namespace NeverNull.Tests {
 
         Because of =
             () => _sut = Option.From(_null);
+
+        It should_return_an_option_that_None_is_equal_to =
+            () => Option.None.Equals(_sut).ShouldBeTrue();
+
+        It should_return_an_option_that_equals_None =
+            () => _sut.Equals(Option.None).ShouldBeTrue();
 
         It should_return_an_option_that_has_no_value =
             () => _sut.HasValue.ShouldBeFalse();
