@@ -11,11 +11,11 @@ namespace NeverNull {
         }
 
         public static Option<B> Map<A, B>(this Option<A> option, Func<A, B> f) {
-            return option.FlatMap(a => Option.From(f(a)));
+            return option.Match(a => Option.From(f(a)), () => Option.None);
         }
 
         public static Option<B> FlatMap<A, B>(this Option<A> option, Func<A, Option<B>> f) {
-            return option.HasValue ? f(option.Value) : Option.None;
+            return option.Match(f, () => Option.None);
         }
 
         public static Option<T> Flatten<T>(this Option<Option<T>> nestedOption) {
@@ -23,12 +23,12 @@ namespace NeverNull {
         }
 
         public static Option<B> Transform<A, B>(this Option<A> option, Func<A, B> ifSome, Func<B> ifNone) {
-            return Option.From(option.HasValue ? ifSome(option.Value) : ifNone());
+            return option.Match(ifSome, ifNone);
         }
 
         public static Option<B> TransformWith<A, B>(this Option<A> option, Func<A, Option<B>> ifSome,
                                                     Func<Option<B>> ifNone) {
-            return option.HasValue ? ifSome(option.Value) : ifNone();
+            return option.Match(ifSome, ifNone);
         }
 
         public static Option<C> Zip<A, B, C>(this Option<A> optionA, Option<B> optionB, Func<A, B, C> f) {
@@ -48,11 +48,11 @@ namespace NeverNull {
         }
 
         public static Option<T> OrElse<T>(this Option<T> option, T orElse) {
-            return option.HasValue ? option : Option.From(orElse);
+            return option.Match(a => a, () => orElse);
         }
 
         public static Option<T> OrElseWith<T>(this Option<T> option, Option<T> orElse) {
-            return option.HasValue ? option : orElse;
+            return option.Match(a => a, () => orElse);
         }
 
         public static Option<T> Tap<T>(this Option<T> option, Action<T> tap) {

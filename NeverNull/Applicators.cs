@@ -7,11 +7,11 @@ namespace NeverNull {
         }
 
         public static T GetOrElse<T>(this Option<T> option, T elseValue) {
-            return option.HasValue ? option.Value : elseValue;
+            return option.Match(value => value, () => elseValue);
         }
 
         public static T GetOrDefault<T>(this Option<T> option) {
-            return option.HasValue ? option.Value : default(T);
+            return option.Match(value => value, () => default(T));
         }
 
         public static void IfSome<T>(this Option<T> option, Action<T> action) {
