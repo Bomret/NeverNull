@@ -20,26 +20,26 @@ Option.Create(() => WebRequest.Create(Url) as HttpWebRequest)
 ------
 
 ## Basics
-`Option` represents the absence or presence of `null`. If the `Create` function receives a reference to `null` or a `Func<T>` that produces `null`, a `None<T>` is returned, otherwise a `Some<T>`.
+`Option` represents the absence or presence of `null`. If the `From` function receives a reference to `null`, `None` is returned, otherwise a `Some<T>`.
 
 ```csharp
-var result = Option.Create(() => 2 + 4);
+Option<int> result = Option.From(2);
 ```
 
-The above example would evaluate the anonymous function `() => 2 + 4` and - since a valid integer will be returned - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
+The above example would evaluate `2` and - because that is a valid integer - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
 
 ```csharp
 var six = result.Value;
 ```
 
-To find out if `result` represents a `Some` or `None` it provides a boolean property: `HasValue`. To be safe, you can either check this property first or use the corresponding extension (more on extensions below):
+To find out if `result` represents a `Some` or `None` it provides two boolean properties: `HasValue` and `IsEmpty`. To be safe, you can either check these properties first or use the corresponding applicator (more on applicators below):
 
 ```csharp
-result.WhenSome(i => _six = i);
+result.IfSome(i => _six = i);
 ```
 
 ## Recommended usage
-Every method that could return `null` should return an `IOption<T>` instead of the result directly. That way, eventual `null` references can be handled by applying combinators and extensions to the return value.
+Every method that could return `null` should return an `Option<T>` instead of the result directly. That way, eventual `null` references can be handled by applying combinators and extensions to the return value.
 
 So instead of this:
 
@@ -51,113 +51,232 @@ private int? CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 write this:
 
 ```csharp
-private IOption<string> DoSomethingThatCouldReturnNull(string a) { //... };
-private IOption<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
+private Option<string> DoSomethingThatCouldReturnNull(string a) { //... };
+private Option<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 
-## Extensions and Combinators
+## Implicit conversions
+Because `Option<T>` represents the presence or absence of a value, NeverNull implicitly converts a reference to an `Option` like for e.g. method return values.
+
+```csharp
+Option<int> = 5;
+
+Option<string> Stringify<T>(T obj) {
+    if(obj == null) return Option.None;
+
+    return obj.ToString();
+}
+```
+
+But because an `Option<T>` may also represent the absence of a value, the other way around is not possible.
+
+```csharp
+// all invalid
+
+int = Option.Some(5);
+
+string Stringify<T>(T obj) {
+    if(obj == null) return Option.None;
+
+    return Option.From(obj.ToString());
+}
+```
+
+## Creating an Option
+There are several ways to create an `Option`.
+
+### From
+```csharp
+Option<int> option = Option.From(2);
+```
+Evaluates a `T` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise.
+
+### Some
+```csharp
+Option<int> five = Option.Some(5);
+```
+Create a `Some` that contains the given value.
+
+### None
+```csharp
+Option<int> none = Option.None;
+```
+Returns `None` that represents the absence of a value.
+
+## Applicators and Combinators
 Since `Some` and `None` are simple data structures, a couple of extension methods are provided that make working with both types easier.
 
-### Extensions
-An extension is either void or returns something different than a `Some` or `None`. Extensions can be used to execute actions with side effect.
+### Applicators
+An applicator is either void or returns something different than a `Some` or `None`. Applicators can be used to execute actions with side effect.
 
-#### WhenSome
+#### IfSome
 ```csharp
-Option.Create(() => 2 + 3)
-      .WhenSome(i => _five = i);
+Option.From(2)
+      .IfSome(i => _two = i);
 ```
+`IfSome` is only executed if `2` is not return `null` and delegates the value of the `Some` to its enclosed callback. In the above example `_two` would be a int with Value `2`.
 
-`WhenSome` is only executed if `() => 2 + 3` does not return `null` and delegates the value of the `Some` to its enclosed callback. In the above example `_five` would be a int with Value *5*.
-
-#### WhenNone
+#### IfNone
 ```csharp
-Option.Create(() => null)
-      .WhenNone(() => _wasNull = true;);
+Option.From(null)
+      .IfNone(() => _wasNull = true;);
 ```
-
-`WhenNone` is only executed if `null` was returned and then executes its enclosed callback.
+`IfNone` is only executed if `null` was returned and then executes its enclosed callback.
 
 #### Match
 ```csharp
-Option.Create(() => 2 + 3)
-      .Match(
-          i => _five = i,
-         () => _wasNull = true);
+Option.From(2)
+       .Match(
+   		i => _two = i,
+   		() => _isNone = true);
 ```
+`Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if the value is null.
 
-`Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if `null` was returned.
+```csharp
+string result = Option.From(2)
+                .Match(
+   		             i => i.ToString(),
+   		             () => "");
+```
+This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
 #### Get
 ```csharp
-var five = Option.Create(() => 2 + 3).Get();
+int two = Option.From(2).Get();
 ```
-
-`Get` is the most straight forward extension. It returns the value if the result is a `Some` or throws a `NotSupportedException` if it is a `None`. In the above example `five` would be *5*.
+`Get` is the most straight forward applicator. It returns the value if the result is a `Some` or throws an `InvalidOperationException`, if `None`. In the above example `two` would be `2`.
 
 #### GetOrElse
 ```csharp
-var five = Option.Create(() => 2 + 3).GetOrElse(-1);
+int two = Option.From(2).GetOrElse(-1);
 ```
+`GetOrElse` either returns the value, if `From` returned a `Some` or the else value, if `From` returned `None`. In the above example `two` would be `2`. It would have been `-1` if `2` was `null`.
 
-`GetOrElse` either returns the value, if `Create` returned a `Some` or the else value, if `Create` returned a `None`. In the above example `five` would be *5*. It would have been *-1* if `() => 2 + 3` had returned `null`.
+#### GetOrDefault
+```csharp
+int two = Option.From(2).GetOrDefault();
+```
+`GetOrDefault` either returns the value, if `From` returned a `Some` or the value of `default(T)`, if `From` returned `None`. In the above example `two` would be `2`. It would have been `0` which is `default(int)` if `2` was `null`.
 
 ### Combinators
-A combinator always returns a `Some` or `None` and thus lets you combine it with other combinators and allows function composition.
+A combinator always returns a `Some` or `None` and thus lets you combine it with other combinators and allow function composition.
 This library provides a growing number of combinators that empowers you to write concise and bloat-free code for handling `null`. Some of them, like `Map` and `Filter` have already been shown in the topmost example.
 
 #### OrElse
 ```csharp
-var result = Option.Create(() => null)
-				   .OrElse(new Some<int>(-1));
-
-// or
-
-var result = Option.Create(() => null)
-				   .OrElse(() => new Some<int>(-1));
+var result = Option.From(null)
+				   .OrElse(-1);
 ```
+In the above examples `null` would have been returned and `result` would be `None`. The `OrElse` combinator makes it possible to return a different value in case of `None`. `result` would be a `Some<int>` with the Value *-1*.
 
-In the above examples `null` would have been returned and `result` would be a `None`. The 
-`OrElse` combinator makes it possible to return a different `Option` in case of a `None`. In both cases above `result` would be a `Some<int>` with the Value *-1*.
-
-#### AndThen
+#### OrElseWith
 ```csharp
-var result = Option.Create(() => Server.GetLoggedOnUserName())
-                   .AndThen(FormatResponse);
+var result = Option.From(null)
+				   .OrElseWith(Option.Some(-1));
 ```
-Allows chaining and conversion of multiple Options. If an option returns `null`, the chain will be interrupted and return immediately with a `None`. In the above example `result` would be a `Some<string>`. Here is the signature of the method `FormatResponse`:
+In the above examples `null` would have been returned and `result` would be `None`. The `OrElseWith` combinator makes it possible to return a different `Option` in case of `None`. `result` would be a `Some<int>` with the Value *-1*.
 
+**Note:** Because of the implicit conversion, `OrElseWith(-1)` would also be valid.
+
+#### Then
 ```csharp
-IOption<string> FormatResponse(IOption<string> arg)
+var result = Option.From(Server.GetLoggedOnUserName())
+                   .Then(o => o.HasValue);
 ```
+Allows chaining and conversion of multiple Options. If an option returns `null`, the chain will be interrupted and return immediately with `None`. In the above example `result` would be a `Some<bool>`.
+
+#### Then
+```csharp
+var result = Option.From(Server.GetLoggedOnUserName())
+                   .ThenWith(o => o.Map(IsValid));
+```
+Allows chaining and conversion of multiple Options. If an option returns `null`, the chain will be interrupted and return immediately with `None`. In the above example `result` would be a `Some<bool>`.
 
 #### Map
 ```csharp
-var result = Option.Create(() => 2 + 3)
+var result = Option.From(2)
 				   .Map(i => i.ToString());
 ```
-
 `Map` allows to apply a function to the value of a `Some`. In the above example `result` would be a `Some<string>` with Value *"5"*.
-
-#### Filter
-```csharp
-var result = Try.To(() => 2 + 3)
-				.Filter(i => i == 5);
-```
-
-`Filter` checks if a given predicate holds true for an `Option`. In the above example `result` would be a `Some<int>` with Value *5*. If the predicate `i => i == 5` would not hold, `result` would have been a `None<int>`. If `() => 2 + 3` would have returned `null`, `result` would have been the original `None<int>`.
 
 #### FlatMap
 ```csharp
-var result = Option.Create(() => 2 + 3)
-                   .FlatMap(i => Option.Create(() => i.ToString()));
+var result = Option.From(2)
+                   .FlatMap(i => Option.From(i.ToString()));
 ```
+`FlatMap` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some<string>` with Value `"5"`. If `Map` would have been used, `result` would have been a `Some<Some<string>>`.
 
-`FlatMap` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some<string>` with Value *"5"*. If `Map` would have been used, `result` would have been a `Some<Some<string>>`.
-
-#### Recover
+#### Filter
 ```csharp
-var result = Option.Create(() => null)
-				   .Recover(() => -1);
+var result = Option.From(5)
+				   .Filter(i => i == 5);
 ```
+`Filter` checks if a given predicate holds true for an `Option`. In the above example `result` would be a `Some<int>` with Value `5`. If the predicate `i => i == 5` would not hold, `result` would have been `None`.
 
-This combinator is used to recover from a `None`. In the above example `result` would be a `Some<int>` with Value *-1*.
+#### Reject
+```csharp
+var result = Option.From(5)
+				   .Reject(i => i == 5);
+```
+`Reject` does the exact opposite of `Filter`. In the above example `result` would be `None`. If the predicate `i => i == 5` would not hold, `result` would have been a `Some<int>` with value `5`.
+
+#### Zip
+```csharp
+Option<int> five = 5;
+Option<int> four = 4;
+
+Option<int> nine = five.Zip(four, (a, b) => a + b);
+```
+Takes one other `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
+In the above example `nine` would be a `Some<int>` containing `9`.
+
+#### ZipWith
+```csharp
+Option<int> five = 5;
+Option<int> four = 4;
+
+Option<int> nine = five.ZipWith(four, (a, b) => Option.From(a + b));
+```
+Takes one other `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
+In the above example `nine` would be a `Some<int>` containing `9`.
+
+#### Transform
+```csharp
+Option<string> result = Option.From(2)
+        				.Transform(
+        					i => i.ToString(),
+        					() => "");
+```
+Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some<string>` with Value `"5"`.
+
+#### TransformWith
+```csharp
+Option<string> result = Option.From(2)
+        				.TransformWith(
+        					i => Option.From(i.ToString()),
+        					() => Option.None);
+```
+Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some<string>` with Value `"5"`.
+
+#### Tap
+```csharp
+Option<int> result = Option.From(2)
+        			 .Tap(i => Console.WriteLine(i))
+        			 .Map(i => i + 1);
+```
+Can be used to take a look at the value of an `Option` without modifying it. In the above example `result` would be a `Some<int>` containing the value `3`. `Tap` would have printed `2` to the console.
+
+#### Do
+```csharp
+Option<string> result = Option.From(2)
+				        .Do(() => Console.Write("Do executed"))
+				        .Map(i => i.ToString());
+```
+Can be used to execute side effecting behavior without modifying an `Option`. In the above example `result` would be a `Some<string>` containing `"2"`. The given `Action` will be executed in _either case_, regardless if the incoming `Option` is a `Some` or `None`.
+
+#### Flatten
+```csharp
+Option<Option<int>> nestedOption = Option.From(Option.From(2));
+Option<int> result = nestedOption.Flatten();
+```
+Flattens a nested `Option`.
