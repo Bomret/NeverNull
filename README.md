@@ -9,12 +9,12 @@ Licensed under the Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.
 Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Map` and `Filter` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Map` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Filter function.
 
 ```csharp
-Option.Create(() => WebRequest.Create(Url) as HttpWebRequest)
+Option.From(WebRequest.Create(Url) as HttpWebRequest)
       .Map(request => request.GetResponse())
       .Map(response => response.ContentType)
       .Filter(contentType => contentType.StartsWith("text"))
       .Match(
-          contentType => Console.WriteLine("Success: {0}", contentType),
+          contentType => Console.WriteLine("Content-Type: {0}", contentType),
           () => Console.WriteLine("No matching result."));
 ```
 ------
@@ -25,13 +25,11 @@ Option.Create(() => WebRequest.Create(Url) as HttpWebRequest)
 ```csharp
 Option<int> result = Option.From(2);
 ```
-
 The above example would evaluate `2` and - because that is a valid integer - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
 
 ```csharp
 var six = result.Value;
 ```
-
 To find out if `result` represents a `Some` or `None` it provides two boolean properties: `HasValue` and `IsEmpty`. To be safe, you can either check these properties first or use the corresponding applicator (more on applicators below):
 
 ```csharp
@@ -47,7 +45,6 @@ So instead of this:
 private string DoSomethingThatCouldReturnNull(string a) { //... };
 private int? CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
-
 write this:
 
 ```csharp
@@ -56,24 +53,26 @@ private Option<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //...
 ```
 
 ## Implicit conversions
-Because `Option<T>` represents the presence or absence of a value, NeverNull implicitly converts a reference to an `Option` like for e.g. method return values.
+Because `Option<T>` represents the presence or absence of `null`, NeverNull implicitly converts a reference to an `Option` like for e.g. method return values.
 
 ```csharp
+// all valid
+
 Option<int> = 5;
 
-Option<string> Stringify<T>(T obj) {
+Option<string> Stringify(object obj) {
     if(obj == null) return Option.None;
 
     return obj.ToString();
 }
 ```
 
-But because an `Option<T>` may also represent the absence of a value, the other way around is not possible.
+But because an `Option<T>` may also represent the presence of null, the other way around is not possible.
 
 ```csharp
 // all invalid
 
-int = Option.Some(5);
+string = Option.From(OperationThatMayReturnNull());
 
 string Stringify<T>(T obj) {
     if(obj == null) return Option.None;
