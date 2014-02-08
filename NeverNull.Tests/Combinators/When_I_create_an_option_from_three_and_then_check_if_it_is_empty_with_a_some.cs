@@ -1,12 +1,12 @@
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "Then")]
-    public class When_I_create_an_option_from_three_and_then_check_if_it_is_empty {
+    [Subject(typeof (NeverNull.Combinators), "ThenWith")]
+    public class When_I_create_an_option_from_three_and_then_check_if_it_is_empty_with_a_some {
         static Option<bool> _result;
 
         Because of = () => _result = Option.Some(3)
-                                           .Then(o => o.IsEmpty);
+                                           .ThenWith(o => Option.Some(o.IsEmpty));
 
         It should_contain_false_in_the_result =
             () => _result.Value.ShouldBeFalse();

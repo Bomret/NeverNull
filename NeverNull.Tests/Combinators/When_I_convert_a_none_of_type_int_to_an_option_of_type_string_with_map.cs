@@ -1,4 +1,3 @@
-using System;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -7,7 +6,7 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _none;
         static Option<string> _anotherNone;
 
-        Establish context = () =>_none = Option.None;
+        Establish context = () => _none = Option.None;
 
         Because of = () => _anotherNone = _none.Map(i => i.ToString());
 

@@ -1,18 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-<metadata>
-<id>NeverNull</id>
-<version>1.0</version>
-<title>NeverNull</title>
-<authors>Stefan Reichel</authors>
-<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
-<projectUrl>https://github.com/Bomret/NeverNull</projectUrl>
-<requireLicenseAcceptance>true</requireLicenseAcceptance>
-<description>A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.</description>
-<tags>null, functional, NullReferenceException, option</tags>
-</metadata>
-<files>
-<file src="..\NeverNull\bin\Release\net35\NeverNull.dll" target="lib\net35\NeverNull.dll"/>
-<file src="..\NeverNull\bin\Release\net40\NeverNull.dll" target="lib\net40\NeverNull.dll"/>
-<file src="..\NeverNull\bin\Release\net45\NeverNull.dll" target="lib\net45\NeverNull.dll"/>
-</files>
+    <metadata>
+        <id>NeverNull</id>
+        <version>1.5.0</version>
+        <title>NeverNull</title>
+        <authors>Stefan Reichel</authors>
+        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+        <projectUrl>https://github.com/Bomret/NeverNull</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.</description>
+        <tags>null, functional, NullReferenceException, option</tags>
+    </metadata>
 </package>

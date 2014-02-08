@@ -19,7 +19,7 @@ namespace NeverNull {
         }
 
         public static Option<T> Flatten<T>(this Option<Option<T>> nestedOption) {
-            return nestedOption.Value;
+            return nestedOption.Match(o => o, () => Option.None);
         }
 
         public static Option<B> Transform<A, B>(this Option<A> option, Func<A, B> ifSome, Func<B> ifNone) {

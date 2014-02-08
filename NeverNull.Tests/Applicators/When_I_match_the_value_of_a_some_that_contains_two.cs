@@ -3,7 +3,7 @@ using Machine.Specifications;
 
 namespace NeverNull.Tests.Applicators {
     [Subject(typeof (NeverNull.Applicators), "Match")]
-    internal class When_I_match_the_value_of_a_some_that_contains_two {
+    class When_I_match_the_value_of_a_some_that_contains_two {
         static Option<int> _some;
         static int _two;
 
@@ -19,8 +19,8 @@ namespace NeverNull.Tests.Applicators {
         };
 
         Because of = () => _some.Match(
-            _whenSome,
-            _whenNone);
+                                       _whenSome,
+                                       _whenNone);
 
         It should_execute_the_some_callback_and_return_two = () => _two.ShouldEqual(2);
 
