@@ -5,14 +5,20 @@ open Fake.AssemblyInfoFile
 RestorePackages()
 
 let buildDir = "./build"
+let net451Dir = buildDir + "/net451"
+let net45Dir = buildDir + "/net45"
+let net40Dir = buildDir + "/net40"
+let net35Dir = buildDir + "/net35"
+
 let testDir = "./test"
+let packagingDir = "./package"
 let testAssemblies = !! (testDir + "/*.Tests.dll")
 let version = 
     match buildServer with
         | TeamCity -> buildVersion
-        | _ -> "1.5.0"
+        | _ -> "1.6.0"
 
-Target "Clean" (fun _ -> CleanDirs [buildDir; testDir])
+Target "Clean" (fun _ -> CleanDirs [buildDir; testDir; packagingDir])
 
 Target "BuildLib" (fun _ -> 
     CreateCSharpAssemblyInfo "./NeverNull/Properties/AssemblyInfo.cs"
@@ -24,7 +30,19 @@ Target "BuildLib" (fun _ ->
          Attribute.FileVersion version]
 
     !! "NeverNull/**/*.csproj"
-    |> MSBuildRelease buildDir "Build"
+    |> MSBuild net451Dir "Build" ["Configuration","Net451"]
+    |> Log "Build output: "
+
+    !! "NeverNull/**/*.csproj"
+    |> MSBuild net45Dir "Build" ["Configuration","Net45"]
+    |> Log "Build output: "
+
+    !! "NeverNull/**/*.csproj"
+    |> MSBuild net40Dir "Build" ["Configuration","Net40"]
+    |> Log "Build output: "
+
+    !! "NeverNull/**/*.csproj"
+    |> MSBuild net35Dir "Build" ["Configuration","Net35"]
     |> Log "Build output: "
 )
 
@@ -39,9 +57,31 @@ Target "Test" (fun _ ->
         |> MSpec (fun p -> {p with HtmlOutputDir = testDir})
 )
 
+Target "CreatePackage" (fun _ ->
+  CreateDir "package/lib/net451"
+  CreateDir "package/lib/net45"
+  CreateDir "package/lib/net40"
+  CreateDir "package/lib/net35"
+
+  CopyFile "package/lib/net451/NeverNull.dll" "build/net451/NeverNull.dll"
+  CopyFile "package/lib/net45/NeverNull.dll" "build/net45/NeverNull.dll"
+  CopyFile "package/lib/net40/NeverNull.dll" "build/net40/NeverNull.dll"
+  CopyFile "package/lib/net35/NeverNull.dll" "build/net35/NeverNull.dll"
+
+  NuGet (fun p ->
+    {p with
+        WorkingDir = packagingDir
+        OutputPath = packagingDir
+        Version = version
+        Publish = false
+            })
+            "NeverNull.nuspec"
+)
+
 "Clean"
     ==> "BuildLib"
     ==> "BuildTests"
     ==> "Test"
+    ==> "CreatePackage"
 
-RunTargetOrDefault "Test"
+RunTargetOrDefault "CreatePackage"

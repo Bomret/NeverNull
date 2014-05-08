@@ -4,13 +4,19 @@ using System.Collections.Generic;
 namespace NeverNull {
     public abstract class Option<T> : IEquatable<Option<T>>,
                                       IEquatable<None> {
-        static readonly Option<T> None = new None<T>();
+        static readonly Option<T> _none = new None<T>();
+
         public abstract bool HasValue { get; }
         public abstract bool IsEmpty { get; }
         public abstract T Value { get; }
 
         public bool Equals(None other) {
             return IsEmpty;
+        }
+
+        public static Option<T> None
+        {
+            get { return _none; }
         }
 
         public bool Equals(Option<T> other) {
