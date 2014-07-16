@@ -3,13 +3,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitleAttribute("NeverNull")]
-[assembly: AssemblyDescriptionAttribute("A Option type that allows readable and bloat free null handling.")]
+[assembly: AssemblyDescriptionAttribute("A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.")]
 [assembly: GuidAttribute("1f08d66b-44d7-4616-a82e-250a3817adbd")]
 [assembly: AssemblyProductAttribute("NeverNull")]
-[assembly: AssemblyVersionAttribute("1.6.0")]
-[assembly: AssemblyFileVersionAttribute("1.6.0")]
+[assembly: AssemblyVersionAttribute("0.5.0")]
+[assembly: AssemblyFileVersionAttribute("0.5.0")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "1.6.0";
+        internal const string Version = "0.5.0";
     }
 }

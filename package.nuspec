@@ -1,15 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>NeverNull</id>
+        <id>@project@</id>
         <version>@build.number@</version>
-        <title>NeverNull</title>
-        <authors>Stefan Reichel</authors>
+        <title>@project@</title>
+        <authors>@authors@</authors>
         <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
         <projectUrl>https://github.com/Bomret/NeverNull</projectUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.</description>
-        <tags>null, functional, NullReferenceException, option</tags>
+        <tags>null, functional, NullReferenceException, option, optional</tags>
+        @dependencies@
         @references@
     </metadata>
+    @files@
 </package>

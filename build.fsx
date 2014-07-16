@@ -1,87 +1,72 @@
-#r @"FAKE\tools\FakeLib.dll"
+﻿#r @"FAKE\tools\FakeLib.dll"
 open Fake
 open Fake.AssemblyInfoFile
 
 RestorePackages()
 
-let buildDir = "./build"
-let net451Dir = buildDir + "/net451"
-let net45Dir = buildDir + "/net45"
-let net40Dir = buildDir + "/net40"
-let net35Dir = buildDir + "/net35"
+let name ="NeverNull"
+let description = "A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition."
+let id = "1f08d66b-44d7-4616-a82e-250a3817adbd"
+let authors = ["Stefan Reichel"]
+let tags = "null, functional, NullReferenceException, option, optional"
 
+let solution = name + ".sln"
+let builtAssembly = name + ".dll"
+let publishDir = "./publish"
+let buildDir = "./build"
 let testDir = "./test"
-let packagingDir = "./package"
-let testAssemblies = !! (testDir + "/*.Tests.dll")
-let version = 
+
+let version =
     match buildServer with
         | TeamCity -> buildVersion
-        | _ -> "1.6.0"
+        | _ -> "0.5.0"
 
-Target "Clean" (fun _ -> CleanDirs [buildDir; testDir; packagingDir])
+Target "Clean" (fun _ -> CleanDirs [buildDir; testDir; publishDir])
 
-Target "BuildLib" (fun _ -> 
+Target "BuildLibrary" (fun _ ->
     CreateCSharpAssemblyInfo "./NeverNull/Properties/AssemblyInfo.cs"
-        [Attribute.Title "NeverNull"
-         Attribute.Description "A Option type that allows readable and bloat free null handling."
-         Attribute.Guid "1f08d66b-44d7-4616-a82e-250a3817adbd"
-         Attribute.Product "NeverNull"
+        [Attribute.Title name
+         Attribute.Description description
+         Attribute.Guid id
+         Attribute.Product name
          Attribute.Version version
          Attribute.FileVersion version]
 
-    !! "NeverNull/**/*.csproj"
-    |> MSBuild net451Dir "Build" ["Configuration","Net451"]
-    |> Log "Build output: "
-
-    !! "NeverNull/**/*.csproj"
-    |> MSBuild net45Dir "Build" ["Configuration","Net45"]
-    |> Log "Build output: "
-
-    !! "NeverNull/**/*.csproj"
-    |> MSBuild net40Dir "Build" ["Configuration","Net40"]
-    |> Log "Build output: "
-
-    !! "NeverNull/**/*.csproj"
-    |> MSBuild net35Dir "Build" ["Configuration","Net35"]
-    |> Log "Build output: "
+    MSBuildRelease buildDir "Build" [solution]
+    |> Log "Building app: "
 )
 
-Target "BuildTests" (fun _ -> 
-    !! "NeverNull.Tests/**/*.csproj"
+Target "BuildTests" (fun _ ->
+    !! "*.Tests/**/*.csproj"
     |> MSBuildDebug testDir "Build"
-    |> Log "Test build output: "
+    |> Log "Building tests: "
 )
 
 Target "Test" (fun _ ->
-    testAssemblies
-        |> MSpec (fun p -> {p with HtmlOutputDir = testDir})
+    !! (testDir @@ "*.Tests.dll")
+    |> MSpec (fun p -> {p with HtmlOutputDir = testDir})
 )
 
-Target "CreatePackage" (fun _ ->
-  CreateDir "package/lib/net451"
-  CreateDir "package/lib/net45"
-  CreateDir "package/lib/net40"
-  CreateDir "package/lib/net35"
+Target "Package" (fun _ ->
+    CopyFiles publishDir !! (buildDir @@ builtAssembly)
 
-  CopyFile "package/lib/net451/NeverNull.dll" "build/net451/NeverNull.dll"
-  CopyFile "package/lib/net45/NeverNull.dll" "build/net45/NeverNull.dll"
-  CopyFile "package/lib/net40/NeverNull.dll" "build/net40/NeverNull.dll"
-  CopyFile "package/lib/net35/NeverNull.dll" "build/net35/NeverNull.dll"
-
-  NuGet (fun p ->
-    {p with
-        WorkingDir = packagingDir
-        OutputPath = packagingDir
-        Version = version
-        Publish = false
-            })
-            "NeverNull.nuspec"
+    NuGet (fun p ->
+        {p with
+            Project = name
+            Authors = authors
+            Description = description
+            Tags = tags
+            Version = version
+            OutputPath = publishDir
+            WorkingDir = publishDir
+            Files = [builtAssembly, Some "lib/portable-net40+sl50+win+wpa81+wp80", None] })
+            "package.nuspec"
 )
 
 "Clean"
-    ==> "BuildLib"
+    ==> "BuildLibrary"
     ==> "BuildTests"
     ==> "Test"
-    ==> "CreatePackage"
+    ==> "Package"
 
-RunTargetOrDefault "CreatePackage"
+RunTargetOrDefault "Test"
