@@ -1,15 +1,16 @@
-﻿using FluentAssertions;
+using System;
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests
 {
-    [Subject(typeof (Option), "From")]
-    public class When_I_create_an_option_from_hello
+    [Subject(typeof (Option), "FromTryPattern")]
+    public class When_I_create_an_option_from_Int32_TryParse
     {
-        private static Option<string> _sut;
+        private static Option<int> _sut;
 
         private Because of =
-            () => _sut = "hello";
+            () => _sut = Option.FromTryPattern<string, int>(Int32.TryParse, "26");
 
         private It should_return_an_option_that_has_a_value =
             () => _sut.HasValue.Should().BeTrue();
@@ -18,6 +19,6 @@ namespace NeverNull.Tests
             () => _sut.IsEmpty.Should().BeFalse();
 
         private It should_return_that_contains_hello_as_the_value =
-            () => _sut.Value.Should().Be("hello");
+            () => _sut.Value.Should().Be(26);
     }
 }

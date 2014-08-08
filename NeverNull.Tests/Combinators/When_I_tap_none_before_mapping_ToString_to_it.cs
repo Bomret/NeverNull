@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -13,9 +14,9 @@ namespace NeverNull.Tests.Combinators {
                                           .Map(i => i.ToString());
 
         It should_leave_the_tapped_result_as_default_of_int =
-            () => _zero.ShouldEqual(default(int));
+            () => _zero.Should().Be(default(int));
 
         It should_return_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
     }
 }

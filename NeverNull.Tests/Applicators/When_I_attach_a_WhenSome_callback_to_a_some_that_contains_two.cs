@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using FluentAssertions;
+using Machine.Specifications;
 
 namespace NeverNull.Tests.Applicators {
     [Subject(typeof (NeverNull.Applicators), "WhenSome")]
@@ -10,6 +11,6 @@ namespace NeverNull.Tests.Applicators {
 
         Because of = () => _some.IfSome(i => _two = i);
 
-        It should_execute_the_callback_and_return_two = () => _two.ShouldEqual(2);
+        It should_execute_the_callback_and_return_two = () => _two.Should().Be(2);
     }
 }

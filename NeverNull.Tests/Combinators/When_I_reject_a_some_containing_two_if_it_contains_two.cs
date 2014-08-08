@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,6 +12,6 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _two.Reject(i => i == 2);
 
         It should_return_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
     }
 }

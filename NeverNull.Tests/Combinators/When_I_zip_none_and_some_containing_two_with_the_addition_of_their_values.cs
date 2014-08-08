@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -15,6 +16,6 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _none.ZipWith(_two, (a, b) => Option.From(a + b));
 
         It should_return_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using FluentAssertions;
+using Machine.Specifications;
 
 namespace NeverNull.Tests.Applicators {
     [Subject(typeof (NeverNull.Applicators), "WhenNone")]
@@ -10,6 +11,6 @@ namespace NeverNull.Tests.Applicators {
 
         Because of = () => _some.IfNone(() => _callbackExecuted = true);
 
-        It should_not_execute_the_callback = () => _callbackExecuted.ShouldBeFalse();
+        It should_not_execute_the_callback = () => _callbackExecuted.Should().BeFalse();
     }
 }

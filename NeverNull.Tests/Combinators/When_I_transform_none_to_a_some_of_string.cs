@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,9 +12,9 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _none.Transform(i => i.ToString(), () => "nothing");
 
         It should_contain_nothing_as_string_in_the_result =
-            () => _result.Value.ShouldEqual("nothing");
+            () => _result.Value.Should().Be("nothing");
 
         It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+            () => _result.HasValue.Should().BeTrue();
     }
 }

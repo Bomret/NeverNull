@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,9 +12,10 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _nested.Flatten();
 
         It should_contain_three_in_the_result =
-            () => _result.Value.ShouldEqual(3);
+            () => _result.Value.Should().Be(3);
 
-        It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+        private It should_return_a_some =
+            () => _result.HasValue.Should().BeTrue();
+
     }
 }

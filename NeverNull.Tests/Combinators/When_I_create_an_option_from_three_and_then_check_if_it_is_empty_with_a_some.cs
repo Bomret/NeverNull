@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -9,9 +10,9 @@ namespace NeverNull.Tests.Combinators {
                                            .ThenWith(o => Option.Some(o.IsEmpty));
 
         It should_contain_false_in_the_result =
-            () => _result.Value.ShouldBeFalse();
+            () => _result.Value.Should().BeFalse();
 
         It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+            () => _result.HasValue.Should().BeTrue();
     }
 }

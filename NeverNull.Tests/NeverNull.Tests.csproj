@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NeverNull.Tests</RootNamespace>
     <AssemblyName>NeverNull.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -35,18 +35,27 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net45\Machine.Specifications.dll</HintPath>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.3.1.229\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Clr4">
-      <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.1.229\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Should">
-      <HintPath>..\packages\Machine.Specifications.0.6.2\lib\net45\Machine.Specifications.Should.dll</HintPath>
+    <Reference Include="Machine.Specifications, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.8.3\lib\net45\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Machine.Specifications.0.8.3\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applicators\When_I_get_a_some_that_conatins_two_as_a_nullable.cs" />
+    <Compile Include="Applicators\When_I_get_none_as_a_nullable.cs" />
     <Compile Include="Combinators\When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_flatmap.cs" />
     <Compile Include="Combinators\When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_map.cs" />
     <Compile Include="Combinators\When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_flatmap.cs" />
@@ -94,19 +103,21 @@
     <Compile Include="When_I_check_the_equality_of_null_with_some_and_none.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_null.cs" />
     <Compile Include="When_I_create_an_option_from_a_nullable_boolean_that_is_true.cs" />
+    <Compile Include="When_I_create_an_option_from_Double_TryParse_with_all_args.cs" />
     <Compile Include="When_I_create_an_option_from_hello.cs" />
+    <Compile Include="When_I_create_an_option_from_Int32_TryParse.cs" />
     <Compile Include="When_I_create_an_option_from_null.cs" />
     <Compile Include="When_I_create_an_option_from_three.cs" />
     <Compile Include="When_I_create_an_option_from_zero.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeverNull\NeverNull.csproj">
       <Project>{da424a79-8121-4fb3-b6bb-4404ee50c702}</Project>
       <Name>NeverNull</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

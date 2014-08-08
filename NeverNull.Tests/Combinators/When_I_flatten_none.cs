@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,6 +12,6 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _nested.Flatten();
 
         It should_return_none =
-            () => _result.HasValue.ShouldBeFalse();
+            () => _result.HasValue.Should().BeFalse();
     }
 }

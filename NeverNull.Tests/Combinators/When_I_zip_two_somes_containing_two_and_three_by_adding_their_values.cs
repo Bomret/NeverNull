@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -15,9 +16,9 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _two.Zip(_three, (a, b) => a + b);
 
         It should_contain_five_in_the_result =
-            () => _result.Value.ShouldEqual(5);
+            () => _result.Value.Should().Be(5);
 
         It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+            () => _result.HasValue.Should().BeTrue();
     }
 }

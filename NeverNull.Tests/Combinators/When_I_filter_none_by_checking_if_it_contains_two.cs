@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -12,6 +13,6 @@ namespace NeverNull.Tests.Combinators {
             () => _result = _none.Filter(i => i == 3);
 
         It should_return_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
     }
 }

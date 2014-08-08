@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,6 +12,6 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _anotherNone = _none.Map(i => i.ToString());
 
         It should_return_a_none =
-            () => _anotherNone.HasValue.ShouldBeFalse();
+            () => _anotherNone.HasValue.Should().BeFalse();
     }
 }

@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using FluentAssertions;
+using Machine.Specifications;
 
 namespace NeverNull.Tests {
     [Subject(typeof (Option), "From")]
@@ -8,12 +9,12 @@ namespace NeverNull.Tests {
         Because of = () => _sut = 3;
 
         It should_return_an_option_that_has_a_value =
-            () => _sut.HasValue.ShouldBeTrue();
+            () => _sut.HasValue.Should().BeTrue();
 
         It should_return_an_option_that_is_not_empty =
-            () => _sut.IsEmpty.ShouldBeFalse();
+            () => _sut.IsEmpty.Should().BeFalse();
 
         It should_return_three_when_trying_to_access_the_value =
-            () => _sut.Value.ShouldEqual(3);
+            () => _sut.Value.Should().Be(3);
     }
 }

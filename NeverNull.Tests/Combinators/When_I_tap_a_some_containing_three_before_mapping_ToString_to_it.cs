@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,12 +12,12 @@ namespace NeverNull.Tests.Combinators {
                                            .Map(i => i.ToString());
 
         It should_contain_three_as_string_in_the_result =
-            () => _result.Value.ShouldEqual("3");
+            () => _result.Value.Should().Be("3");
 
         It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+            () => _result.HasValue.Should().BeTrue();
 
         It should_set_the_tapped_result_to_three_as_integer =
-            () => _three.ShouldEqual(3);
+            () => _three.Should().Be(3);
     }
 }

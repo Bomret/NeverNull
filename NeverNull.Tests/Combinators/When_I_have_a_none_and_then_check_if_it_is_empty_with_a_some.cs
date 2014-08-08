@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,6 +12,6 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _none.ThenWith(o => Option.Some(o.IsEmpty));
 
         It should_return_a_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
     }
 }

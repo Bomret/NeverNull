@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,9 +12,9 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _twoAsString = _two.Map(i => i.ToString());
 
         It should_contain_two_as_string_in_the_some =
-            () => _twoAsString.Value.ShouldEqual("2");
+            () => _twoAsString.Value.Should().Be("2");
 
         It should_return_a_some =
-            () => _twoAsString.HasValue.ShouldBeTrue();
+            () => _twoAsString.HasValue.Should().BeTrue();
     }
 }

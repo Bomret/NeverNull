@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -11,9 +12,9 @@ namespace NeverNull.Tests.Combinators {
         Because of = () => _result = _two.OrElse(0);
 
         It should_contain_two_in_the_some =
-            () => _result.Value.ShouldEqual(2);
+            () => _result.Value.Should().Be(2);
 
         It should_return_a_some =
-            () => _result.HasValue.ShouldBeTrue();
+            () => _result.HasValue.Should().BeTrue();
     }
 }

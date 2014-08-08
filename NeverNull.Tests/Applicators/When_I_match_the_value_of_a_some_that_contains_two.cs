@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Applicators {
@@ -22,8 +23,8 @@ namespace NeverNull.Tests.Applicators {
                                        _whenSome,
                                        _whenNone);
 
-        It should_execute_the_some_callback_and_return_two = () => _two.ShouldEqual(2);
+        It should_execute_the_some_callback_and_return_two = () => _two.Should().Be(2);
 
-        It should_not_execute_the_none_callback = () => _isNone.ShouldBeFalse();
+        It should_not_execute_the_none_callback = () => _isNone.Should().BeFalse();
     }
 }

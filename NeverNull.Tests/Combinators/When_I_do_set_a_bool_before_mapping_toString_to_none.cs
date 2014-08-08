@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Machine.Specifications;
 
 namespace NeverNull.Tests.Combinators {
@@ -13,9 +14,9 @@ namespace NeverNull.Tests.Combinators {
                                           .Map(i => i.ToString());
 
         It should_return_none =
-            () => _result.IsEmpty.ShouldBeTrue();
+            () => _result.IsEmpty.Should().BeTrue();
 
         It should_set_the_bool_to_true =
-            () => _doExecuted.ShouldBeTrue();
+            () => _doExecuted.Should().BeTrue();
     }
 }
