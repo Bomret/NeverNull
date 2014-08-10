@@ -1,10 +1,9 @@
 # NeverNull
-A Option type that prevents using null in your code, inspired by its counterpart in the Scala programming language (http://www.scala-lang.org/).
+A Option type that prevents using null in your code.
+Licensed under the MIT License (http://opensource.org/licenses/MIT).
 
-Build Status: [![Build status](https://ci.appveyor.com/api/projects/status/p0dtd1hwosthsrds)](https://ci.appveyor.com/project/StefanReichel/nevernull)
-Nuget: [![NuGet Status](http://nugetstatus.com/packages/NeverNull.png)](http://nugetstatus.com/packages/NeverNull)
-
-Licensed under the Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html).
+[![Build status](http://img.shields.io/appveyor/ci/stefanreichel/nevernull.svg)](https://ci.appveyor.com/project/StefanReichel/nevernull)
+[![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
 
 ## Example
 Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Map` and `Filter` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Map` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Filter function.
@@ -91,6 +90,22 @@ Option<int> option = Option.From(2);
 ```
 Evaluates a `T` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise.
 
+### FromNullable
+```csharp
+DateTime? now = DateTime.Now;
+
+Option<DateTime> option = Option.FromNullable(now);
+```
+Evaluates a `T?` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise.
+
+### FromTryPattern
+```csharp
+Option<double> option = Option.FromTryPattern<string, double>(Double.TryParse, "2.6");
+```
+Evaluates the call to a given method that follows the TryParse pattern and arguments synchronously and returns a `Some<T>` if the method succeeded or `None` otherwise.
+
+Currently the method is overloaded with versions that take up to five args.
+
 ### Some
 ```csharp
 Option<int> five = Option.Some(5);
@@ -140,6 +155,14 @@ string result = Option.From(2)
 ```
 This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
+#### ToNullable
+```csharp
+Option<DateTime> nowOption = Option.From(DateTime.Now)
+
+DateTime? maybeNow = nowOption.ToNullable();
+```
+Converts an `Option<T>` (where `T` is a value type) to a `Nullable<T>`.
+
 #### Get
 ```csharp
 int two = Option.From(2).Get();
@@ -185,7 +208,7 @@ var result = Option.From(Server.GetLoggedOnUserName())
 ```
 Allows chaining and conversion of multiple Options. If an option returns `null`, the chain will be interrupted and return immediately with `None`. In the above example `result` would be a `Some<bool>`.
 
-#### Then
+#### ThenWith
 ```csharp
 var result = Option.From(Server.GetLoggedOnUserName())
                    .ThenWith(o => o.Map(IsValid));
