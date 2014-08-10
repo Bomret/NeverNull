@@ -5,7 +5,7 @@ Also available on NuGet (https://www.nuget.org/packages/NeverNull/).
 
 Licensed under the Apache License 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html).
 
-Build Status: ![Not available](http://ci.devcrowd.de/app/rest/builds/buildType:OpenSource_NeverNull_Integration/statusIcon)
+Build Status: [![Build status](https://ci.appveyor.com/api/projects/status/p0dtd1hwosthsrds)](https://ci.appveyor.com/project/StefanReichel/nevernull)
 
 ## Example
 Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Map` and `Filter` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Map` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Filter function.
