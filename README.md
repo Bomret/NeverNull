@@ -58,7 +58,7 @@ Because `Option<T>` represents the presence or absence of `null`, NeverNull impl
 ```csharp
 // all valid
 
-Option<int> = 5;
+Option<int> five = 5;
 
 Option<string> Stringify(object obj) {
     if(obj == null) return Option.None;
@@ -72,7 +72,7 @@ But because an `Option<T>` may also represent the presence of null, the other wa
 ```csharp
 // all invalid
 
-string = Option.From(OperationThatMayReturnNull());
+string maybeValue = Option.From(OperationThatMayReturnNull());
 
 string Stringify<T>(T obj) {
     if(obj == null) return Option.None;
