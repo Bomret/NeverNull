@@ -1,5 +1,5 @@
 # NeverNull
-A Option type that prevents using null in your code.
+A Option type that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
 Licensed under the MIT License (http://opensource.org/licenses/MIT).
 
 [![Build status](http://img.shields.io/appveyor/ci/stefanreichel/nevernull.svg)](https://ci.appveyor.com/project/StefanReichel/nevernull)
@@ -37,26 +37,28 @@ result.IfSome(i => _six = i);
 ```
 
 ## Recommended usage
-Every method that could return `null` should return an `Option<T>` instead of the result directly. That way, eventual `null` references can be handled by applying combinators and extensions to the return value.
+Every method that may not return a value in some circumstances should return an `Option<T>` instead of the result directly. That way, eventual `null` references or the usage of "magic values" can be avoided.
 
 So instead of this:
 
 ```csharp
 private string DoSomethingThatCouldReturnNull(string a) { //... };
+private int DoSomethingThatCouldReturnAMagicValue(string a) { //... };
 private int? CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 write this:
 
 ```csharp
 private Option<string> DoSomethingThatCouldReturnNull(string a) { //... };
+private Option<int> DoSomethingThatCouldReturnAMagicValue(string a) { //... };
 private Option<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 
 ## Implicit conversions
-Because `Option<T>` represents the presence or absence of `null`, NeverNull implicitly converts a reference to an `Option` like for e.g. method return values.
+Because `Option<T>` may represent the presence of a value, NeverNull can implicitly convert a reference of type `T` to an `Option<T>` like for e.g. method return values.
 
 ```csharp
-// all valid
+// all valid.
 
 Option<int> five = 5;
 
@@ -67,7 +69,7 @@ Option<string> Stringify(object obj) {
 }
 ```
 
-But because an `Option<T>` may also represent the presence of null, the other way around is not possible.
+But because an `Option<T>` may also represent the absence of a value, the other way around is not possible.
 
 ```csharp
 // all invalid
@@ -82,7 +84,7 @@ string Stringify<T>(T obj) {
 ```
 
 ## Creating an Option
-There are several ways to create an `Option`.
+There are several ways to create an `Option<T>`.
 
 ### From
 ```csharp
