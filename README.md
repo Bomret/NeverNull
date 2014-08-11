@@ -28,12 +28,12 @@ Option<int> result = Option.From(2);
 The above example would evaluate `2` and - because that is a valid integer - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
 
 ```csharp
-var six = result.Value;
+var two = result.Value;
 ```
 To find out if `result` represents a `Some` or `None` it provides two boolean properties: `HasValue` and `IsEmpty`. To be safe, you can either check these properties first or use the corresponding applicator (more on applicators below):
 
 ```csharp
-result.IfSome(i => _six = i);
+result.IfSome(i => _two = i);
 ```
 
 ## Recommended usage
