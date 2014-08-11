@@ -5,10 +5,8 @@ open Fake.AssemblyInfoFile
 RestorePackages()
 
 let name ="NeverNull"
-let description = "A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition."
 let id = "1f08d66b-44d7-4616-a82e-250a3817adbd"
 let authors = ["Stefan Reichel"]
-let tags = "null, functional, NullReferenceException, option, optional"
 
 let solution = name + ".sln"
 let builtAssembly = name + ".dll"
@@ -26,7 +24,7 @@ Target "Clean" (fun _ -> CleanDirs [buildDir; testDir; publishDir])
 Target "BuildLibrary" (fun _ ->
     CreateCSharpAssemblyInfo "./NeverNull/Properties/AssemblyInfo.cs"
         [Attribute.Title name
-         Attribute.Description description
+         Attribute.Description "An Option type that allows readable and bloat free handling of null and 'magic values'."
          Attribute.Guid id
          Attribute.Product name
          Attribute.Version version
@@ -54,8 +52,6 @@ Target "Package" (fun _ ->
         {p with
             Project = name
             Authors = authors
-            Description = description
-            Tags = tags
             Version = version
             OutputPath = publishDir
             WorkingDir = publishDir

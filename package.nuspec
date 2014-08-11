@@ -5,11 +5,12 @@
         <version>@build.number@</version>
         <title>@project@</title>
         <authors>@authors@</authors>
-        <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/Bomret/NeverNull</projectUrl>
-        <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.</description>
-        <tags>null, functional, NullReferenceException, option, optional</tags>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>An Option type that allows readable and bloat free handling of null and "magic values". Provides a growing number of combinators for functional composition.</description>
+        <summary>An Option type that allows readable and bloat free handling of null and "magic values".</summary>
+        <tags>null, functional, NullReferenceException, option, optional, magic value</tags>
         @dependencies@
         @references@
     </metadata>

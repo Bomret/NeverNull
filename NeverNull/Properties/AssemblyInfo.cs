@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitleAttribute("NeverNull")]
-[assembly: AssemblyDescriptionAttribute("A Option type that allows readable and bloat free null handling. Provides a growing number of combinators for functional composition.")]
+[assembly: AssemblyDescriptionAttribute("An Option type that allows readable and bloat free handling of null and 'magic values'.")]
 [assembly: GuidAttribute("1f08d66b-44d7-4616-a82e-250a3817adbd")]
 [assembly: AssemblyProductAttribute("NeverNull")]
 [assembly: AssemblyVersionAttribute("0.5.0")]
