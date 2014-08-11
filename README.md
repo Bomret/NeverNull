@@ -44,14 +44,12 @@ So instead of this:
 ```csharp
 private string DoSomethingThatCouldReturnNull(string a) { //... };
 private int DoSomethingThatCouldReturnAMagicValue(string a) { //... };
-private int? CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 write this:
 
 ```csharp
 private Option<string> DoSomethingThatCouldReturnNull(string a) { //... };
 private Option<int> DoSomethingThatCouldReturnAMagicValue(string a) { //... };
-private Option<int?> CalculateSomethingThatCouldReturnNull(int a, int b) { //... };
 ```
 
 ## Implicit conversions
