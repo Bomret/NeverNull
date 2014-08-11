@@ -20,7 +20,7 @@ Option.From(WebRequest.Create(Url) as HttpWebRequest)
 ------
 
 ## Basics
-`Option` represents the absence or presence of `null`. If the `From` function receives a reference to `null`, `None` is returned, otherwise a `Some<T>`.
+`Option<T>` represents the absence or presence of a value.
 
 ```csharp
 Option<int> result = Option.From(2);
@@ -90,7 +90,7 @@ There are several ways to create an `Option<T>`.
 ```csharp
 Option<int> option = Option.From(2);
 ```
-Evaluates a `T` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise.
+Evaluates a `T` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise. Always returns `Some<T>`for non-nullable (value) types.
 
 ### FromNullable
 ```csharp
