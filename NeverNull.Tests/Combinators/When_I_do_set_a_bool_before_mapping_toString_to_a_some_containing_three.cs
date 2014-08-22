@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "Do")]
+    [Subject(typeof (DoExt), "Do")]
     public class When_I_do_set_a_bool_before_mapping_toString_to_a_some_containing_three {
         static Option<string> _result;
         static bool _doExecuted;

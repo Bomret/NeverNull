@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "ThenWith")]
+    [Subject(typeof (ThenWithExt), "ThenWith")]
     public class When_I_create_an_option_from_three_and_then_check_if_it_is_empty_with_a_some {
         static Option<bool> _result;
 

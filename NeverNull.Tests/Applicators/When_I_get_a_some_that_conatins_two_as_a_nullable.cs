@@ -1,9 +1,10 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Applicators
 {
-    [Subject(typeof (NeverNull.Applicators), "ToNullable")]
+    [Subject(typeof(ToNullableExt), "ToNullable")]
     internal class When_I_get_a_some_that_conatins_two_as_a_nullable
     {
         private static Option<int> _none;

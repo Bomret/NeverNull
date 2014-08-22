@@ -1,10 +1,11 @@
 ﻿using System;
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Applicators
 {
-    [Subject(typeof (NeverNull.Applicators), "Get")]
+    [Subject(typeof(GetExt), "Get")]
     internal class When_I_get_the_value_of_a_none
     {
         private static Option<int> _none;

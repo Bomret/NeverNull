@@ -1,9 +1,12 @@
 ﻿using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators {
-    [Subject(typeof (NeverNull.Applicators), "WhenSome")]
-    class When_I_attach_a_WhenSome_callback_to_a_none {
+namespace NeverNull.Tests.Applicators
+{
+    [Subject(typeof(IfSomeExt), "IfSome")]
+    class When_I_attach_a_WhenSome_callback_to_a_none
+    {
         static Option<int> _none;
         static bool _callbackExecuted;
 

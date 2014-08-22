@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "OrElse")]
+    [Subject(typeof (OrElseExt), "OrElse")]
     public class When_I_return_none_or_else_a_some_containing_zero_on_none {
         static Option<int> _none;
         static Option<int> _result;

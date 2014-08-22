@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "Map")]
+    [Subject(typeof (MapExt), "Map")]
     public class When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_map {
         static Option<int> _two;
         static Option<string> _twoAsString;

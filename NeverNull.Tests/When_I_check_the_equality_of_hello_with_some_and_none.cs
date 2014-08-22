@@ -3,7 +3,7 @@ using Machine.Specifications;
 
 namespace NeverNull.Tests
 {
-    [Subject(typeof (Option), "Equals")]
+    [Subject(typeof(Option), "Equals")]
     public class When_I_check_the_equality_of_hello_with_some_and_none
     {
         private static Option<string> _sut;

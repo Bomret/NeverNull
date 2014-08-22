@@ -1,17 +1,21 @@
 ﻿using System;
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators {
-    [Subject(typeof (NeverNull.Applicators), "Match")]
-    class When_I_match_the_value_of_a_none {
+namespace NeverNull.Tests.Applicators
+{
+    [Subject(typeof(MatchExt), "Match")]
+    class When_I_match_the_value_of_a_none
+    {
         static Option<int> _none;
         static Action<int> _whenSome;
         static bool _noneCallbackExecuted;
         static Action _whenNone;
         static bool _someCallbackExecuted;
 
-        Establish context = () => {
+        Establish context = () =>
+        {
             _none = Option.None;
 
             _whenSome = i => _someCallbackExecuted = true;
@@ -19,8 +23,8 @@ namespace NeverNull.Tests.Applicators {
         };
 
         Because of = () => _none.Match(
-                                       _whenSome,
-                                       _whenNone);
+                         _whenSome,
+                         _whenNone);
 
         It should_execute_the_none_callback = () => _noneCallbackExecuted.Should().BeTrue();
 

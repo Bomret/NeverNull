@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "Tap")]
+    [Subject(typeof (TapExt), "Tap")]
     public class When_I_tap_a_some_containing_three_before_mapping_ToString_to_it {
         static Option<string> _result;
         static int _three;

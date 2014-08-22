@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
+using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators {
-    [Subject(typeof (NeverNull.Combinators), "Reject")]
+    [Subject(typeof (RejectExt), "Reject")]
     public class When_I_reject_a_some_containing_two_if_it_contains_two {
         static Option<int> _two;
         static Option<int> _result;
