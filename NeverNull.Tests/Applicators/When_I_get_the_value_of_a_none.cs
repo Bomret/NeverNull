@@ -15,6 +15,6 @@ namespace NeverNull.Tests.Applicators
 
         private Because of = () => _error = Catch.Exception(() => _none.Get());
 
-        private It should_throw_a_NotSupportedException = () => _error.Should().BeOfType<InvalidOperationException>();
+        private It should_throw_a_NotSupportedException = () => _error.Should().BeOfType<NotSupportedException>();
     }
 }

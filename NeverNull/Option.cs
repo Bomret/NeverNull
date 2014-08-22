@@ -14,7 +14,6 @@ namespace NeverNull
             _hasValue = true;
         }
 
-
         public bool HasValue
         {
             get { return _hasValue; }
@@ -45,6 +44,8 @@ namespace NeverNull
         {
             return Option.From(value);
         }
+
+        
     }
 
     public static class Option
