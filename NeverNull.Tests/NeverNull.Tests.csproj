@@ -54,8 +54,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Applicators\When_I_get_a_some_that_conatins_two_as_a_nullable.cs" />
-    <Compile Include="Applicators\When_I_get_none_as_a_nullable.cs" />
+    <Compile Include="Combinators\When_I_attach_a_WhenNone_callback_to_a_none.cs" />
+    <Compile Include="Combinators\When_I_attach_a_WhenNone_callback_to_a_some_that_contains_two.cs" />
+    <Compile Include="Combinators\When_I_attach_a_WhenSome_callback_to_a_none.cs" />
+    <Compile Include="Combinators\When_I_attach_a_WhenSome_callback_to_a_some_that_contains_two.cs" />
     <Compile Include="Combinators\When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_flatmap.cs" />
     <Compile Include="Combinators\When_I_convert_a_none_of_type_int_to_an_option_of_type_string_with_map.cs" />
     <Compile Include="Combinators\When_I_convert_a_some_with_value_two_to_an_option_of_type_string_with_flatmap.cs" />
@@ -66,23 +68,21 @@
     <Compile Include="Combinators\When_I_do_set_a_bool_before_mapping_toString_to_none.cs" />
     <Compile Include="Combinators\When_I_flatten_a_some_containing_three_that_is_nested_in_another_some.cs" />
     <Compile Include="Combinators\When_I_flatten_none.cs" />
+    <Compile Include="Combinators\When_I_get_a_some_that_conatins_two_as_a_nullable.cs" />
+    <Compile Include="Combinators\When_I_get_none_as_a_nullable.cs" />
+    <Compile Include="Combinators\When_I_get_the_value_of_a_none.cs" />
+    <Compile Include="Combinators\When_I_get_the_value_of_a_none_and_get_zero_instead.cs" />
+    <Compile Include="Combinators\When_I_get_the_value_of_a_some_that_contains_two.cs" />
+    <Compile Include="Combinators\When_I_get_the_value_of_a_some_that_contains_two_and_would_get_zero_if_it_would_be_a_none.cs" />
     <Compile Include="Combinators\When_I_have_a_none_and_then_check_if_it_is_empty.cs" />
     <Compile Include="Combinators\When_I_have_a_none_and_then_check_if_it_is_empty_with_a_some.cs" />
+    <Compile Include="Combinators\When_I_match_the_value_of_a_none.cs" />
+    <Compile Include="Combinators\When_I_match_the_value_of_a_some_that_contains_two.cs" />
     <Compile Include="Combinators\When_I_return_a_some_containing_two_or_else_a_some_with_value_zero_if_it_would_be_none.cs" />
     <Compile Include="Combinators\When_I_filter_none_by_checking_if_it_contains_two.cs" />
     <Compile Include="Combinators\When_I_filter_a_some_containing_two_by_checking_if_it_contains_three.cs" />
     <Compile Include="Combinators\When_I_filter_a_some_containing_two_by_checking_if_it_contains_two.cs" />
     <Compile Include="Combinators\When_I_return_none_or_else_a_some_containing_zero_on_none.cs" />
-    <Compile Include="Applicators\When_I_attach_a_WhenNone_callback_to_a_none.cs" />
-    <Compile Include="Applicators\When_I_attach_a_WhenNone_callback_to_a_some_that_contains_two.cs" />
-    <Compile Include="Applicators\When_I_attach_a_WhenSome_callback_to_a_none.cs" />
-    <Compile Include="Applicators\When_I_attach_a_WhenSome_callback_to_a_some_that_contains_two.cs" />
-    <Compile Include="Applicators\When_I_get_the_value_of_a_none.cs" />
-    <Compile Include="Applicators\When_I_get_the_value_of_a_none_and_get_zero_instead.cs" />
-    <Compile Include="Applicators\When_I_get_the_value_of_a_some_that_contains_two.cs" />
-    <Compile Include="Applicators\When_I_get_the_value_of_a_some_that_contains_two_and_would_get_zero_if_it_would_be_a_none.cs" />
-    <Compile Include="Applicators\When_I_match_the_value_of_a_none.cs" />
-    <Compile Include="Applicators\When_I_match_the_value_of_a_some_that_contains_two.cs" />
     <Compile Include="Combinators\When_I_reject_a_some_containing_two_if_it_contains_three.cs" />
     <Compile Include="Combinators\When_I_reject_a_some_containing_two_if_it_contains_two.cs" />
     <Compile Include="Combinators\When_I_reject_none_if_it_contains_two.cs" />

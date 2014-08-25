@@ -26,7 +26,7 @@ namespace NeverNull
 
         public bool Equals<T>(Option<T> option)
         {
-            return option.HasValue;
+            return option.IsEmpty;
         }
     }
 }

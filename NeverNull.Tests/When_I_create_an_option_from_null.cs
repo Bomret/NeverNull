@@ -28,6 +28,6 @@ namespace NeverNull.Tests {
             () => _sut.IsEmpty.Should().BeTrue();
 
         It should_throw_a_NotSupportedException_when_trying_to_access_the_value =
-            () => Catch.Exception(() => _value = _sut.Value).Should().BeOfType<InvalidOperationException>();
+            () => Catch.Exception(() => _value = _sut.Value).Should().BeOfType<NotSupportedException>();
     }
 }

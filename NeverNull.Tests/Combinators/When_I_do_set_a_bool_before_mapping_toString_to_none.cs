@@ -17,7 +17,7 @@ namespace NeverNull.Tests.Combinators {
         It should_return_none =
             () => _result.IsEmpty.Should().BeTrue();
 
-        It should_not_set_the_bool_to_true =
-            () => _doExecuted.Should().BeFalse();
+        It should_set_the_bool_to_true =
+            () => _doExecuted.Should().BeTrue();
     }
 }

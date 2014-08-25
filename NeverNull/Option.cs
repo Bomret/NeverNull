@@ -2,7 +2,7 @@
 
 namespace NeverNull
 {
-    public struct Option<T>
+    public struct Option<T> : IEquatable<None>
     {
         public static Option<T> None = new Option<T>();
         private readonly bool _hasValue;
@@ -45,7 +45,11 @@ namespace NeverNull
             return Option.From(value);
         }
 
-        
+
+        public bool Equals(None other)
+        {
+            return IsEmpty;
+        }
     }
 
     public static class Option

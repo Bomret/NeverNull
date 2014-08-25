@@ -6,8 +6,7 @@ namespace NeverNull.Combinators
     {
         public static Option<T> Do<T>(this Option<T> option, Action action)
         {
-            if (option.HasValue)
-                action();
+            action();
 
             return option;
         }

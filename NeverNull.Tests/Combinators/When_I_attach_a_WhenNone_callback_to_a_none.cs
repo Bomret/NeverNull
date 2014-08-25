@@ -2,7 +2,7 @@
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators
+namespace NeverNull.Tests.Combinators
 {
     [Subject(typeof(IfNoneExt), "IfNone")]
     class When_I_attach_a_WhenNone_callback_to_a_none

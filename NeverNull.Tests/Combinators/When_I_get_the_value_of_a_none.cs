@@ -3,7 +3,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators
+namespace NeverNull.Tests.Combinators
 {
     [Subject(typeof(GetExt), "Get")]
     internal class When_I_get_the_value_of_a_none

@@ -3,7 +3,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators
+namespace NeverNull.Tests.Combinators
 {
     [Subject(typeof(MatchExt), "Match")]
     class When_I_match_the_value_of_a_some_that_contains_two

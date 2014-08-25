@@ -2,7 +2,7 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Applicators
+namespace NeverNull.Tests.Combinators
 {
     [Subject(typeof(ToNullableExt), "ToNullable")]
     internal class When_I_get_none_as_a_nullable
