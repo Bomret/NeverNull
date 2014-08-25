@@ -4,7 +4,8 @@ namespace NeverNull
 {
     public struct Option<T> : IEquatable<None>
     {
-        public static Option<T> None = new Option<T>();
+        public static readonly Option<T> None = new Option<T>();
+
         readonly bool _hasValue;
         readonly T _value;
 
