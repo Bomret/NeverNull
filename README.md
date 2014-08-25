@@ -20,12 +20,12 @@ Option.From(WebRequest.Create(Url) as HttpWebRequest)
 ------
 
 ## Basics
-`Option<T>` represents the absence or presence of a value.
+`Option<T>` represents the absence or presence of a value. If a `Option<T>` contains a value, we'll call it `Some` from now on. If it is empty, we'll call it `None`.
 
 ```csharp
 Option<int> result = Option.From(2);
 ```
-The above example would evaluate `2` and - because that is a valid integer - return a `Some<int>` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
+The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
 
 ```csharp
 var two = result.Value;
@@ -88,7 +88,7 @@ There are several ways to create an `Option<T>`.
 ```csharp
 Option<int> option = Option.From(2);
 ```
-Evaluates a `T` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise. Always returns `Some<T>`for non-nullable (value) types.
+Evaluates a `T` synchronously and returns a `Some` if the value is not null or `None` otherwise. Always returns `Some`for non-nullable (value) types.
 
 ### FromNullable
 ```csharp
@@ -96,13 +96,13 @@ DateTime? now = DateTime.Now;
 
 Option<DateTime> option = Option.FromNullable(now);
 ```
-Evaluates a `T?` synchronously and returns a `Some<T>` if the value is not null or `None` otherwise.
+Evaluates a `T?` synchronously and returns a `Some` if the value is not null or `None` otherwise.
 
 ### FromTryPattern
 ```csharp
 Option<double> option = Option.FromTryPattern<string, double>(Double.TryParse, "2.6");
 ```
-Evaluates the call to a given method that follows the TryParse pattern and arguments synchronously and returns a `Some<T>` if the method succeeded or `None` otherwise.
+Evaluates the call to a given method that follows the TryParse pattern and arguments synchronously and returns a `Some` if the method succeeded or `None` otherwise.
 
 Currently the method is overloaded with versions that take up to five args.
 
