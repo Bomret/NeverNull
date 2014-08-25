@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests {
+namespace NeverNull.Tests
+{
     [Subject(typeof (Option), "From")]
-    public class When_I_create_an_option_from_three {
+    public class When_I_create_an_option_from_three
+    {
         static Option<int> _sut;
 
         Because of = () => _sut = 3;

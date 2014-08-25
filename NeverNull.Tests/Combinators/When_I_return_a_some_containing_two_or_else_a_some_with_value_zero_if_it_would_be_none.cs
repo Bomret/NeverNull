@@ -2,9 +2,11 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators {
+namespace NeverNull.Tests.Combinators
+{
     [Subject(typeof (OrElseExt), "OrElse")]
-    public class When_I_return_a_some_containing_two_or_else_a_some_with_value_zero_if_it_would_be_none {
+    public class When_I_return_a_some_containing_two_or_else_a_some_with_value_zero_if_it_would_be_none
+    {
         static Option<int> _two;
         static Option<int> _result;
 

@@ -2,9 +2,11 @@
 using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests {
+namespace NeverNull.Tests
+{
     [Subject(typeof (Option), "From")]
-    public class When_I_create_an_option_from_null {
+    public class When_I_create_an_option_from_null
+    {
         static Option<object> _sut;
         static object _null;
         static object _value;

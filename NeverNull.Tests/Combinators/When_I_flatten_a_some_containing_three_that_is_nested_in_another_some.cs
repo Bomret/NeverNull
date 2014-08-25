@@ -2,9 +2,11 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators {
+namespace NeverNull.Tests.Combinators
+{
     [Subject(typeof (FlattenExt), "Flatten")]
-    public class When_I_flatten_a_some_containing_three_that_is_nested_in_another_some {
+    public class When_I_flatten_a_some_containing_three_that_is_nested_in_another_some
+    {
         static Option<int> _result;
         static Option<Option<int>> _nested;
 
@@ -15,8 +17,7 @@ namespace NeverNull.Tests.Combinators {
         It should_contain_three_in_the_result =
             () => _result.Value.Should().Be(3);
 
-        private It should_return_a_some =
+        It should_return_a_some =
             () => _result.HasValue.Should().BeTrue();
-
     }
 }

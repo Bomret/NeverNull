@@ -2,9 +2,11 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators {
+namespace NeverNull.Tests.Combinators
+{
     [Subject(typeof (DoExt), "Do")]
-    public class When_I_do_set_a_bool_before_mapping_toString_to_none {
+    public class When_I_do_set_a_bool_before_mapping_toString_to_none
+    {
         static Option<string> _result;
         static bool _doExecuted;
         static Option<int> _none;

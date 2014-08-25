@@ -5,8 +5,8 @@ namespace NeverNull
     public struct Option<T> : IEquatable<None>
     {
         public static Option<T> None = new Option<T>();
-        private readonly bool _hasValue;
-        private readonly T _value;
+        readonly bool _hasValue;
+        readonly T _value;
 
         public Option(T value)
         {
@@ -35,6 +35,11 @@ namespace NeverNull
             }
         }
 
+        public bool Equals(None other)
+        {
+            return IsEmpty;
+        }
+
         public static implicit operator Option<T>(None none)
         {
             return None;
@@ -44,17 +49,11 @@ namespace NeverNull
         {
             return Option.From(value);
         }
-
-
-        public bool Equals(None other)
-        {
-            return IsEmpty;
-        }
     }
 
     public static class Option
     {
-        private static readonly None _none = new None();
+        static readonly None _none = new None();
 
         public static None None
         {
@@ -98,14 +97,14 @@ namespace NeverNull
         }
 
         public static Option<E> FromTryPattern<A, B, C, D, E>(TryPattern<A, B, C, D, E> pattern, A val, B arg, C arg2,
-            D arg3)
+                                                              D arg3)
         {
             E e;
             return pattern(val, arg, arg2, arg3, out e) ? Some(e) : Option<E>.None;
         }
 
         public static Option<F> FromTryPattern<A, B, C, D, E, F>(TryPattern<A, B, C, D, E, F> pattern, A val, B arg,
-            C arg2, D arg3, E arg4)
+                                                                 C arg2, D arg3, E arg4)
         {
             F f;
             return pattern(val, arg, arg2, arg3, arg4, out f) ? Some(f) : Option<F>.None;

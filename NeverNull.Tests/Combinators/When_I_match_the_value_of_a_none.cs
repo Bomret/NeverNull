@@ -5,7 +5,7 @@ using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators
 {
-    [Subject(typeof(MatchExt), "Match")]
+    [Subject(typeof (MatchExt), "Match")]
     class When_I_match_the_value_of_a_none
     {
         static Option<int> _none;
@@ -23,8 +23,8 @@ namespace NeverNull.Tests.Combinators
         };
 
         Because of = () => _none.Match(
-                         _whenSome,
-                         _whenNone);
+                                       _whenSome,
+                                       _whenNone);
 
         It should_execute_the_none_callback = () => _noneCallbackExecuted.Should().BeTrue();
 

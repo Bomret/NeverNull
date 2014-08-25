@@ -1,5 +1,3 @@
-using System;
-
 namespace NeverNull
 {
     public struct None
@@ -18,7 +16,7 @@ namespace NeverNull
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(obj,null)) return false;
+            if (ReferenceEquals(obj, null)) return false;
             if (obj is None) return true;
 
             return false;

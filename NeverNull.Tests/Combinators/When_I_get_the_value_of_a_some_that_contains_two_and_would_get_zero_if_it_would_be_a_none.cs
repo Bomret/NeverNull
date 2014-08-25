@@ -4,7 +4,7 @@ using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators
 {
-    [Subject(typeof(GetOrElseExt), "GetOrElse")]
+    [Subject(typeof (GetOrElseExt), "GetOrElse")]
     class When_I_get_the_value_of_a_some_that_contains_two_and_would_get_zero_if_it_would_be_a_none
     {
         static Option<int> _some;

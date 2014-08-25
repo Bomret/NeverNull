@@ -5,7 +5,7 @@ using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators
 {
-    [Subject(typeof(MatchExt), "Match")]
+    [Subject(typeof (MatchExt), "Match")]
     class When_I_match_the_value_of_a_some_that_contains_two
     {
         static Option<int> _some;
@@ -24,8 +24,8 @@ namespace NeverNull.Tests.Combinators
         };
 
         Because of = () => _some.Match(
-                         _whenSome,
-                         _whenNone);
+                                       _whenSome,
+                                       _whenNone);
 
         It should_execute_the_some_callback_and_return_two = () => _two.Should().Be(2);
 

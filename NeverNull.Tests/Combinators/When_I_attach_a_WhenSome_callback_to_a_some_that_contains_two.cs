@@ -4,7 +4,7 @@ using NeverNull.Combinators;
 
 namespace NeverNull.Tests.Combinators
 {
-    [Subject(typeof(IfSomeExt), "IfSome")]
+    [Subject(typeof (IfSomeExt), "IfSome")]
     class When_I_attach_a_WhenSome_callback_to_a_some_that_contains_two
     {
         static Option<int> _some;
