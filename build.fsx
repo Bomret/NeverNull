@@ -8,7 +8,6 @@ let name ="NeverNull"
 let id = "1f08d66b-44d7-4616-a82e-250a3817adbd"
 let authors = ["Stefan Reichel"]
 
-let solution = name + ".sln"
 let builtAssembly = name + ".dll"
 let publishDir = "./publish"
 let buildDir = "./build"
@@ -30,18 +29,19 @@ Target "BuildLibrary" (fun _ ->
          Attribute.Version version
          Attribute.FileVersion version]
 
-    MSBuildRelease buildDir "Build" [solution]
+    !! "./NeverNull/**/*.csproj"
+    |> MSBuildRelease buildDir "Build"
     |> Log "Building app: "
 )
 
 Target "BuildTests" (fun _ ->
     !! "*.Tests/**/*.csproj"
-    |> MSBuildDebug testDir "Build"
+    |> MSBuildDebug buildDir "Build"
     |> Log "Building tests: "
 )
 
 Target "Test" (fun _ ->
-    !! (testDir @@ "*.Tests.dll")
+    !! (buildDir @@ "*.Tests.dll")
     |> MSpec (fun p -> {p with HtmlOutputDir = testDir})
 )
 
@@ -63,6 +63,9 @@ Target "Package" (fun _ ->
     ==> "BuildLibrary"
     ==> "BuildTests"
     ==> "Test"
+
+"Clean"
+    ==> "BuildLibrary"
     ==> "Package"
 
 RunTargetOrDefault "Test"
