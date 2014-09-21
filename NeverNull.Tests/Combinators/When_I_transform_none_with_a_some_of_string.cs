@@ -2,11 +2,9 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (TransformWithExt), "TransformWith")]
-    public class When_I_transform_none_with_a_some_of_string
-    {
+    public class When_I_transform_none_with_a_some_of_string {
         static Option<string> _result;
         static Option<int> _none;
 

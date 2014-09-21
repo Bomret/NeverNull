@@ -2,17 +2,14 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (ZipWithExt), "ZipWith")]
-    public class When_I_zip_two_somes_containing_two_and_three_with_the_addition_of_their_values
-    {
+    public class When_I_zip_two_somes_containing_two_and_three_with_the_addition_of_their_values {
         static Option<int> _result;
         static Option<int> _two;
         static Option<int> _three;
 
-        Establish ctx = () =>
-        {
+        Establish ctx = () => {
             _two = 2;
             _three = 3;
         };

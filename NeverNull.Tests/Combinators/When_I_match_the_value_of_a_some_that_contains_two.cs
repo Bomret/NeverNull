@@ -3,11 +3,9 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (MatchExt), "Match")]
-    class When_I_match_the_value_of_a_some_that_contains_two
-    {
+    class When_I_match_the_value_of_a_some_that_contains_two {
         static Option<int> _some;
         static int _two;
 
@@ -15,8 +13,7 @@ namespace NeverNull.Tests.Combinators
         static bool _isNone;
         static Action _whenNone;
 
-        Establish context = () =>
-        {
+        Establish context = () => {
             _some = Option.Some(2);
 
             _whenSome = i => _two = i;

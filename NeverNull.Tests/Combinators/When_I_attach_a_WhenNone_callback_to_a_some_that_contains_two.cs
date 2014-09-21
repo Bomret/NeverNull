@@ -2,11 +2,9 @@
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (IfNoneExt), "IfNone")]
-    class When_I_attach_a_WhenNone_callback_to_a_some_that_contains_two
-    {
+    class When_I_attach_a_WhenNone_callback_to_a_some_that_contains_two {
         static Option<int> _some;
         static bool _callbackExecuted;
 

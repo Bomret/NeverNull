@@ -3,11 +3,9 @@ using System.Globalization;
 using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests
-{
+namespace NeverNull.Tests {
     [Subject(typeof (Option), "FromTryPattern")]
-    public class When_I_create_an_option_from_Double_TryParse_with_all_args
-    {
+    public class When_I_create_an_option_from_Double_TryParse_with_all_args {
         static Option<double> _sut;
 
         Because of =

@@ -2,11 +2,9 @@ using System;
 using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests
-{
+namespace NeverNull.Tests {
     [Subject(typeof (Option), "FromTryPattern")]
-    public class When_I_create_an_option_from_Int32_TryParse
-    {
+    public class When_I_create_an_option_from_Int32_TryParse {
         static Option<int> _sut;
 
         Because of =

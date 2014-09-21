@@ -2,11 +2,9 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (FlattenExt), "Flatten")]
-    public class When_I_flatten_none
-    {
+    public class When_I_flatten_none {
         static Option<int> _result;
         static Option<Option<int>> _nested;
 

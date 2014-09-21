@@ -2,11 +2,9 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (TransformExt), "Transform")]
-    public class When_I_transform_a_some_containing_three_to_a_some_of_string
-    {
+    public class When_I_transform_a_some_containing_three_to_a_some_of_string {
         static Option<string> _result;
 
         Because of = () => _result = Option.Some(3)

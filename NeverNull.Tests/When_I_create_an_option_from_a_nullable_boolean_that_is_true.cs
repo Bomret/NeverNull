@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests
-{
+namespace NeverNull.Tests {
     [Subject(typeof (Option), "From")]
-    public class When_I_create_an_option_from_a_nullable_boolean_that_is_true
-    {
+    public class When_I_create_an_option_from_a_nullable_boolean_that_is_true {
         static Option<bool> _sut;
         static bool? _true;
 

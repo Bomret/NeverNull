@@ -2,11 +2,9 @@ using FluentAssertions;
 using Machine.Specifications;
 using NeverNull.Combinators;
 
-namespace NeverNull.Tests.Combinators
-{
+namespace NeverNull.Tests.Combinators {
     [Subject(typeof (TapExt), "Tap")]
-    public class When_I_tap_none_before_mapping_ToString_to_it
-    {
+    public class When_I_tap_none_before_mapping_ToString_to_it {
         static Option<string> _result;
         static Option<int> _none;
         static int _zero;

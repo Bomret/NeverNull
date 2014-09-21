@@ -1,11 +1,9 @@
 using FluentAssertions;
 using Machine.Specifications;
 
-namespace NeverNull.Tests
-{
+namespace NeverNull.Tests {
     [Subject(typeof (Option), "Equals")]
-    public class When_I_check_the_equality_of_hello_with_some_and_none
-    {
+    public class When_I_check_the_equality_of_hello_with_some_and_none {
         static Option<string> _sut;
 
         Because of =

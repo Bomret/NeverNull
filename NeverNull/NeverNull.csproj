@@ -59,6 +59,7 @@
     <Compile Include="Combinators\TransformWithExt.cs" />
     <Compile Include="Combinators\ZipExt.cs" />
     <Compile Include="Combinators\ZipWithExt.cs" />
+    <Compile Include="IOption.cs" />
     <Compile Include="None.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Delegates.cs" />
