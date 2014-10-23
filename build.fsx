@@ -1,8 +1,6 @@
-﻿#r @"FAKE\tools\FakeLib.dll"
+﻿#r @"packages\FAKE\tools\FakeLib.dll"
 open Fake
 open Fake.AssemblyInfoFile
-
-RestorePackages()
 
 let name ="NeverNull"
 let id = "1f08d66b-44d7-4616-a82e-250a3817adbd"
