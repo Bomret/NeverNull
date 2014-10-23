@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Combinators\ThenExt.cs" />
     <Compile Include="Combinators\DoExt.cs" />
     <Compile Include="Combinators\FilterExt.cs" />
@@ -59,8 +56,9 @@
     <Compile Include="Combinators\TransformWithExt.cs" />
     <Compile Include="Combinators\ZipExt.cs" />
     <Compile Include="Combinators\ZipWithExt.cs" />
-    <Compile Include="IOption.cs" />
     <Compile Include="None.cs" />
+    <Compile Include="Option.Creation.cs" />
+    <Compile Include="Option.Creation.TryPattern.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Delegates.cs" />
   </ItemGroup>

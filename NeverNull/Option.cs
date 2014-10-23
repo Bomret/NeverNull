@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NeverNull {
-    public struct Option<T> : IOption<T>, IEquatable<None> {
+    public struct Option<T> : IEquatable<None> {
         private static readonly Option<T> NoneInstance = new Option<T>();
 
         private readonly bool _hasValue;
@@ -14,10 +15,6 @@ namespace NeverNull {
 
         public static Option<T> None {
             get { return NoneInstance; }
-        }
-
-        public bool Equals(None other) {
-            return IsEmpty;
         }
 
         public bool HasValue {
@@ -37,16 +34,34 @@ namespace NeverNull {
             }
         }
 
+        #region Equality
+
+        public bool Equals(None other) {
+            return IsEmpty;
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                return (_hasValue.GetHashCode() * 397) ^ EqualityComparer<T>.Default.GetHashCode(_value);
+            }
+        }
+
+        #endregion
+
+        #region Formatting
+
         public override string ToString() {
             return HasValue ? string.Format("Some({0})", Value) : "None";
         }
+
+        #endregion
+
+        #region Implicits
 
         public static implicit operator Option<T>(None _) {
             return NoneInstance;
         }
 
-        public static implicit operator Option<T>(T value) {
-            return Option.From(value);
-        }
+        #endregion
     }
 }

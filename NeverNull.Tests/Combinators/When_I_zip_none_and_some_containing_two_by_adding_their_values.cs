@@ -10,7 +10,7 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _none;
 
         Establish ctx = () => {
-            _two = 2;
+            _two = Option.From(2);
             _none = Option.None;
         };
 

@@ -8,7 +8,7 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _two;
         static Option<int> _result;
 
-        Establish context = () => _two = 2;
+        Establish context = () => _two = Option.From(2);
 
         Because of = () => _result = _two.Reject(i => i == 2);
 

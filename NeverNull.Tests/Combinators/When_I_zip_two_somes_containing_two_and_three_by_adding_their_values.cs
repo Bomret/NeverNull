@@ -10,8 +10,8 @@ namespace NeverNull.Tests.Combinators {
         static Option<int> _three;
 
         Establish ctx = () => {
-            _two = 2;
-            _three = 3;
+            _two = Option.From(2);
+            _three = Option.From(3);
         };
 
         Because of = () => _result = _two.Zip(_three, (a, b) => a + b);
