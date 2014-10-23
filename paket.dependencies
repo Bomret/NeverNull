@@ -1,0 +1,5 @@
+source http://nuget.org/api/v2
+
+nuget FAKE
+nuget Machine.Specifications
+nuget FluentAssertions
