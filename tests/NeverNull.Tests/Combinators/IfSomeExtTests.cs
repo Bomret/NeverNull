@@ -8,12 +8,10 @@ namespace NeverNull.Tests.Combinators {
         [Test]
         public void IfSome_should_only_be_called_on_options_containing_a_value() =>
             Prop.ForAll<string>(x => {
-                var option = Option.From(x);
+                var modifiedVal = "-1";
+                Option.From(x).IfSome(v => modifiedVal = v + "1");
 
-                var modfiedVal = "";
-                option.IfSome(v => modfiedVal = v + "1");
-
-                return x == null ? string.IsNullOrEmpty(modfiedVal) : modfiedVal.Equals(x + "1");
+                return modifiedVal.Equals(x == null ? "-1" : x + "1");
             }).QuickCheckThrowOnFailure();
     }
 }

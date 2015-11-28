@@ -10,12 +10,10 @@ namespace NeverNull.Tests.Combinators
         [Test]
         public void Getting_the_value_from_an_option_should_throw_for_None_and_return_the_value_if_the_option_contains_one() =>
             Prop.ForAll<string>(x => {
-                var option = Option.From(x);
-
                 string val = null;
                 Exception err = null;
                 try {
-                    val = option.Get();
+                    val = Option.From(x).Get();
                 }
                 catch (Exception e) {
                     err = e;
@@ -28,21 +26,14 @@ namespace NeverNull.Tests.Combinators
 
         [Test]
         public void Getting_the_value_from_an_option_should_return_its_default_for_None_and_return_the_value_if_the_option_contains_one() =>
-            Prop.ForAll<string>(x => {
-                var sut = Option.From(x);
-                var val = "some value";
-                val = sut.GetOrDefault();
-
-                return val == (x ?? default(string));
-            }).QuickCheckThrowOnFailure();
+            Prop.ForAll<string>(x => 
+                Option.From(x).GetOrDefault() == (x ?? default(string)))
+            .QuickCheckThrowOnFailure();
 
         [Test]
         public void Getting_the_value_from_an_option_should_return_the_fallback_for_None_and_return_the_value_if_the_option_contains_one() =>
-            Prop.ForAll<string, string>((a, b) => {
-                var sut = Option.From(a);
-                var val = sut.GetOrElse(() => b);
-
-                return val == (a ?? b);
-            }).QuickCheckThrowOnFailure();
+            Prop.ForAll<string, string>((a, b) =>
+                Option.From(a).GetOrElse(() => b) == (a ?? b))
+            .QuickCheckThrowOnFailure();
     }
 }

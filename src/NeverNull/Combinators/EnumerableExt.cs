@@ -19,6 +19,20 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
+        ///     Returns all values in the array of this option as options, if it contains an array.
+        ///     if the contained array is empty or None, an empty array is returned.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="optionalArray"></param>
+        /// <returns></returns>
+        public static Option<T>[] Exchange<T>(this Option<T[]> optionalArray) {
+            T[] xs;
+            return optionalArray.TryGet(out xs)
+                ? xs.Select(Option.From).ToArray()
+                : new Option<T>[0];
+        }
+
+        /// <summary>
         ///     Selects all values from the options in this enumerable that contain values.
         /// </summary>
         /// <typeparam name="T"></typeparam>

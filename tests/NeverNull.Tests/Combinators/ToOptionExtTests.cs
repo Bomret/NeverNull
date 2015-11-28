@@ -4,12 +4,11 @@ using NUnit.Framework;
 
 namespace NeverNull.Tests.Combinators {
     [TestFixture]
-    class SelectExtTests {
+    class ToOptionExtTests {
         [Test]
-        public void Only_values_inside_a_Some_should_be_selected() {
+        public void Converting_reference_values_to_options_should_yield_None_for_null_otherwise_a_Some_containing_the_value() =>
             Prop.ForAll<string>(x => 
-                Option.From(x).Select(v => v.Length).Equals(x?.Length ?? Option<int>.None))
+                x.ToOption().Equals(x ?? Option<string>.None))
             .QuickCheckThrowOnFailure();
-        }
     }
 }

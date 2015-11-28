@@ -8,13 +8,10 @@ namespace NeverNull.Tests.Combinators {
         [Test]
         public void IfNone_should_only_be_called_on_None() =>
             Prop.ForAll<string>(x => {
-                var option = Option.From(x);
+                var modfiedVal = "-1";
+                Option.From(x).IfNone(() => modfiedVal = "1");
 
-                var modfiedVal = "";
-                option.IfNone(() => modfiedVal = "1");
-
-                return x == null ? modfiedVal.Equals("1") : string.IsNullOrEmpty(modfiedVal);
-
+                return modfiedVal.Equals(x == null ? "1": "-1");
             }).QuickCheckThrowOnFailure();
     }
 }

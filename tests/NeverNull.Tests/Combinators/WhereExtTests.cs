@@ -15,9 +15,9 @@ namespace NeverNull.Tests.Combinators {
 
             Prop.ForAll(xs, x => {
                 var option = Option.From(x);
-                var result = option.Where(v => v.Length < 10);
 
-                return result.Equals(x.Length < 10 ? option : Option<string>.None);
+                return option.Where(v => v.Length < 10)
+                    .Equals(x.Length < 10 ? option : Option<string>.None);
             }).QuickCheckThrowOnFailure();
         }
     }
