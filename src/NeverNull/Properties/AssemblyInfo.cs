@@ -3,7 +3,7 @@ using System.Reflection;
 
 [assembly: AssemblyTitleAttribute("NeverNull")]
 [assembly: AssemblyProductAttribute("NeverNull")]
-[assembly: AssemblyDescriptionAttribute("Project has no summmary; update build.fsx")]
+[assembly: AssemblyDescriptionAttribute("An Option type that allows readable and bloat free handling of null and 'magic values'.")]
 [assembly: AssemblyVersionAttribute("3.0")]
 [assembly: AssemblyFileVersionAttribute("3.0")]
 namespace System {

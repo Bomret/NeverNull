@@ -32,17 +32,17 @@ let project = "NeverNull"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "Project has no summmary; update build.fsx"
+let summary = "An Option type that allows readable and bloat free handling of null and 'magic values'."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = "Project has no description; update build.fsx"
+let description = "An Option type that allows readable and bloat free handling of null and 'magic values'. Provides a growing number of combinators for functional composition."
 
 // List of author names (for NuGet package)
 let authors = [ "Stefan Reichel" ]
 
 // Tags for your project (for NuGet package)
-let tags = ""
+let tags = "null functional NullReferenceException option optional magic value"
 
 // File system information 
 let solutionFile  = "NeverNull.sln"

@@ -1,0 +1,21 @@
+type project
+owners
+    Stefan Reichel
+authors 
+    Stefan Reichel
+projectUrl
+    http://github.com/bomret/NeverNull
+licenseUrl
+    http://opensource.org/licenses/MIT
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    null functional NullReferenceException option optional magic value
+summary
+    A Option type that allows readable and bloat free handling of null and "magic values".
+description
+    A Option type that allows readable and bloat free handling of null and "magic values". Provides a growing number of combinators for functional composition.
+
+
