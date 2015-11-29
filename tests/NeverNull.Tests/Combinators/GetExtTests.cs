@@ -27,13 +27,13 @@ namespace NeverNull.Tests.Combinators
         [Test]
         public void Getting_the_value_from_an_option_should_return_its_default_for_None_and_return_the_value_if_the_option_contains_one() =>
             Prop.ForAll<string>(x => 
-                Option.From(x).GetOrDefault() == (x ?? default(string)))
+                Option.From(x).GetOrDefault() == (x == null ? default(string) : x))
             .QuickCheckThrowOnFailure();
 
         [Test]
         public void Getting_the_value_from_an_option_should_return_the_fallback_for_None_and_return_the_value_if_the_option_contains_one() =>
             Prop.ForAll<string, string>((a, b) =>
-                Option.From(a).GetOrElse(() => b) == (a ?? b))
+                Option.From(a).GetOrElse(() => b) == (a == null ? b : a))
             .QuickCheckThrowOnFailure();
     }
 }
