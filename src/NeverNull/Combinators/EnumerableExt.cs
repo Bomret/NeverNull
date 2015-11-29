@@ -51,7 +51,7 @@ namespace NeverNull.Combinators {
 
         /// <summary>
         ///     Aggregates the values of this enumerable using the given <paramref name="fold" />
-        ///     function. If this enumerable is empty or all values ar NULL, None is returned.
+        ///     function. If this enumerable is empty or all values are NULL, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
@@ -70,7 +70,7 @@ namespace NeverNull.Combinators {
 
         /// <summary>
         ///     Returns an option containing all values or None, if any of the options in this enumerable
-        ///     does not contain a value.
+        ///     does not contain a value or the enumerable is empty.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
@@ -85,7 +85,9 @@ namespace NeverNull.Combinators {
                 if (option.TryGet(out t)) results.Add(t);
                 else return Option<IEnumerable<T>>.None;
             }
-            return Option.From(results.AsEnumerable());
+            return results.Count == 0
+                ? Option<IEnumerable<T>>.None
+                : Option.From(results.AsEnumerable());
         }
 
         /// <summary>
