@@ -32,17 +32,17 @@ let project = "NeverNull"
 
 // Short summary of the project
 // (used as description in AssemblyInfo and as a short summary for NuGet package)
-let summary = "An Option type that allows readable and bloat free handling of null and 'magic values'."
+let summary = "A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code."
 
 // Longer description of the project
 // (used as a description for NuGet package; line breaks are automatically cleaned up)
-let description = "An Option type that allows readable and bloat free handling of null and 'magic values'. Provides a growing number of combinators for functional composition."
+let description = "A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code. Licensed under the MIT License (http://opensource.org/licenses/MIT). Provides a growing number of combinators for functional composition."
 
 // List of author names (for NuGet package)
 let authors = [ "Stefan Reichel" ]
 
 // Tags for your project (for NuGet package)
-let tags = "null functional NullReferenceException option optional magic value"
+let tags = "null functional NullReferenceException option optional maybe magic value"
 
 // File system information 
 let solutionFile  = "NeverNull.sln"

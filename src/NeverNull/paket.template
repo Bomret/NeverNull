@@ -12,10 +12,10 @@ requireLicenseAcceptance
 copyright
     Copyright 2015
 tags
-    null functional NullReferenceException option optional magic value
+    null functional NullReferenceException option optional maybe magic value
 summary
-    A Option type that allows readable and bloat free handling of null and "magic values".
+    A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code.
 description
-    A Option type that allows readable and bloat free handling of null and "magic values". Provides a growing number of combinators for functional composition.
+    A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code. Licensed under the MIT License (http://opensource.org/licenses/MIT). Provides a growing number of combinators for functional composition.
 
 

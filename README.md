@@ -12,13 +12,13 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT).
 [![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
 
 ## Example
-Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Map` and `Filter` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Map` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Filter function.
+Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Select` and `Where` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Select` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Where predicate.
 
 ```csharp
 Option.From(WebRequest.Create(Url) as HttpWebRequest)
-      .Map(request => request.GetResponse())
-      .Map(response => response.ContentType)
-      .Filter(contentType => contentType.StartsWith("text"))
+      .Select(request => request.GetResponse())
+      .Select(response => response.ContentType)
+      .Where(contentType => contentType.StartsWith("text"))
       .Match(
           contentType => Console.WriteLine("Content-Type: {0}", contentType),
           () => Console.WriteLine("No matching result."));
@@ -31,14 +31,17 @@ Option.From(WebRequest.Create(Url) as HttpWebRequest)
 ```csharp
 Option<int> result = Option.From(2);
 ```
-The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Value` property:
+The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `TryGet` method:
 
 ```csharp
-var two = result.Value;
+int two;
+result.TryGet(out two);
 ```
-To find out if `result` represents a `Some` or `None` it provides two boolean properties: `HasValue` and `IsEmpty`. To be safe, you can either check these properties first or use the corresponding applicator (more on applicators below):
+To find out if `result` represents a `Some` or `None` it provides the boolean property `HasValue`:
 
 ```csharp
+if(result.HasValue) _two = i;
+// is same as
 result.IfSome(i => _two = i);
 ```
 
@@ -67,11 +70,10 @@ Option<int> option = Option.From(2);
 ```
 Evaluates a `T` synchronously and returns a `Some` if the value is not null or `None` otherwise. Always returns `Some`for non-nullable (value) types.
 
-### FromNullable
 ```csharp
 DateTime? now = DateTime.Now;
 
-Option<DateTime> option = Option.FromNullable(now);
+Option<DateTime> option = Option.From(now);
 ```
 Evaluates a `T?` synchronously and returns a `Some` if the value is not null or `None` otherwise.
 
@@ -82,12 +84,6 @@ Option<double> option = Option.FromTryPattern<string, double>(Double.TryParse, "
 Evaluates the call to a given method that follows the TryParse pattern and arguments synchronously and returns a `Some` if the method succeeded or `None` otherwise.
 
 Currently the method is overloaded with versions that take up to five args.
-
-### Some
-```csharp
-Option<int> five = Option.Some(5);
-```
-Create a `Some` that contains the given value.
 
 ### None
 ```csharp
@@ -169,19 +165,17 @@ var result = Option.From(null)
 ```
 In the above examples `null` would have been returned and `result` would be `None`. The `OrElseWith` combinator makes it possible to return a different `Option` in case of `None`. `result` would be a `Some<int>` with the Value *-1*.
 
-### Map
+### Select
 ```csharp
-var result = Option.From(2)
-				   .Map(i => i.ToString());
+var result = Option.From(2).Select(i => i.ToString());
 ```
-`Map` allows to apply a function to the value of a `Some`. In the above example `result` would be a `Some<string>` with Value *"5"*.
+`Select` allows to apply a function to the value of a `Some`. In the above example `result` would contain the string value *"5"*.
 
-### FlatMap
+### SelectMany
 ```csharp
-var result = Option.From(2)
-                   .FlatMap(i => Option.From(i.ToString()));
+var result = Option.From(2).SelectMany(i => Option.From(i.ToString()));
 ```
-`FlatMap` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some<string>` with Value `"5"`. If `Map` would have been used, `result` would have been a `Some<Some<string>>`.
+`SelectMany` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some<string>` with Value `"5"`. If `Map` would have been used, `result` would have been a `Some<Some<string>>`.
 
 ### Filter
 ```csharp
@@ -225,23 +219,6 @@ Option<string> result = Option.From(2)
         					() => "");
 ```
 Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some<string>` with Value `"5"`.
-
-### TransformWith
-```csharp
-Option<string> result = Option.From(2)
-        				.TransformWith(
-        					i => Option.From(i.ToString()),
-        					() => Option.None);
-```
-Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some<string>` with Value `"5"`.
-
-### Tap
-```csharp
-Option<int> result = Option.From(2)
-        			 .Tap(i => Console.WriteLine(i))
-        			 .Map(i => i + 1);
-```
-Can be used to take a look at the value of an `Option` without modifying it. In the above example `result` would be a `Some<int>` containing the value `3`. `Tap` would have printed `2` to the console.
 
 ### Do
 ```csharp

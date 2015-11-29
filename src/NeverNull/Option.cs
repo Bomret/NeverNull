@@ -23,6 +23,7 @@ namespace NeverNull {
         ///     Is true if a value is present, false otherwise.
         /// </summary>
         public bool HasValue { get; }
+        public bool IsEmpty => !HasValue;
 
         internal Option(T value) : this() {
             _value = value;
