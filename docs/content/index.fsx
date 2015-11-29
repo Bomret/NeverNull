@@ -29,7 +29,7 @@ This example demonstrates using a function defined in this sample library.
 #r "NeverNull.dll"
 open NeverNull
 
-printfn "hello = %i" <| Library.hello 0
+printfn "hello = %A" <| NeverNull.Option.From 0
 
 (**
 Some more info
@@ -55,13 +55,13 @@ the project and submit pull requests. If you're adding a new public API, please 
 consider adding [samples][content] that can be turned into a documentation. You might
 also want to read the [library design notes][readme] to understand how it works.
 
-The library is available under Public Domain license, which allows modification and 
+The library is available under MIT license, which allows modification and 
 redistribution for both commercial and non-commercial purposes. For more information see the 
 [License file][license] in the GitHub repository. 
 
-  [content]: https://github.com/fsprojects/NeverNull/tree/master/docs/content
-  [gh]: https://github.com/fsprojects/NeverNull
-  [issues]: https://github.com/fsprojects/NeverNull/issues
-  [readme]: https://github.com/fsprojects/NeverNull/blob/master/README.md
-  [license]: https://github.com/fsprojects/NeverNull/blob/master/LICENSE.txt
+  [content]: https://github.com/bomret/NeverNull/tree/master/docs/content
+  [gh]: https://github.com/bomret/NeverNull
+  [issues]: https://github.com/bomret/NeverNull/issues
+  [readme]: https://github.com/bomret/NeverNull/blob/master/README.md
+  [license]: https://github.com/bomret/NeverNull/blob/master/LICENSE.txt
 *)

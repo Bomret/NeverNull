@@ -55,14 +55,53 @@ namespace NeverNull.Tests.Combinators {
             var options = Arb.From<string[]>()
                 .Filter(xs => xs != null)
                 .Convert(
-                    xs => 
-                    xs.Select(Option.From),
+                    xs => xs.Select(Option.From),
                     ys => ys.Select(o => o.GetOrDefault()).ToArray());
 
-            ForAll(options, xs => 
-                xs.AllOrNone().Equals(xs.Count() == 0 || xs.Any(x => !x.HasValue)
-                    ? Option<IEnumerable<string>>.None
-                    : xs.Select(x => x.Get()).ToOption()))
+            ForAll(options, xs => {
+                var sut = xs.AllOrNone();
+
+                return xs.Count() == 0 || xs.Any(x => !x.HasValue)
+                    ? sut.Equals(Option<IEnumerable<string>>.None)
+                    : sut.Get().SequenceEqual(xs.Select(o => o.Get()));
+            })
+            .QuickCheckThrowOnFailure();
+        }
+
+        [Test]
+        public void Selecting_the_first_value_from_an_enumerable_should_yield_None_for_an_empty_enumerable() {
+            var strings = Arb.From<string[]>().Filter(xs => xs != null);
+
+            ForAll(strings, xs =>
+                xs.FirstOptional().Equals(xs.FirstOrDefault()))
+            .QuickCheckThrowOnFailure();
+        }
+
+        [Test]
+        public void Selecting_the_last_value_from_an_enumerable_should_yield_None_for_an_empty_enumerable() {
+            var strings = Arb.From<string[]>().Filter(xs => xs != null);
+
+            ForAll(strings, xs =>
+                xs.LastOptional().Equals(xs.LastOrDefault()))
+            .QuickCheckThrowOnFailure();
+        }
+
+        [Test]
+        public void Selecting_a_single_value_from_an_enumerable_should_yield_None_for_an_empty_enumerable() {
+            var strings = Arb.From<string[]>().Filter(xs => xs != null);
+
+            ForAll(strings, xs => {
+                Option<string> val = Option<string>.None;
+                Exception err = null;
+                try {
+                    val = xs.SingleOptional();
+                }
+                catch (Exception e) {
+                    err = e;
+                }
+
+                return err != null || val.Equals(xs.SingleOrDefault());
+            })
             .QuickCheckThrowOnFailure();
         }
     }

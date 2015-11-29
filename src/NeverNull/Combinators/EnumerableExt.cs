@@ -127,23 +127,37 @@ namespace NeverNull.Combinators {
         /// <summary>
         ///     Returns the only element in this enumerable wrapped in an option.
         ///     If this enumerable is empty or the single element is NULL, None is returned.
-        ///     Throws an exception if this enumerable contains more than one value.
+        ///     Throws an exception if this enumerable contains more than one element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
-        public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable) {
+        /// <exception cref="InvalidOperationException"><paramref name="enumerable"/> contains more than one element.</exception>
+        public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable) =>
+            SingleOptional(enumerable, _ => true);
+
+        /// <summary>
+        ///     Returns the only element in this enumerable that matches a predicate, wrapped in an option.
+        ///     If this enumerable is empty or the single matching element is NULL, None is returned.
+        ///     Throws an exception if this enumerable contains more than one matching element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) {
             enumerable.ThrowIfNull(nameof(enumerable));
-            
+            predicate.ThrowIfNull(nameof(predicate));
+
             var xs = enumerable.ToList();
             switch (xs.Count) {
                 case 0:
                     return Option<T>.None;
                 case 1:
-                    return Option.From(xs[0]);
+                    return predicate(xs[0]) ? xs[0] : Option<T>.None;
                 default:
-                    return xs.SingleOrDefault();
+                    return xs.SingleOrDefault(predicate);
             }
         }
     }

@@ -53,6 +53,7 @@
     <Compile Include="Combinators\SwitchExt.cs" />
     <Compile Include="Combinators\ToNullableExt.cs" />
     <Compile Include="Combinators\ToOptionExt.cs" />
+    <Compile Include="Combinators\TransformExt.cs" />
     <Compile Include="Combinators\WhereExt.cs" />
     <Compile Include="Combinators\ZipExt.cs" />
     <Compile Include="Delegates.cs" />
