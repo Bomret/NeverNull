@@ -81,6 +81,8 @@ There are several ways to create an `Option<T>`.
 ### From
 ```csharp
 Option<int> option = Option.From(2);
+// same as
+Option<int> option = 2;
 ```
 Evaluates a `T` synchronously and returns a `Some` if the value is not null or `None` otherwise. Always returns `Some`for non-nullable (value) types.
 
