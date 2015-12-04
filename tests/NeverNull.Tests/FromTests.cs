@@ -9,7 +9,7 @@ namespace NeverNull.Tests {
             => Prop.ForAll<string>(x => {
                 var option = Option.From(x);
                 if (ReferenceEquals(x, null))
-                    return option.Equals(Option<string>.None) && !option.HasValue;
+                    return option.Equals(Option.None) && !option.HasValue;
 
                 string val;
                 return option.HasValue && option.TryGet(out val) && val.Equals(x);
@@ -29,7 +29,7 @@ namespace NeverNull.Tests {
             => Prop.ForAll<int?>(x => {
                 var option = Option.From(x);
                 if (!x.HasValue)
-                    return option.Equals(Option<int>.None) && !option.HasValue;;
+                    return option.Equals(Option.None) && !option.HasValue;;
 
                 int val;
                 return option.HasValue && option.TryGet(out val) && val.Equals(x);

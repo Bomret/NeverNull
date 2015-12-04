@@ -9,8 +9,7 @@ namespace NeverNull {
     /// </summary>
     /// <typeparam name="T">The type of the value</typeparam>
     [DebuggerDisplay("{ToString(),nq}")]
-    public struct Option<T> : IEquatable<Option<T>>, IStructuralEquatable, IStructuralComparable, IComparable<Option<T>>,
-        IComparable {
+    public struct Option<T> : IEquatable<Option<T>>, IStructuralEquatable, IStructuralComparable, IComparable<Option<T>>, IComparable {
         readonly T _value;
 
         /// <summary>
@@ -122,9 +121,9 @@ namespace NeverNull {
 
         #region Implicits
 
-        public static implicit operator Option<T>(T value) {
-            return Option.From(value);
-        }
+        public static implicit operator Option<T>(T value) => Option.From(value);
+
+        public static implicit operator Option<T>(None _) => Option<T>.None;
 
         #endregion
     }

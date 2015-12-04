@@ -11,7 +11,7 @@ namespace NeverNull.Tests {
 
                 double testVal;
                 if (!double.TryParse(x, out testVal))
-                    return option.Equals(Option<double>.None);
+                    return option.Equals(Option.None);
 
                 double val;
                 return option.TryGet(out val) && val.Equals(testVal);

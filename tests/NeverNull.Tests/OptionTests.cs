@@ -10,7 +10,7 @@ namespace NeverNull.Tests {
             Prop.ForAll<int>(x => {
                 var option = (IStructuralComparable)Option.From(x);
                 return option.CompareTo(Option.From(x - 1), Comparer.Default) > 0 
-                    && option.CompareTo(Option.None<int>(), Comparer.Default) > 0;
+                    && option.CompareTo(Option.None, Comparer.Default) > 0;
             });
 
         [Test]
@@ -18,7 +18,7 @@ namespace NeverNull.Tests {
             Prop.ForAll<int>(x => {
                 var option = (IStructuralComparable)Option.From(x);
                 return option.CompareTo(Option.From(x + 1), Comparer.Default) < 0 
-                    && option.CompareTo(Option.None<int>(), Comparer.Default) > 0;
+                    && option.CompareTo(Option.None, Comparer.Default) > 0;
             });
 
         [Test]

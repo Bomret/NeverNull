@@ -59,6 +59,7 @@
     <Compile Include="Combinators\WhereExt.cs" />
     <Compile Include="Combinators\ZipExt.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="None.cs" />
     <Compile Include="Option.Creation.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.TryPattern.cs" />

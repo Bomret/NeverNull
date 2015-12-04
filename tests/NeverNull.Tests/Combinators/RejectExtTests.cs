@@ -17,7 +17,7 @@ namespace NeverNull.Tests.Combinators {
                 var option = Option.From(x);
                 var result = option.Reject(v => v.Length < 10);
 
-                return result.Equals(x.Length < 10 ? Option<string>.None : option);
+                return result.Equals(x.Length < 10 ? Option.None : option);
             }).QuickCheckThrowOnFailure();
         }
     }

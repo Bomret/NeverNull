@@ -17,7 +17,7 @@ namespace NeverNull.Tests.Combinators {
                     select va + vb;
 
                 return a == null || b == null 
-                    ? joined.Equals(Option<string>.None) 
+                    ? joined.Equals(Option.None) 
                     : joined.Equals(Option.From(a + b));
             }).QuickCheckThrowOnFailure();
     }

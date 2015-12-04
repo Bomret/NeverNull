@@ -3,7 +3,7 @@
     ///     Provides methods to create new Option types.
     /// </summary>
     public static partial class Option {
-        public static Option<T> None<T>() => Option<T>.None;
+        public static None None => default(None);
 
         /// <summary>
         ///     Creates a new Option type from the given value.

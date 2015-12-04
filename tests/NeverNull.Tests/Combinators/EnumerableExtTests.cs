@@ -62,7 +62,7 @@ namespace NeverNull.Tests.Combinators {
                 var sut = xs.AllOrNone();
 
                 return xs.Count() == 0 || xs.Any(x => !x.HasValue)
-                    ? sut.Equals(Option<IEnumerable<string>>.None)
+                    ? sut.Equals(Option.None)
                     : sut.Get().SequenceEqual(xs.Select(o => o.Get()));
             })
             .QuickCheckThrowOnFailure();
@@ -91,7 +91,7 @@ namespace NeverNull.Tests.Combinators {
             var strings = Arb.From<string[]>().Filter(xs => xs != null);
 
             ForAll(strings, xs => {
-                Option<string> val = Option<string>.None;
+                Option<string> val = Option.None;
                 Exception err = null;
                 try {
                     val = xs.SingleOptional();
