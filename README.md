@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Bomret/NeverNull.png?label=ready&title=Ready)](https://waffle.io/Bomret/NeverNull)
 # NeverNull
 A Option type that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
 Licensed under the MIT License (http://opensource.org/licenses/MIT).
