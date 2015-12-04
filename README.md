@@ -102,6 +102,8 @@ Currently the method is overloaded with versions that take up to 16 args.
 ### None
 ```csharp
 Option<int> none = Option.None;
+// same as
+Option<int> none = Option<int>.None;
 ```
 Returns `None` that represents the absence of a value.
 
@@ -129,10 +131,9 @@ Option.From(2).Match(
 `Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if the value is null.
 
 ```csharp
-string result = Option.From(2)
-    .Match(
-        Some: i => i.ToString(),
-   		None: () => "");
+string result = Option.From(2).Match(
+    Some: i => i.ToString(),
+   	None: () => "");
 ```
 This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
@@ -220,18 +221,15 @@ In the above example `nine` would be a `Some` containing `9`.
 
 ### Transform
 ```csharp
-Option<string> result = Option
-    .From(2)
-    .Transform(
-        Some: i => i.ToString(),
-        None: () => "");
+Option<string> result = Option.From(2).Transform(
+    Some: i => i.ToString(),
+    None: () => "");
 ```
 Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some` with value `"5"`.
 
 ### Do
 ```csharp
-Option<string> result = Option
-    .From(2)
+Option<string> result = Option.From(2)
     .Do(() => Console.Write("Do executed"))
     .Select(i => i.ToString());
 ```
