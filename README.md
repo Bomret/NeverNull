@@ -65,14 +65,14 @@ Every method that may not return a value in some circumstances should return an 
 So instead of this:
 
 ```csharp
-private string DoSomethingThatCouldReturnNull(string a) { //... };
-private int DoSomethingThatCouldReturnAMagicValue(string a) { //... };
+string DoSomethingThatCouldReturnNull(string a) { /* ... */ };
+int DoSomethingThatCouldReturnAMagicValue(string a) { /* ... */ };
 ```
 write this:
 
 ```csharp
-private Option<string> DoSomethingThatCouldReturnNull(string a) { //... };
-private Option<int> DoSomethingThatCouldReturnAMagicValue(string a) { //... };
+Option<string> DoSomethingThatCouldReturnNull(string a) { /* ... */ };
+Option<int> DoSomethingThatCouldReturnAMagicValue(string a) { /* ... */ };
 ```
 
 ## Creating an Option
