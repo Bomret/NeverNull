@@ -109,6 +109,12 @@ Option<int> none = Option<int>.None;
 ```
 Returns `None` that represents the absence of a value.
 
+### ToOption
+```csharp
+Option<int> none = 3.ToOption();
+```
+Converts any value to an `Option<T>` by calling `Option.From` on it. 
+
 ## Combinators
 Since `Some` and `None` are simple data structures, a couple of extension methods are provided that make working with both types easier.
 
@@ -249,3 +255,13 @@ Option<Option<int>> nestedOption = Option.From(Option.From(2));
 Option<int> result = nestedOption.Flatten();
 ```
 Flattens a nested `Option`.
+
+### Switch
+```csharp
+Option<int?> two = Option.From(2);
+Option<int?> nil = Option.From<int?>(null);
+Option<int?> three = Option.From(3);
+
+Option<string> result = nil.Switch(three, two);
+```
+Returns the first `Option` that contains a value or `None` if all are `None`.  
