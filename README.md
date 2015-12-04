@@ -122,7 +122,13 @@ Option.From(someString).IfSome(value => /* Do something with the value */);
 ```csharp
 Option.From<string>(null).IfNone(() => _wasNull = true;);
 ```
-`IfNone` is only executed if `null` was returned and then executes its enclosed callback.
+`IfNone` is only executed if `None` was returned and then executes its enclosed callback.
+
+### Contains
+```csharp
+bool containsFive = Option.From(5).Contains(5);
+```
+Returns `true` if the `Option` it is applied to is a `Some` containing the desired value otherwise `false`.
 
 ### Match
 ```csharp

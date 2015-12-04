@@ -26,7 +26,7 @@ namespace NeverNull.Combinators {
             A a;
             B b;
             if (!first.TryGet(out a) || !second.TryGet(out b))
-                return Option<C>.None;
+                return Option.None;
 
             var keyA = firstKeySelector(a);
             var keyB = secondKeySelector(b);

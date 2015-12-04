@@ -17,7 +17,7 @@ namespace NeverNull.Combinators {
 
             A value;
             return !option.TryGet(out value)
-                ? Option<B>.None
+                ? Option.None
                 : selector(value);
         }
 
@@ -39,7 +39,7 @@ namespace NeverNull.Combinators {
 
             A value;
             if (!option.TryGet(out value))
-                return Option<C>.None;
+                return Option.None;
 
             var selected = optionSelector(value);
 

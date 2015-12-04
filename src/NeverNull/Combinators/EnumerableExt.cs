@@ -83,10 +83,10 @@ namespace NeverNull.Combinators {
             foreach (var option in enumerable) {
                 T t;
                 if (option.TryGet(out t)) results.Add(t);
-                else return Option<IEnumerable<T>>.None;
+                else return Option.None;
             }
             return results.Count == 0
-                ? Option<IEnumerable<T>>.None
+                ? Option.None
                 : Option.From(results.AsEnumerable());
         }
 
@@ -104,7 +104,7 @@ namespace NeverNull.Combinators {
             foreach (var value in enumerable)
                 return Option.From(value);
 
-            return Option<T>.None;
+            return Option.None;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace NeverNull.Combinators {
 
             var xs = enumerable.ToList();
             return xs.Count == 0
-                ? Option<T>.None
+                ? Option.None
                 : Option.From(xs[xs.Count - 1]);
         }
 
@@ -153,7 +153,7 @@ namespace NeverNull.Combinators {
             var xs = enumerable.ToList();
             switch (xs.Count) {
                 case 0:
-                    return Option<T>.None;
+                    return Option.None;
                 case 1:
                     return predicate(xs[0]) ? xs[0] : Option<T>.None;
                 default:

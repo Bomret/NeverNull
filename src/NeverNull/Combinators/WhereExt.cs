@@ -14,12 +14,9 @@ namespace NeverNull.Combinators {
             predicate.ThrowIfNull(nameof(predicate));
 
             T value;
-            if (!option.TryGet(out value))
-                return Option<T>.None;
-
-            return predicate(value)
-                ? option
-                : Option<T>.None;
+            return option.TryGet(out value) && predicate(value)
+                ? option 
+                : Option.None;
         }
     }
 }

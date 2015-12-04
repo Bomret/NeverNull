@@ -11,7 +11,7 @@
 
             return nestedOption.TryGet(out option)
                 ? option
-                : Option<T>.None;
+                : Option.None;
         }
     }
 }
