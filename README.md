@@ -5,7 +5,6 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT).
 [![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
 [![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/pr?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
 [![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/issue?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
-[![Covertity Scan](https://img.shields.io/coverity/scan/7200.svg)](https://scan.coverity.com/projects/bomret-nevernull/)
 
 ## Build status
 |  |  BuildScript | Status of last build |
