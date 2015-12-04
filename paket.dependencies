@@ -5,6 +5,8 @@ nuget FSharp.Formatting
 nuget NUnit ~> 2
 nuget NUnit.Runners ~> 2
 nuget FAKE
+nuget OpenCover
+nuget coveralls.net
 nuget SourceLink.Fake
 
 github fsharp/FAKE modules/Octokit/Octokit.fsx

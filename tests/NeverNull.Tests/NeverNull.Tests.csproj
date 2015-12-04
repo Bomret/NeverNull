@@ -74,6 +74,15 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <None Include="paket.references" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NeverNull\NeverNull.csproj">
+      <Project>{C93A1DEC-40DE-4B37-AD48-FA1B91043D79}</Project>
+      <Name>NeverNull</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
@@ -183,14 +192,5 @@
       <Private>True</Private>
       <Paket>True</Paket>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\NeverNull\NeverNull.csproj">
-      <Project>{C93A1DEC-40DE-4B37-AD48-FA1B91043D79}</Project>
-      <Name>NeverNull</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>
