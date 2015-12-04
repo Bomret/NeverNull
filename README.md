@@ -1,7 +1,11 @@
-[![Stories in Ready](https://badge.waffle.io/Bomret/NeverNull.png?label=ready&title=Ready)](https://waffle.io/Bomret/NeverNull)
 # NeverNull
 A Option type that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
 Licensed under the MIT License (http://opensource.org/licenses/MIT).
+
+[![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
+[![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/pr?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
+[![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/issue?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
+[![Covertity Scan](https://img.shields.io/coverity/scan/7200.svg)](https://scan.coverity.com/projects/bomret-nevernull/)
 
 ## Build status
 |  |  BuildScript | Status of last build |
@@ -9,20 +13,30 @@ Licensed under the MIT License (http://opensource.org/licenses/MIT).
 | **Mono** | [build.sh](https://github.com/Bomret/NeverNull/blob/master/build.sh) | [![Travis build status](https://travis-ci.org/Bomret/NeverNull.svg)](https://travis-ci.org/Bomret/NeverNull) |
 | **Windows** | [build.cmd](https://github.com/Bomret/NeverNull/blob/master/build.cmd) | [![AppVeyor Build status](http://img.shields.io/appveyor/ci/stefanreichel/nevernull.svg)](https://ci.appveyor.com/project/StefanReichel/nevernull) |
 
-## Nuget status
-[![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
-
 ## Example
 Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Select` and `Where` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Select` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Where predicate.
 
 ```csharp
 Option.From(WebRequest.Create(Url) as HttpWebRequest)
-      .Select(request => request.GetResponse())
-      .Select(response => response.ContentType)
-      .Where(contentType => contentType.StartsWith("text"))
-      .Match(
-          contentType => Console.WriteLine("Content-Type: {0}", contentType),
-          () => Console.WriteLine("No matching result."));
+    .Select(request => request.GetResponse()?.ContentType)
+    .Where(contentType => contentType.StartsWith("text"))
+    .Match(
+        Some: contentType => Console.WriteLine("Content-Type: {0}", contentType),
+        None: () => Console.WriteLine("No matching result."));
+```
+
+The same can be written using LINQ syntax:
+
+```csharp
+var maybeText =
+    from req in Option.From(WebRequest.Create(Url) as HttpWebRequest)
+    let contentType = req.GetResponse()?.ContentType
+    where contentType.StartsWith("text")
+    select contentType;
+        
+maybeText.Match(
+    Some: contentType => Console.WriteLine("Content-Type: {0}", contentType),
+    None: () => Console.WriteLine("No matching result."));
 ```
 ------
 
@@ -35,15 +49,14 @@ Option<int> result = Option.From(2);
 The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `TryGet` method:
 
 ```csharp
-int two;
-result.TryGet(out two);
+int value;
+if(result.TryGet(out value))
+    // use value;
 ```
 To find out if `result` represents a `Some` or `None` it provides the boolean property `HasValue`:
 
 ```csharp
 if(result.HasValue) _two = i;
-// is same as
-result.IfSome(i => _two = i);
 ```
 
 ## Recommended usage
@@ -84,7 +97,7 @@ Option<double> option = Option.FromTryPattern<string, double>(Double.TryParse, "
 ```
 Evaluates the call to a given method that follows the TryParse pattern and arguments synchronously and returns a `Some` if the method succeeded or `None` otherwise.
 
-Currently the method is overloaded with versions that take up to five args.
+Currently the method is overloaded with versions that take up to 16 args.
 
 ### None
 ```csharp
@@ -97,32 +110,29 @@ Since `Some` and `None` are simple data structures, a couple of extension method
 
 ### IfSome
 ```csharp
-Option.From(2)
-      .IfSome(i => _two = i);
+Option.From(someString).IfSome(value => /* Do something with the value */);
 ```
-`IfSome` is only executed if `2` is not return `null` and delegates the value of the `Some` to its enclosed callback. In the above example `_two` would be a int with Value `2`.
+`IfSome` is only executed if `someString` is not `null` and delegates the value of the `Some` to its enclosed callback.
 
 ### IfNone
 ```csharp
-Option.From(null)
-      .IfNone(() => _wasNull = true;);
+Option.From<string>(null).IfNone(() => _wasNull = true;);
 ```
 `IfNone` is only executed if `null` was returned and then executes its enclosed callback.
 
 ### Match
 ```csharp
-Option.From(2)
-       .Match(
-   		i => _two = i,
-   		() => _isNone = true);
+Option.From(2).Match(
+    Some: i => _two = i,
+   	None: () => _isNone = true);
 ```
 `Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if the value is null.
 
 ```csharp
 string result = Option.From(2)
-                .Match(
-   		             i => i.ToString(),
-   		             () => "");
+    .Match(
+        Some: i => i.ToString(),
+   		None: () => "");
 ```
 This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
@@ -138,7 +148,7 @@ Converts an `Option<T>` (where `T` is a value type) to a `Nullable<T>`.
 ```csharp
 int two = Option.From(2).Get();
 ```
-`Get` is the most straight forward applicator. It returns the value if the result is a `Some` or throws an `InvalidOperationException`, if `None`. In the above example `two` would be `2`.
+`Get` is the most straight forward extension. It returns the value if the result is a `Some` or throws an `InvalidOperationException`, if `None`. In the above example `two` would be `2`.
 
 ### GetOrElse
 ```csharp
@@ -154,43 +164,39 @@ int two = Option.From(2).GetOrDefault();
 
 ### OrElse
 ```csharp
-var result = Option.From(null)
-				   .OrElse(-1);
+Option<int> result = Option.From<int?>(null).OrElse(-1);
 ```
-In the above examples `null` would have been returned and `result` would be `None`. The `OrElse` combinator makes it possible to return a different value in case of `None`. `result` would be a `Some<int>` with the Value *-1*.
+In the above examples `null` would have been returned and `result` would be `None`. The `OrElse` combinator makes it possible to return a different value in case of `None`. `result` would be a `Some<int>` with the Value `-1`.
 
 ### OrElseWith
 ```csharp
-var result = Option.From(null)
-				   .OrElseWith(Option.Some(-1));
+Option<int> result = Option.From<int?>(null).OrElseWith(Option.From(-1));
 ```
-In the above examples `null` would have been returned and `result` would be `None`. The `OrElseWith` combinator makes it possible to return a different `Option` in case of `None`. `result` would be a `Some<int>` with the Value *-1*.
+In the above examples `null` would have been returned and `result` would be `None`. The `OrElseWith` combinator makes it possible to return a different `Option` in case of `None`. `result` would be a `Some<int>` with the Value `-1`.
 
 ### Select
 ```csharp
-var result = Option.From(2).Select(i => i.ToString());
+Option<string> result = Option.From(2).Select(i => i.ToString());
 ```
-`Select` allows to apply a function to the value of a `Some`. In the above example `result` would contain the string value *"5"*.
+`Select` allows to apply a function to the value of a `Some`. In the above example `result` would contain the string value `"5"`.
 
 ### SelectMany
 ```csharp
-var result = Option.From(2).SelectMany(i => Option.From(i.ToString()));
+Option<string> result = Option.From(2).SelectMany(i => Option.From(i.ToString()));
 ```
-`SelectMany` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some<string>` with Value `"5"`. If `Map` would have been used, `result` would have been a `Some<Some<string>>`.
+`SelectMany` allows to apply a function to the value of a `Some` that returns another `Option` and avoid the nesting that would occur otherwise. In the above example `result` would be a `Some` with Value `"5"`. If `Some` would have been used, `result` would have been a `Option<Option<string>>`.
 
-### Filter
+### Where
 ```csharp
-var result = Option.From(5)
-				   .Filter(i => i == 5);
+var result = Option.From(5).Where(i => i == 5);
 ```
-`Filter` checks if a given predicate holds true for an `Option`. In the above example `result` would be a `Some<int>` with Value `5`. If the predicate `i => i == 5` would not hold, `result` would have been `None`.
+`Where` checks if a given predicate holds true for an `Option`. In the above example `result` would be a `Some` with Value `5`. If the predicate `i => i == 5` would not hold, `result` would have been `None`.
 
 ### Reject
 ```csharp
-var result = Option.From(5)
-				   .Reject(i => i == 5);
+var result = Option.From(5).Reject(i => i == 5);
 ```
-`Reject` does the exact opposite of `Filter`. In the above example `result` would be `None`. If the predicate `i => i == 5` would not hold, `result` would have been a `Some<int>` with value `5`.
+`Reject` does the exact opposite of `Where`. In the above example `result` would be `None`. If the predicate `i => i == 5` would not hold, `result` would have been a `Some` with value `5`.
 
 ### Zip
 ```csharp
@@ -199,8 +205,8 @@ Option<int> four = 4;
 
 Option<int> nine = five.Zip(four, (a, b) => a + b);
 ```
-Takes one other `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
-In the above example `nine` would be a `Some<int>` containing `9`.
+Takes another `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
+In the above example `nine` would be a `Some` containing `9`.
 
 ### ZipWith
 ```csharp
@@ -209,25 +215,27 @@ Option<int> four = 4;
 
 Option<int> nine = five.ZipWith(four, (a, b) => Option.From(a + b));
 ```
-Takes one other `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
-In the above example `nine` would be a `Some<int>` containing `9`.
+Takes another `Option` and allows to apply a `Func` to the values of both options. If one `Option` would be `None` the function would not be applied.
+In the above example `nine` would be a `Some` containing `9`.
 
 ### Transform
 ```csharp
-Option<string> result = Option.From(2)
-        				.Transform(
-        					i => i.ToString(),
-        					() => "");
+Option<string> result = Option
+    .From(2)
+    .Transform(
+        Some: i => i.ToString(),
+        None: () => "");
 ```
-Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some<string>` with Value `"5"`.
+Can be used to transform the value of an `Option`. The first function parameter transforms the resulting value if it is a `Some`, the second returns a value if it is `None`. In the above example `result` would be a `Some` with value `"5"`.
 
 ### Do
 ```csharp
-Option<string> result = Option.From(2)
-				        .Do(() => Console.Write("Do executed"))
-				        .Map(i => i.ToString());
+Option<string> result = Option
+    .From(2)
+    .Do(() => Console.Write("Do executed"))
+    .Select(i => i.ToString());
 ```
-Can be used to execute side effecting behavior without modifying an `Option`. In the above example `result` would be a `Some<string>` containing `"2"`. The given `Action` will be executed in _either case_, regardless if the incoming `Option` is a `Some` or `None`.
+Can be used to execute side effecting behavior without modifying an `Option`. In the above example `result` would be a `Some` containing `"2"`. The given `Action` will be executed in _either case_, regardless if the incoming `Option` is a `Some` or `None`.
 
 ### Flatten
 ```csharp
