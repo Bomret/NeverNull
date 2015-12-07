@@ -3,11 +3,11 @@ using System.Reflection;
 
 [assembly: AssemblyTitleAttribute("NeverNull")]
 [assembly: AssemblyProductAttribute("NeverNull")]
-[assembly: AssemblyDescriptionAttribute("An Option type that allows readable and bloat free handling of null and 'magic values'.")]
-[assembly: AssemblyVersionAttribute("3.0")]
-[assembly: AssemblyFileVersionAttribute("3.0")]
+[assembly: AssemblyDescriptionAttribute("A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code.")]
+[assembly: AssemblyVersionAttribute("3.0.0")]
+[assembly: AssemblyFileVersionAttribute("3.0.0")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "3.0";
+        internal const string Version = "3.0.0";
     }
 }

@@ -1,4 +1,4 @@
-### 3.0.0 - Unreleased
+### 3.0.0 - December 7 2015
 * Complete rewrite
 
 #### 2.0.0.14 - August 25 2014

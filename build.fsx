@@ -352,7 +352,7 @@ Target "Release" (fun _ ->
     // release on github
     createClient user pw
     |> createDraft gitOwner gitName release.NugetVersion (release.SemVer.PreRelease <> None) release.Notes 
-    // TODO: |> uploadFile "PATH_TO_FILE"    
+    |> uploadFile ("bin" @@ (sprintf "%s.%s.nupkg" project release.NugetVersion))    
     |> releaseDraft
     |> Async.RunSynchronously
 )
