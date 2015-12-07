@@ -19,7 +19,7 @@ let githubLink = "http://github.com/bomret/NeverNull"
 let info =
   [ "project-name", "NeverNull"
     "project-author", "Stefan Reichel"
-    "project-summary", "Project has no summmary; update build.fsx"
+    "project-summary", "A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code. Licensed under the MIT License (http://opensource.org/licenses/MIT). Provides a growing number of combinators for functional composition."
     "project-github", githubLink
     "project-nuget", "http://nuget.org/packages/NeverNull" ]
 
