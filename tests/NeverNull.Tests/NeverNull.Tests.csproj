@@ -51,6 +51,7 @@
     <Compile Include="Combinators\IfSomeExtTests.cs" />
     <Compile Include="Combinators\JoinExtTests.cs" />
     <Compile Include="Combinators\MatchExtTests.cs" />
+    <Compile Include="Combinators\NormalizeExtTests.cs" />
     <Compile Include="Combinators\OrElseExtTests.cs" />
     <Compile Include="Combinators\RejectExtTests.cs" />
     <Compile Include="Combinators\SelectExtTests.cs" />

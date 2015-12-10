@@ -150,6 +150,13 @@ string result = Option.From(2).Match(
 ```
 This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
+### Normalize
+```csharp
+Option<int?> option = Option.From<int?>(5);
+Option<int> normalized = option.Normalize();
+```
+Normalizes an `Option<T?>` into its `Option<T>` representation.
+
 ### ToNullable
 ```csharp
 Option<DateTime> nowOption = Option.From(DateTime.Now)
@@ -167,6 +174,8 @@ int two = Option.From(2).Get();
 ### GetOrElse
 ```csharp
 int two = Option.From(2).GetOrElse(-1);
+// or lazily with a func
+int two = Option.From(2).GetOrElse(() => -1);
 ```
 `GetOrElse` either returns the value, if `From` returned a `Some` or the else value, if `From` returned `None`. In the above example `two` would be `2`. It would have been `-1` if `2` was `null`.
 
@@ -179,12 +188,16 @@ int two = Option.From(2).GetOrDefault();
 ### OrElse
 ```csharp
 Option<int> result = Option.From<int?>(null).OrElse(-1);
+// or lazily with a func
+Option<int> result = Option.From<int?>(null).OrElse(() => -1);
 ```
 In the above examples `null` would have been returned and `result` would be `None`. The `OrElse` combinator makes it possible to return a different value in case of `None`. `result` would be a `Some<int>` with the Value `-1`.
 
 ### OrElseWith
 ```csharp
 Option<int> result = Option.From<int?>(null).OrElseWith(Option.From(-1));
+// or lazily with a func
+Option<int> result = Option.From<int?>(null).OrElseWith(() => Option.From(-1));
 ```
 In the above examples `null` would have been returned and `result` would be `None`. The `OrElseWith` combinator makes it possible to return a different `Option` in case of `None`. `result` would be a `Some<int>` with the Value `-1`.
 
@@ -243,7 +256,7 @@ Can be used to transform the value of an `Option`. The first function parameter 
 ### Do
 ```csharp
 Option<string> result = Option.From(2)
-    .Do(() => Console.Write("Do executed"))
+    .Do(i => Console.Write($"Do executed on {i}"))
     .Select(i => i.ToString());
 ```
 Can be used to execute side effecting behavior without modifying an `Option`. In the above example `result` would be a `Some` containing `"2"`. The given `Action` will be executed in _either case_, regardless if the incoming `Option` is a `Some` or `None`.
@@ -263,4 +276,15 @@ Option<int?> three = Option.From(3);
 
 Option<string> result = nil.Switch(three, two);
 ```
-Returns the first `Option` that contains a value or `None` if all are `None`.  
+Returns the first `Option` that contains a value or `None` if all are `None`.
+
+## Combinators for `IEnumerable<T>`
+NeverNull contains several extensions that integrate `Option<T>` with `IEnumerable<T>`.
+
+### Exchange
+```csharp
+IEnumerable<int?> ints = new [] { 1, 2, default(int?), 4 };
+Option<IEnumerable<ints?>>
+IEnumerable<Option<T>> optionalInts = Option.From(ints).Exchange();
+```
+If the given Applies `Option.From` to all values inside the `IEnumerable<T>` if t  |

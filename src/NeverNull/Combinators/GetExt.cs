@@ -37,6 +37,16 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
+        public static T GetOrElse<T>(this Option<T> option, T fallback) =>
+            GetOrElse(option, () => fallback);
+
+        /// <summary>
+        ///     Returns the value of this option, if it has one or executed the given <paramref name="fallback" /> func and returns the produced value, if not.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="option"></param>
+        /// <param name="fallback"></param>
+        /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="fallback"/> is null.</exception>
         public static T GetOrElse<T>(this Option<T> option, Func<T> fallback) {
             fallback.ThrowIfNull(nameof(fallback));
