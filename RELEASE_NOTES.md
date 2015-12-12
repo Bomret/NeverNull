@@ -1,3 +1,7 @@
+### 3.1.0 - December 12 2015
+* Additional lazy overloads for GetOrElse and OrElse
+* Additional overloads and methods for working with nullables
+
 ### 3.0.1 - December 8 2015
 * Fixed broken Nuget package
 
