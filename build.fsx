@@ -396,8 +396,8 @@ Target "All" DoNothing
 "ReleaseDocs"
   ==> "Release"
 
-(*"BuildPackage"
+"BuildPackage"
   ==> "PublishNuget"
-  ==> "Release"*)
+  ==> "Release"
 
 RunTargetOrDefault "All"
