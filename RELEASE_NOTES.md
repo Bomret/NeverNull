@@ -1,3 +1,6 @@
+### 3.0.1 - December 8 2015
+* Fixed broken Nuget package
+
 ### 3.0.0 - December 7 2015
 * Complete rewrite
 

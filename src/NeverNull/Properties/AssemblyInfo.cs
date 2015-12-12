@@ -4,10 +4,10 @@ using System.Reflection;
 [assembly: AssemblyTitleAttribute("NeverNull")]
 [assembly: AssemblyProductAttribute("NeverNull")]
 [assembly: AssemblyDescriptionAttribute("A Option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code.")]
-[assembly: AssemblyVersionAttribute("3.0.0")]
-[assembly: AssemblyFileVersionAttribute("3.0.0")]
+[assembly: AssemblyVersionAttribute("3.0.1")]
+[assembly: AssemblyFileVersionAttribute("3.0.1")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "3.0.0";
+        internal const string Version = "3.0.1";
     }
 }

@@ -284,7 +284,62 @@ NeverNull contains several extensions that integrate `Option<T>` with `IEnumerab
 ### Exchange
 ```csharp
 IEnumerable<int?> ints = new [] { 1, 2, default(int?), 4 };
-Option<IEnumerable<ints?>>
-IEnumerable<Option<T>> optionalInts = Option.From(ints).Exchange();
+IEnumerable<Option<int>> optionalInts = Option.From(ints).Exchange();
 ```
-If the given Applies `Option.From` to all values inside the `IEnumerable<T>` if t  |
+If the given `Option<IEnumerable<T>>` is a `Some`, `Option.From` is applied to all values of the enumerable. If it is `None` instead, an empty enumerable is returned.
+
+### SelectValues
+```csharp
+IEnumerable<Option<int?>> ints = new[] {1, 2, default(int?), 4};
+IEnumerable<int> values = ints.SelectValues();
+```
+Select only the values contained in the options of the given enumerable. If it only contains `None`, an empty enumerable is returned.
+
+### AggregateOptional
+```csharp
+IEnumerable<string> strings = new[] {"a", "b", default(string), "d"};
+Option<string> abd = strings.AggregateOptional((a, c) => a + c);
+```
+Like the standard Linq `Aggregate` but automatically handles null elements and results in an option.
+
+### AggregateOptionalNullable
+```csharp
+IEnumerable<int?> ints = new[] {1, 2, default(int?), 4};
+Option<int> seven = ints.AggregateOptional((a, c) => a + c);
+```
+Like `AggregateOptional` but for `Nullable<T>` elements.
+
+### AllOrNone
+```csharp
+IEnumerable<Option<string>> strings = new[] {"a", "b", default(string), "d"};
+Option<IEnumerable<string>> abd = strings.AllOrNone();
+```
+Returns an option containing all values or `None`, if any of the options in the enumerable does not contain a value or the enumerable is empty.
+
+### FirstOptional
+```csharp
+IEnumerable<string> strings = new[] {"a", "b", default(string), "d"};
+Option<string> a = strings.FirstOptional();
+```
+Returns a `Some` containing the first value if the enumerable contains at least one value, else `None`.
+
+### LastOptional
+```csharp
+IEnumerable<string> strings = new[] {"a", "b", default(string), "d"};
+Option<string> d = strings.LastOptional();
+```
+Returns a `Some` containing the last value if the enumerable contains at least one value, else `None`.
+
+### SingleOptional
+```csharp
+IEnumerable<string> strings = new[] {"a"};
+Option<string> a = strings.SingleOptional();
+```
+Like `Single` but returns the only element in the enumerable wrapped in an option. If this enumerable is empty or the single element is NULL, None is returned. Throws an exception if this enumerable contains more than one element.
+
+### SingleOptionalNullable
+```csharp
+IEnumerable<string> strings = new[] {"a"};
+Option<string> a = strings.SingleOptional();
+```
+Like `SingleOptional` but for `Nullable<T>` elements.
