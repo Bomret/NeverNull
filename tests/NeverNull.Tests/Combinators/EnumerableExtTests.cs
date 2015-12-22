@@ -56,10 +56,10 @@ namespace NeverNull.Tests.Combinators {
         [Test]
         public void Aggregating_the_values_from_an_enumerable_of_options_should_yield_None_for_an_empty_one_or_if_all_values_are_null() =>
             ForAll<string[]>(xs => {
-                var check = xs.Where(x => x != null)
-                    .Aggregate(default(string), (a, c) => a == null ? c : a + c);
+                var check = xs.Aggregate(default(string), (a, c) => a == null ? c : a + c);
+                var o = xs.AggregateOptional((a, c) => a + c);
 
-                xs.AggregateOptional((a, c) => a + c).Equals(check);
+                return o.Equals(Option.From(check));
             })
             .QuickCheckThrowOnFailure();
 
@@ -67,9 +67,9 @@ namespace NeverNull.Tests.Combinators {
         public void Aggregating_the_values_from_an_enumerable_of_options_of_nullables_should_yield_None_for_an_empty_one_or_if_all_values_are_null() =>
             ForAll<int?[]>(xs => {
                 var check = xs.Where(x => x.HasValue)
-                    .Aggregate(0, (a, c) => c.HasValue ? a + c.Value : a);
+                    .Aggregate(0, (a, c) => a + c.Value);
 
-                xs.AggregateOptionalNullable((a, c) => a + c).Equals(check);
+                return xs.AggregateOptionalNullable((a, c) => a + c).Equals(check);
             })
             .QuickCheckThrowOnFailure();
 

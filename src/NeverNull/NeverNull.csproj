@@ -47,7 +47,6 @@
     <Compile Include="Combinators\IfNoneExt.cs" />
     <Compile Include="Combinators\IfSomeExt.cs" />
     <Compile Include="Combinators\JoinExt.cs" />
-    <Compile Include="Combinators\MatchExt.cs" />
     <Compile Include="Combinators\NormalizeExt.cs" />
     <Compile Include="Combinators\OrElseExt.cs" />
     <Compile Include="Combinators\RejectExt.cs" />

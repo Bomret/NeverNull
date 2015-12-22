@@ -9,12 +9,9 @@ namespace NeverNull.Tests {
             => Prop.ForAll<string>(x => {
                 var option = Option.FromTryPattern<string, double>(double.TryParse, x);
 
-                double testVal;
-                if (!double.TryParse(x, out testVal))
-                    return option.Equals(Option.None);
-
-                double val;
-                return option.TryGet(out val) && val.Equals(testVal);
+                return option.Match(
+                    None: () => option.IsEmpty && option.Equals(Option<double>.None),
+                    Some: val => option.HasValue && double.Parse(x).Equals(val));
             }).QuickCheckThrowOnFailure();
     }
 }

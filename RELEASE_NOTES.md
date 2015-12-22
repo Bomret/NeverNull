@@ -1,3 +1,9 @@
+### 3.2.0 - Unreleased
+* Match methods are implemented directly in Option<T> 
+* Deprecated TryGet in favor of Match
+* Deprecated GetOrDefault
+* Added Predef module for C# 6 static imports
+
 ### 3.1.0 - December 12 2015
 * Additional lazy overloads for GetOrElse and OrElse
 * Additional overloads and methods for working with nullables

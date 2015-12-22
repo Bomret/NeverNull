@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+// ReSharper disable InconsistentNaming
+
 namespace NeverNull {
     /// <summary>
     ///     Represents the presence or absence of a value of a specific type.
     /// </summary>
     /// <typeparam name="T">The type of the value</typeparam>
     [DebuggerDisplay("{ToString(),nq}")]
-    public struct Option<T> : IEquatable<Option<T>>, IStructuralEquatable, IStructuralComparable, IComparable<Option<T>>, IComparable {
+    public struct Option<T> : IEquatable<Option<T>>, IStructuralEquatable, IStructuralComparable, IComparable<Option<T>>,
+        IComparable {
         readonly T _value;
 
         /// <summary>
@@ -22,6 +25,11 @@ namespace NeverNull {
         ///     Is true if a value is present, false otherwise.
         /// </summary>
         public bool HasValue { get; }
+
+        /// <summary>
+        ///     Indicates if this option is empty.
+        ///     Is true if no value is present, false otherwise.
+        /// </summary>
         public bool IsEmpty => !HasValue;
 
         internal Option(T value) : this() {
@@ -34,6 +42,7 @@ namespace NeverNull {
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
+        [Obsolete("This method is deprecated and will be removed in 2 releases. Use the Match method instead.")]
         public bool TryGet(out T val) {
             if (HasValue) {
                 val = _value;
@@ -44,8 +53,51 @@ namespace NeverNull {
             return false;
         }
 
+        /// <summary>
+        ///     Executes a given side effect if this option contains a value, otherwise a different side effect.
+        /// </summary>
+        /// <param name="Some"></param>
+        /// <param name="None"></param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="Some" /> or <paramref name="None" /> is <see langword="null" />.
+        /// </exception>
+        // ReSharper disable once ParameterHidesMember
+        public void Match(Action<T> Some, Action None) {
+            Some.ThrowIfNull(nameof(Some));
+            None.ThrowIfNull(nameof(None));
+
+            if (HasValue)
+                Some(_value);
+            else
+                None();
+        }
+
+        /// <summary>
+        ///     Applies the first selector to the value of this option if it contains one, otherwise executes the second selector.
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="Some"></param>
+        /// <param name="None"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="Some" /> or <paramref name="None" /> is <see langword="null" />.
+        /// </exception>
+        // ReSharper disable once ParameterHidesMember
+        public R Match<R>(Func<T, R> Some, Func<R> None) {
+            Some.ThrowIfNull(nameof(Some));
+            None.ThrowIfNull(nameof(None));
+
+            return HasValue
+                ? Some(_value)
+                : None();
+        }
+
         #region Formatting
 
+        /// <summary>
+        ///     Retruns the <see cref="string" /> representation of this option.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() {
             return HasValue
                 ? $"Some({_value})"
@@ -57,37 +109,65 @@ namespace NeverNull {
         #region Equality
 
         static int CombineHashCodes(int h1, int h2) {
-            return (((h1 << 5) + h1) ^ h2);
+            return ((h1 << 5) + h1) ^ h2;
         }
 
         bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
             if (!(other is Option<T>)) return false;
-            var otherOption = (Option<T>) other;
-            return comparer.Equals(_value, otherOption._value) && HasValue == otherOption.HasValue;
+
+            var option = (Option<T>) other;
+            return (HasValue && option.HasValue && comparer.Equals(_value, option._value))
+                   || HasValue == false && option.HasValue == false;
         }
 
         int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
-            unchecked {
-                return CombineHashCodes(comparer.GetHashCode(HasValue), comparer.GetHashCode(_value));
-            }
+            return CombineHashCodes(comparer.GetHashCode(HasValue), comparer.GetHashCode(_value));
         }
 
+        /// <summary>
+        ///     Compares the specified <paramref name="other" /> <see cref="Option{T}" /> with this one for equality.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals(Option<T> other) {
             return ((IStructuralEquatable) this).Equals(other, EqualityComparer<object>.Default);
         }
 
-        public override bool Equals(object obj) {
-            return ((IStructuralEquatable) this).Equals(obj, EqualityComparer<object>.Default);
+        /// <summary>
+        ///     Compares the specified <paramref name="object" /> with this one for equality.
+        /// </summary>
+        /// <param name="object"></param>
+        /// <returns></returns>
+        public override bool Equals(object @object) {
+            return ((IStructuralEquatable) this).Equals(@object, EqualityComparer<object>.Default);
         }
 
+        /// <summary>
+        ///     Returns the calculated hash code for this <see cref="Option{T}" />.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode() {
             return ((IStructuralEquatable) this).GetHashCode(EqualityComparer<object>.Default);
         }
 
+        /// <summary>
+        ///     Compares the specified <paramref name="left" /> and <paramref name="right" /> <see cref="Option{T}" /> for
+        ///     equality.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator ==(Option<T> left, Option<T> right) {
             return ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
         }
 
+        /// <summary>
+        ///     Compares the specified <paramref name="left" /> and <paramref name="right" /> <see cref="Option{T}" /> for
+        ///     inequality.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator !=(Option<T> left, Option<T> right) {
             return ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
         }
@@ -121,9 +201,18 @@ namespace NeverNull {
 
         #region Implicits
 
+        /// <summary>
+        ///     Implicitly converts the specified value into an <see cref="Option{T}" />.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static implicit operator Option<T>(T value) => Option.From(value);
 
-        public static implicit operator Option<T>(None _) => Option<T>.None;
+        /// <summary>
+        ///     Implicitly converts the specified <see cref="None" /> into its generic representation.
+        /// </summary>
+        /// <param name="_"></param>
+        public static implicit operator Option<T>(None _) => None;
 
         #endregion
     }

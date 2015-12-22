@@ -1,10 +1,13 @@
 ﻿using System;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    /// Provides extension methods to provide fallbacks when an <see cref="Option{T}"/> is None.
+    /// </summary>
     public static class OrElseExt {
         /// <summary>
-        ///     If this option contains no value, the given <paramref name="fallback" /> 
-        ///     value will be returned, wrapped in an option.
+        ///     If the specified <paramref name="option"/> contains no value, the given <paramref name="fallback" /> 
+        ///     value will be returned, wrapped in an <see cref="Option{T}"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -14,8 +17,7 @@ namespace NeverNull.Combinators {
             OrElseWith(option, () => Option.From(fallback));
         
         /// <summary>
-        ///     If this option contains no value, the given <paramref name="fallback" /> func is executed and the
-        ///     produced value will be returned, wrapped in an option.
+        ///     If the specified <paramref name="option"/> contains no value, the given <paramref name="fallback" /> func is executed and the produced value will be returned, wrapped in an <see cref="Option{T}"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -26,7 +28,7 @@ namespace NeverNull.Combinators {
             OrElseWith(option, () => Option.From(fallback()));
 
         /// <summary>
-        ///     If this option contains no value, the given <paramref name="fallback" /> option is returned.
+        ///     If the specified <paramref name="option"/> contains no value, the given <paramref name="fallback" /> <see cref="Option{T}"/> is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -36,14 +38,16 @@ namespace NeverNull.Combinators {
             OrElseWith(option, () => fallback);
 
         /// <summary>
-        ///     If this option contains no value, the given <paramref name="fallback" /> func
-        ///     is executed and the produced option is returned.
+        ///     If the specified <paramref name="option"/> contains no value, the given <paramref name="fallback" /> func
+        ///     is executed and the produced <see cref="Option{T}"/> is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="fallback"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="fallback"/> is <see langword="null"/>.
+        /// </exception>
         public static Option<T> OrElseWith<T>(this Option<T> option, Func<Option<T>> fallback) {
             fallback.ThrowIfNull(nameof(fallback));
 

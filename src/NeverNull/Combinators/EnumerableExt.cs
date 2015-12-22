@@ -3,187 +3,227 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    ///     Provides extension methods for working with <see cref="Option{T}" /> in conjunction with
+    ///     <see cref="IEnumerable{T}" />.
+    /// </summary>
     public static class EnumerableExt {
         /// <summary>
-        ///     Returns all values in the enumerable of this option as options, if it contains an enumerable.
-        ///     if the contained enumerable is empty or None, an empty enumerable is returned.
+        ///     Returns all values in the specified <paramref name="optionalEnumerable" /> as
+        ///     <see cref="Option{T}" />, if it contains an enumerable.
+        ///     If the contained enumerable is empty or <paramref name="optionalEnumerable" /> is None, an empty enumerable is
+        ///     returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="optionalEnumerable"></param>
         /// <returns></returns>
-        public static IEnumerable<Option<T>> Exchange<T>(this Option<IEnumerable<T>> optionalEnumerable) {
-            IEnumerable<T> xs;
-            return optionalEnumerable.TryGet(out xs)
-                ? xs.Select(Option.From)
-                : Enumerable.Empty<Option<T>>();
-        }
+        public static IEnumerable<Option<T>> Exchange<T>(this Option<IEnumerable<T>> optionalEnumerable) =>
+            optionalEnumerable.Match(
+                None: Enumerable.Empty<Option<T>>,
+                Some: xs => xs.Select(Option.From));
 
         /// <summary>
-        ///     Returns all values in the enumerable of this option as options, if it contains an enumerable.
-        ///     if the contained enumerable is empty or None, an empty enumerable is returned.
+        ///     Returns all values in the specified <paramref name="optionalEnumerable" /> as <see cref="Option{T}" />, if it
+        ///     contains an enumerable.
+        ///     If the contained enumerable is empty or <paramref name="optionalEnumerable" /> is None, an empty enumerable is
+        ///     returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="optionalEnumerable"></param>
         /// <returns></returns>
-        public static IEnumerable<Option<T>> Exchange<T>(this Option<IEnumerable<T?>> optionalEnumerable) where T : struct {
-            IEnumerable<T?> xs;
-            return optionalEnumerable.TryGet(out xs)
-                ? xs.Select(Option.From)
-                : Enumerable.Empty<Option<T>>();
-        }
+        public static IEnumerable<Option<T>> Exchange<T>(this Option<IEnumerable<T?>> optionalEnumerable)
+            where T : struct =>
+                optionalEnumerable.Match(
+                    None: Enumerable.Empty<Option<T>>,
+                    Some: xs => xs.Select(Option.From));
 
         /// <summary>
-        ///     Returns all values in the array of this option as options, if it contains an array.
-        ///     if the contained array is empty or None, an empty array is returned.
+        ///     Returns all values in the specified <paramref name="optionalArray" /> as <see cref="Option{T}" />, if it contains
+        ///     an array.
+        ///     If the contained array is empty or <paramref name="optionalArray" /> is None, an empty array is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="optionalArray"></param>
         /// <returns></returns>
-        public static Option<T>[] Exchange<T>(this Option<T[]> optionalArray) {
-            T[] xs;
-            return optionalArray.TryGet(out xs)
-                ? xs.Select(Option.From).ToArray()
-                : new Option<T>[0];
-        }
+        public static Option<T>[] Exchange<T>(this Option<T[]> optionalArray) =>
+            optionalArray.Match(
+                None: () => new Option<T>[0],
+                Some: xs => xs.Select(Option.From).ToArray());
 
         /// <summary>
-        ///     Returns all values in the array of this option as options, if it contains an array.
-        ///     if the contained array is empty or None, an empty array is returned.
+        ///     Returns all values in the specified <paramref name="optionalArray" /> as <see cref="Option{T}" />, if it contains
+        ///     an array.
+        ///     If the contained array is empty or <paramref name="optionalArray" /> is None, an empty array is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="optionalArray"></param>
         /// <returns></returns>
-        public static Option<T>[] Exchange<T>(this Option<T?[]> optionalArray) where T : struct {
-            T?[] xs;
-            return optionalArray.TryGet(out xs)
-                ? xs.Select(Option.From).ToArray()
-                : new Option<T>[0];
-        }
+        public static Option<T>[] Exchange<T>(this Option<T?[]> optionalArray) where T : struct =>
+            optionalArray.Match(
+                None: () => new Option<T>[0],
+                Some: xs => xs.Select(Option.From).ToArray());
 
         /// <summary>
-        ///     Selects all values from the options in this enumerable that contain values.
+        ///     Selects all values from the options inside the specified <paramref name="enumerable" /> that contain values.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static IEnumerable<T> SelectValues<T>(this IEnumerable<Option<T>> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
-            foreach (var option in enumerable) {
-                T value;
-                if (option.TryGet(out value))
-                    yield return value;
-            }
+            return enumerable
+                .Select(o => o.Match(
+                    None: () => new {hasVal = false, val = default(T)},
+                    Some: x => new {hasVal = true, val = x}))
+                .Where(o => o.hasVal)
+                .Select(o => o.val);
         }
 
         /// <summary>
-        ///     Selects all values from the options in this enumerable that contain nullables with values.
+        ///     Selects all values from the options inside the specified <paramref name="enumerable" /> that contain values.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
-        public static IEnumerable<T> SelectValues<T>(this IEnumerable<Option<T?>> enumerable) where T : struct{
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
+        public static IEnumerable<T> SelectValues<T>(this IEnumerable<Option<T?>> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
-            foreach (var option in enumerable) {
-                T? nullable;
-                if (option.TryGet(out nullable) && nullable.HasValue)
-                    yield return nullable.Value;
-            }
+            return enumerable
+                .Select(o => o.Match(
+                    None: () => new {hasVal = false, val = default(T?)},
+                    Some: x => new {hasVal = x.HasValue, val = x}))
+                .Where(o => o.hasVal)
+                .Select(o => o.val.Value);
         }
 
         /// <summary>
-        ///     Aggregates the values of this enumerable using the given <paramref name="fold" />
-        ///     function. If this enumerable is empty or all values are NULL, None is returned.
+        ///     Aggregates the values of the specified <paramref name="enumerable" /> using the given <paramref name="fold" />
+        ///     function. If <paramref name="enumerable" /> is empty or all values are <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <param name="fold"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> or <paramref name="fold"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> or <paramref name="fold" /> is <see langword="null" />.
+        /// </exception>
         public static Option<T> AggregateOptional<T>(this IEnumerable<T> enumerable, Func<T, T, T> fold) {
             enumerable.ThrowIfNull(nameof(enumerable));
             fold.ThrowIfNull(nameof(fold));
 
-            return enumerable.Aggregate(Option<T>.None, (accu, current) => {
-                T previousValue;
-                return accu.TryGet(out previousValue) ? fold(previousValue, current) : Option.From(current);
-            });
+            return enumerable
+                .Aggregate(Option<T>.None, (accu, current) => {
+                    var currentOption = Option.From(current);
+
+                    return accu.Match(
+                        None: () => currentOption,
+                        Some: previousValue => currentOption.Match(
+                            None: () => currentOption,
+                            Some: currentValue => fold(previousValue, currentValue)));
+                });
         }
 
         /// <summary>
-        ///     Aggregates the values of this enumerable using the given <paramref name="fold" />
-        ///     function. If this enumerable is empty or all values are NULL, None is returned.
+        ///     Aggregates the values of the specified <paramref name="enumerable" /> using the given <paramref name="fold" />
+        ///     function. If <paramref name="enumerable" /> is empty or all values are <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <param name="fold"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> or <paramref name="fold"/> is null.</exception>
-        public static Option<T> AggregateOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, T, T> fold) where T : struct {
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> or <paramref name="fold" /> is <see langword="null" />.
+        /// </exception>
+        public static Option<T> AggregateOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, T, T> fold)
+            where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
             fold.ThrowIfNull(nameof(fold));
 
-            return enumerable.Aggregate(Option<T>.None, (accu, current) => {
-                T previousValue;
-                return accu.TryGet(out previousValue) && current.HasValue ? fold(previousValue, current.Value) : Option.From(current);
-            });
+            return enumerable
+                .Aggregate(Option<T>.None, (accu, current) => {
+                    var currentOption = Option.From(current);
+
+                    return accu.Match(
+                        None: () => currentOption,
+                        Some: previousValue => currentOption.Match(
+                            None: () => currentOption,
+                            Some: currentValue => fold(previousValue, currentValue)));
+                });
         }
 
         /// <summary>
-        ///     Returns an option containing all values or None, if any of the options in this enumerable
-        ///     does not contain a value or the enumerable is empty.
+        ///     Returns an <see cref="Option{T}" /> containing an <see cref="IEnumerable{T}" /> with all values or None, if any of
+        ///     the options in the specified <paramref name="enumerable" /> does not contain a value or the enumerable is empty.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static Option<IEnumerable<T>> AllOrNone<T>(this IEnumerable<Option<T>> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var results = new List<T>();
             foreach (var option in enumerable) {
-                T t;
-                if (option.TryGet(out t)) results.Add(t);
-                else return Option.None;
+                if (option.IsEmpty)
+                    return Option<IEnumerable<T>>.None;
+
+                option.Match(
+                    None: () => { },
+                    Some: x => results.Add(x));
             }
+
             return results.Count == 0
                 ? Option.None
                 : Option.From(results.AsEnumerable());
         }
 
         /// <summary>
-        ///     Returns an option containing all values or None, if any of the options in this enumerable
-        ///     does not contain a value or the enumerable is empty.
+        ///     Returns an <see cref="Option{T}" /> containing an <see cref="IEnumerable{T}" /> with all values or None, if any of
+        ///     the options in the specified <paramref name="enumerable" /> does not contain a value or the enumerable is empty.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
-        public static Option<IEnumerable<T>> AllOrNone<T>(this IEnumerable<Option<T?>> enumerable) where T : struct{
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
+        public static Option<IEnumerable<T>> AllOrNone<T>(this IEnumerable<Option<T?>> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var results = new List<T>();
             foreach (var option in enumerable) {
-                T? nullable;
-                if (option.TryGet(out nullable) && nullable.HasValue) results.Add(nullable.Value);
-                else return Option.None;
+                if (option.IsEmpty)
+                    return Option<IEnumerable<T>>.None;
+
+                option.Match(
+                    None: () => { },
+                    Some: x => { if (x.HasValue) results.Add(x.Value); });
             }
+
             return results.Count == 0
                 ? Option.None
                 : Option.From(results.AsEnumerable());
         }
 
         /// <summary>
-        ///     Returns the first value of this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the first value is NULL, None is returned.
+        ///     Returns the first value of the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the first value is <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static Option<T> FirstOptional<T>(this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -194,13 +234,15 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the first value of this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the first value is NULL, None is returned.
+        ///     Returns the first value of the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the first value is <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static Option<T> FirstOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -211,13 +253,15 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the last value of this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the last value is NULL, None is returned.
+        ///     Returns the last value of the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the last value is <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static Option<T> LastOptional<T>(this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -228,13 +272,15 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the last value of this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the last value is NULL, None is returned.
+        ///     Returns the last value of the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the last value is <see langword="null" />, None is returned.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
         public static Option<T> LastOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -245,15 +291,19 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the single element is NULL, None is returned.
-        ///     Throws an exception if this enumerable contains more than one element.
+        ///     Returns the only element in the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" />, None is returned.
+        ///     Throws an exception if <paramref name="enumerable" /> contains more than one element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="enumerable"/> contains more than one element.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <paramref name="enumerable" /> contains more than one element.
+        /// </exception>
         public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -264,15 +314,19 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in this enumerable wrapped in an option.
-        ///     If this enumerable is empty or the single element is NULL, None is returned.
-        ///     Throws an exception if this enumerable contains more than one element.
+        ///     Returns the only element in the specified <paramref name="enumerable" /> wrapped in an <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" />, None is returned.
+        ///     Throws an exception if <paramref name="enumerable" /> contains more than one element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="enumerable"/> contains more than one element.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <paramref name="enumerable" /> contains more than one element.
+        /// </exception>
         public static Option<T> SingleOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
@@ -283,16 +337,22 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in this enumerable that matches a predicate, wrapped in an option.
-        ///     If this enumerable is empty or the single matching element is NULL, None is returned.
-        ///     Throws an exception if this enumerable contains more than one matching element.
+        ///     Returns the only element in the specified <paramref name="enumerable" /> taht matches a predicate wrapped in an
+        ///     <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" /> or the predicate does
+        ///     not match any element, None is returned.
+        ///     Throws an exception if <paramref name="enumerable" /> contains more than one element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> or <paramref name="predicate"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="enumerable"/> contains more than one element.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> or <paramref name="predicate" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <paramref name="enumerable" /> contains more than one element.
+        /// </exception>
         public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) {
             enumerable.ThrowIfNull(nameof(enumerable));
             predicate.ThrowIfNull(nameof(predicate));
@@ -304,17 +364,24 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in this enumerable that matches a predicate, wrapped in an option.
-        ///     If this enumerable is empty or the single matching element is NULL, None is returned.
-        ///     Throws an exception if this enumerable contains more than one matching element.
+        ///     Returns the only element in the specified <paramref name="enumerable" /> taht matches a predicate wrapped in an
+        ///     <see cref="Option{T}" />.
+        ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" /> or the predicate does
+        ///     not match any element, None is returned.
+        ///     Throws an exception if <paramref name="enumerable" /> contains more than one element.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="enumerable"/> or <paramref name="predicate"/> is null.</exception>
-        /// <exception cref="InvalidOperationException"><paramref name="enumerable"/> contains more than one element.</exception>
-        public static Option<T> SingleOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, bool> predicate) where T : struct {
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="enumerable" /> or <paramref name="predicate" /> is <see langword="null" />.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <paramref name="enumerable" /> contains more than one element.
+        /// </exception>
+        public static Option<T> SingleOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, bool> predicate)
+            where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
             predicate.ThrowIfNull(nameof(predicate));
 

@@ -1,37 +1,37 @@
 ﻿using System;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    ///     Provides extension methods to get the value from an <see cref="Option{T}" /> or react to None.
+    /// </summary>
     public static class GetExt {
         /// <summary>
-        ///     Returns the value of this option, if it has one or throws a <see cref="InvalidOperationException" />.
+        ///     Returns the value of the specified <paramref name="option" /> if it has one or throws a
+        ///     <see cref="InvalidOperationException" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException"><paramref name="option"/> contains no value</exception>
-        public static T Get<T>(this Option<T> option) {
-            T value;
-            if (!option.TryGet(out value))
-                throw new InvalidOperationException("None does not contain a value.");
-
-            return value;
-        }
+        /// <exception cref="InvalidOperationException"><paramref name="option" /> contains no value</exception>
+        public static T Get<T>(this Option<T> option) =>
+            option.Match(
+                None: () => { throw new InvalidOperationException("None does not contain a value."); },
+                Some: x => x);
 
         /// <summary>
-        ///     Returns the value of this option, if it has one or the default of <typeparamref name="T" />, if not.
+        ///     Returns the value of the specified <paramref name="option" /> if it has one or the default of
+        ///     <typeparamref name="T" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        public static T GetOrDefault<T>(this Option<T> option) {
-            T value;
-            return option.TryGet(out value)
-                ? value
-                : default(T);
-        }
+        [Obsolete("This method is obsolete and will be removed in 2 releases. Use GetOrElse(default(T)) if need this behavior.")]
+        public static T GetOrDefault<T>(this Option<T> option) =>
+            GetOrElse(option, default(T));
 
         /// <summary>
-        ///     Returns the value of this option, if it has one or the given <paramref name="fallback" />, if not.
+        ///     Returns the value of the specified <paramref name="option" /> if it has one or the given
+        ///     <paramref name="fallback" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -41,20 +41,22 @@ namespace NeverNull.Combinators {
             GetOrElse(option, () => fallback);
 
         /// <summary>
-        ///     Returns the value of this option, if it has one or executed the given <paramref name="fallback" /> func and returns the produced value, if not.
+        ///     Returns the value of the specified <paramref name="option" /> if it has one or executes the given
+        ///     <paramref name="fallback" /> func and returns the produced value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="fallback"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="fallback" /> is <see langword="null" />.
+        /// </exception>
         public static T GetOrElse<T>(this Option<T> option, Func<T> fallback) {
             fallback.ThrowIfNull(nameof(fallback));
 
-            T value;
-            return option.TryGet(out value)
-                ? value
-                : fallback();
+            return option.Match(
+                None: fallback,
+                Some: x => x);
         }
     }
 }

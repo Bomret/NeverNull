@@ -2,8 +2,8 @@ source https://nuget.org/api/v2
 
 nuget FsCheck
 nuget FSharp.Formatting
-nuget NUnit ~> 2
-nuget NUnit.Runners ~> 2
+nuget NUnit ~> 2.6
+nuget NUnit.Runners ~> 2.6
 nuget FAKE
 nuget OpenCover
 nuget coveralls.net

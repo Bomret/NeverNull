@@ -1,5 +1,5 @@
 # NeverNull
-A Option type that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
+A Option type for .net that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
 Licensed under the MIT License (http://opensource.org/licenses/MIT).
 
 [![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
@@ -21,7 +21,7 @@ Option.From(WebRequest.Create(Url) as HttpWebRequest)
     .Select(request => request.GetResponse()?.ContentType)
     .Where(contentType => contentType.StartsWith("text"))
     .Match(
-        Some: contentType => Console.WriteLine("Content-Type: {0}", contentType),
+        Some: contentType => Console.WriteLine($"Content-Type: {contentType}"),
         None: () => Console.WriteLine("No matching result."));
 ```
 
@@ -35,7 +35,7 @@ var maybeText =
     select contentType;
         
 maybeText.Match(
-    Some: contentType => Console.WriteLine("Content-Type: {0}", contentType),
+    Some: contentType => Console.WriteLine($"Content-Type: {contentType}"),
     None: () => Console.WriteLine("No matching result."));
 ```
 ------
@@ -43,16 +43,29 @@ maybeText.Match(
 ## License
 The [MIT License](http://opensource.org/licenses/MIT)
 
+## Troubleshooting and support
+Did you find a bug or have an idea for a new feature? Open a new [Issue](https://github.com/Bomret/NeverNull/issues).
+
 ## Contributing
 * Read the [Code of Conduct](https://github.com/Bomret/NeverNull/blob/master/CODE_OF_CONDUCT.md)
-* Fork and clone.
+* Take a look at the [Issues](https://github.com/Bomret/NeverNull/issues). If there is one you want to work on (has labels `ready` and `up-for-grabs`), write a comment that you want to work on it. If you have a new idea/problem, please open an issue and explain it.
+* Fork the repo and clone it on your machine.
 * Build the project running `build.cmd` on Windows or `build.sh` on Mac OSX/Linux.
-* Write your code and don't forget to add tests.
-* Add xml docs in your code and describe your feature in the README.
+* Write your code and don't forget to add xml docs and tests.
+* Run the `build.*` for your platform again to ensure the build works and all tests pass.
+* Describe your feature in the README, if applicable (e.g. new combinator).
 * Create a pull request.
 
+## Versioning
+This project uses [SemVer](http://semver.org/) compatible versioning, which means `Breaking.Feature.Fix`.
+* `Breaking`: Changes that break API compatibility with earlier versions.
+* `Feature`: Added functionality that don't break API compatibility with earlier versions.
+* `Fix`: Backwards compatible bugfixes and refactoring/clean up.
+
 ## Deprecation of features
-If a feature becomes deprecated it is marked with the `Obsolete` attribute and will not throw a compiler error. In the next release it will throw a compiler error and in the release after that it will be removed.
+If a feature becomes deprecated it is marked with the `Obsolete` attribute and will not throw a compiler error.
+In the next release it will throw a compiler error and the major version is incremented by 1 because of breaking changes.
+In the release after that, the feature will be removed and its patch version is incremented by 1.
 
 ### Example
 * 3.2.0
@@ -61,17 +74,19 @@ If a feature becomes deprecated it is marked with the `Obsolete` attribute and w
 public bool TryGet(out value) => // ...
 ```
 
-* 3.2.1
+* 4.0.0
 ```csharp
 [Obsolete("This method is deprecated and will be removed in the next release.", true)]
 public bool TryGet(out value) => // ...
 ```
 
-* 3.2.2
+* 4.0.1
 ```csharp
 // TryGet removed
 ```
 
+## Maintainers
+* [Stefan Reichel (@bomret)](https://github.com/Bomret)
 ------
 
 ## Basics
@@ -80,33 +95,64 @@ public bool TryGet(out value) => // ...
 ```csharp
 Option<int> result = Option.From(2);
 ```
-The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `TryGet` method:
+The above example would evaluate `2` and - because that is a valid integer - return a `Some` and store it in the variable `result`. The result of the calculation is stored inside the `Some` and can be accessed using the `Match`, `IfSome`, several `Get*` or `TryGet`(DEPRECATED) methods:
 
 ```csharp
-int value;
-if(result.TryGet(out value))
-    // use value;
+// using the Match method
+int two;
+result.Match(
+    None: () => { /* no value present */ },
+    Some: i => two = i);
+        
+// or using IfSome
+int two;
+result.IfSome(i => two = i); 
+
+// or using the deprecated TryGet method
+int two;
+if(result.TryGet(out two))
+    /* do something with two */
+else
+    /* no value present */
 ```
 To find out if `result` represents a `Some` or `None` it provides the boolean property `HasValue`:
 
 ```csharp
-if(result.HasValue) _two = i;
+if(result.HasValue)
+    // do something;
 ```
+
+### Match
+```csharp
+Option.From(2).Match(
+    Some: i => { /* do something with the value */ },
+   	None: () => { /* no value present */ });
+```
+`Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if the value is null.
+
+```csharp
+string result = Option.From(2).Match(
+    Some: i => i.ToString(),
+   	None: () => "");
+```
+This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
 
 ## Recommended usage
 Every method that may not return a value in some circumstances should return an `Option<T>` instead of the result directly. That way, eventual `null` references or the usage of "magic values" can be avoided.
+Optional parameters can also be expressed more clearly with an `Option<T>` instead of some arbitrary value that has to be checked inside the method, which can easily be forgotten. And you don't have to place them last in the parameter list.
 
 So instead of this:
-
 ```csharp
-string DoSomethingThatCouldReturnNull(string a) { /* ... */ };
-int DoSomethingThatCouldReturnAMagicValue(string a) { /* ... */ };
+string DoSomethingThatCouldReturnNull(string arg) { /* ... */ }
+int DoSomethingThatCouldReturnAMagicValue(string arg) { /* ... */ }
+void DoSomethingWithAnOptionalParameter(double wouldBeSecond, int? wouldBeFirst = null) { /* ... */ }
 ```
-write this:
 
+write this:
 ```csharp
-Option<string> DoSomethingThatCouldReturnNull(string a) { /* ... */ };
-Option<int> DoSomethingThatCouldReturnAMagicValue(string a) { /* ... */ };
+Option<string> DoSomethingThatCouldReturnNull(string arg) { /* ... */ }
+Option<int> DoSomethingThatCouldReturnAMagicValue(string arg) { /* ... */ }
+void DoSomethingWithAnOptionalParameter(Option<int> first, double second) { /* ... */ }
 ```
 
 ## Creating an Option
@@ -170,21 +216,6 @@ bool containsFive = Option.From(5).Contains(5);
 ```
 Returns `true` if the `Option` it is applied to is a `Some` containing the desired value otherwise `false`.
 
-### Match
-```csharp
-Option.From(2).Match(
-    Some: i => _two = i,
-   	None: () => _isNone = true);
-```
-`Match` allows to use a pattern matching like callback registration. The first function parameter is only executed in case of a `Some` and gets the value to work with. The second function parameter is registered to handle `None` and is only executed if the value is null.
-
-```csharp
-string result = Option.From(2).Match(
-    Some: i => i.ToString(),
-   	None: () => "");
-```
-This overload for `Match` produces a value. In the above example `result` would be the string `"2"`.
-
 ### Normalize
 ```csharp
 Option<int?> option = Option.From<int?>(5);
@@ -214,7 +245,7 @@ int two = Option.From(2).GetOrElse(() => -1);
 ```
 `GetOrElse` either returns the value, if `From` returned a `Some` or the else value, if `From` returned `None`. In the above example `two` would be `2`. It would have been `-1` if `2` was `null`.
 
-### GetOrDefault
+### GetOrDefault (Deprecated)
 ```csharp
 int two = Option.From(2).GetOrDefault();
 ```
