@@ -40,6 +40,40 @@ maybeText.Match(
 ```
 ------
 
+## License
+The [MIT License](http://opensource.org/licenses/MIT)
+
+## Contributing
+* Read the [Code of Conduct](https://github.com/Bomret/NeverNull/blob/master/CODE_OF_CONDUCT.md)
+* Fork and clone.
+* Build the project running `build.cmd` on Windows or `build.sh` on Mac OSX/Linux.
+* Write your code and don't forget to add tests.
+* Add xml docs in your code and describe your feature in the README.
+* Create a pull request.
+
+## Deprecation of features
+If a feature becomes deprecated it is marked with the `Obsolete` attribute and will not throw a compiler error. In the next release it will throw a compiler error and in the release after that it will be removed.
+
+### Example
+* 3.2.0
+```csharp
+[Obsolete("This method is deprecated and will be removed in 2 releases.")]
+public bool TryGet(out value) => // ...
+```
+
+* 3.2.1
+```csharp
+[Obsolete("This method is deprecated and will be removed in the next release.", true)]
+public bool TryGet(out value) => // ...
+```
+
+* 3.2.2
+```csharp
+// TryGet removed
+```
+
+------
+
 ## Basics
 `Option<T>` represents the absence or presence of a value. If a `Option<T>` contains a value, we'll call it `Some` from now on. If it is empty, we'll call it `None`.
 
