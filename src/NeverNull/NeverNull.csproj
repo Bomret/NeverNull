@@ -63,6 +63,7 @@
     <Compile Include="None.cs" />
     <Compile Include="Option.Creation.cs" />
     <Compile Include="Option.cs" />
+    <Compile Include="Option.Predef.cs" />
     <Compile Include="Option.TryPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_.cs" />
@@ -75,4 +76,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\..\.paket\paket.targets" />
 </Project>
