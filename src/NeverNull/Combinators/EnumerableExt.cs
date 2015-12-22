@@ -125,7 +125,7 @@ namespace NeverNull.Combinators {
                     return accu.Match(
                         None: () => currentOption,
                         Some: previousValue => currentOption.Match(
-                            None: () => currentOption,
+                            None: () => previousValue,
                             Some: currentValue => fold(previousValue, currentValue)));
                 });
         }
@@ -153,7 +153,7 @@ namespace NeverNull.Combinators {
                     return accu.Match(
                         None: () => currentOption,
                         Some: previousValue => currentOption.Match(
-                            None: () => currentOption,
+                            None: () => previousValue,
                             Some: currentValue => fold(previousValue, currentValue)));
                 });
         }

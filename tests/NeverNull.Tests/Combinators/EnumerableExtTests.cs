@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using FsCheck;
 using NeverNull.Combinators;
@@ -56,9 +57,9 @@ namespace NeverNull.Tests.Combinators {
         [Test]
         public void Aggregating_the_values_from_an_enumerable_of_options_should_yield_None_for_an_empty_one_or_if_all_values_are_null() =>
             ForAll<string[]>(xs => {
-                var check = xs.Aggregate(default(string), (a, c) => a == null ? c : a + c);
+                var check = xs.Where(x => x != null).Aggregate(default(string), (a, c) => a + c);
                 var o = xs.AggregateOptional((a, c) => a + c);
-
+                
                 return o.Equals(Option.From(check));
             })
             .QuickCheckThrowOnFailure();
@@ -66,10 +67,16 @@ namespace NeverNull.Tests.Combinators {
         [Test]
         public void Aggregating_the_values_from_an_enumerable_of_options_of_nullables_should_yield_None_for_an_empty_one_or_if_all_values_are_null() =>
             ForAll<int?[]>(xs => {
-                var check = xs.Where(x => x.HasValue)
-                    .Aggregate(0, (a, c) => a + c.Value);
+                var check = xs.Where(x => x.HasValue).Aggregate(default(int?),(a, c) => a.HasValue ? a.Value + c.Value : c.Value);
+                var o = xs.AggregateOptionalNullable((a, c) => a + c);
 
-                return xs.AggregateOptionalNullable((a, c) => a + c).Equals(check);
+                var l = xs.Any() ? string.Join(", ", xs) : "EMPTY";
+                Debug.WriteLine("------------");
+                Debug.WriteLine($"ORIG: {l}");
+                Debug.WriteLine($"CHECK: {check}");
+                Debug.WriteLine($"OPTION: {o}");
+
+                return o.Equals(Option.From(check));
             })
             .QuickCheckThrowOnFailure();
 
