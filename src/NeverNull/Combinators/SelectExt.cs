@@ -15,10 +15,9 @@ namespace NeverNull.Combinators {
         public static Option<B> Select<A, B>(this Option<A> option, Func<A, B> selector) {
             selector.ThrowIfNull(nameof(selector));
 
-            A value;
-            return option.TryGet(out value)
-                ? selector(value)
-                : Option<B>.None;
+            return option.Match(
+                None: () => Option<B>.None,
+                Some: x => selector(x));
         }
     }
 }

@@ -6,9 +6,9 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        public static T? ToNullable<T>(this Option<T> option) where T : struct {
-            T value;
-            return option.TryGet(out value) ? value : default(T?);
-        }
+        public static T? ToNullable<T>(this Option<T> option) where T : struct =>
+            option.Match(
+                None: () => default(T?),
+                Some: x => x);
     }
 }

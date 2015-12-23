@@ -174,7 +174,7 @@ namespace NeverNull.Combinators {
             var results = new List<T>();
             foreach (var option in enumerable) {
                 if (option.IsEmpty)
-                    return Option<IEnumerable<T>>.None;
+                    return Option.None;
 
                 option.Match(
                     None: () => { },
@@ -202,7 +202,7 @@ namespace NeverNull.Combinators {
             var results = new List<T>();
             foreach (var option in enumerable) {
                 if (option.IsEmpty)
-                    return Option<IEnumerable<T>>.None;
+                    return Option.None;
 
                 option.Match(
                     None: () => { },

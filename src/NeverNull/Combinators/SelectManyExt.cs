@@ -3,22 +3,21 @@
 namespace NeverNull.Combinators {
     public static class SelectManyExt {
         /// <summary>
-        ///     Applies the given <paramref name="selector" /> on the value of this option, if it has one, and returns the
+        ///     Applies the given <paramref name="select" /> on the value of this option, if it has one, and returns the
         ///     resulting option. Otherwise None is returned.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
         /// <param name="option"></param>
-        /// <param name="selector"></param>
+        /// <param name="select"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
-        public static Option<B> SelectMany<A, B>(this Option<A> option, Func<A, Option<B>> selector) {
-            selector.ThrowIfNull(nameof(selector));
+        /// <exception cref="ArgumentNullException"><paramref name="select"/> is null.</exception>
+        public static Option<B> SelectMany<A, B>(this Option<A> option, Func<A, Option<B>> @select) {
+            @select.ThrowIfNull(nameof(@select));
 
-            A value;
-            return !option.TryGet(out value)
-                ? Option.None
-                : selector(value);
+            return option.Match(
+                None: () => Option<B>.None,
+                Some: @select);
         }
 
         /// <summary>
@@ -36,17 +35,12 @@ namespace NeverNull.Combinators {
         public static Option<C> SelectMany<A, B, C>(this Option<A> option, Func<A, Option<B>> optionSelector, Func<A, B, C> resultSelector) {
             optionSelector.ThrowIfNull(nameof(optionSelector));
             resultSelector.ThrowIfNull(nameof(resultSelector));
-
-            A value;
-            if (!option.TryGet(out value))
-                return Option.None;
-
-            var selected = optionSelector(value);
-
-            B selectedValue;
-            return selected.TryGet(out selectedValue)
-                ? resultSelector(value, selectedValue)
-                : Option<C>.None;
+            
+            return option.Match(
+                None: () => Option<C>.None,
+                Some: a => optionSelector(a).Match(
+                    None: () => Option<C>.None,
+                    Some: b => resultSelector(a, b)));
         }
     }
 }

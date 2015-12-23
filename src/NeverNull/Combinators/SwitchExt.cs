@@ -22,7 +22,9 @@ namespace NeverNull.Combinators
         /// <param name="option"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="options"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="options"/> is <see langword="null"/>.
+        /// </exception>
         public static Option<T> Switch<T>(this Option<T> option, IEnumerable<Option<T>> options) {
             options.ThrowIfNull(nameof(options));
 

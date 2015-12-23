@@ -12,11 +12,10 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
         public static Option<T> Reject<T>(this Option<T> option, Func<T, bool> predicate) {
             predicate.ThrowIfNull(nameof(predicate));
-
-            T value;
-            return option.TryGet(out value) && predicate(value)
-                ? Option<T>.None
-                : option;
+            
+            return option.Match(
+                None: () => Option<T>.None, 
+                Some: x => predicate(x) ? Option<T>.None : option);
         }
     }
 }

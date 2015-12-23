@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NeverNull.Combinators {
     /// <summary>
-    ///     Provides extension methods to join multiple instances of <see cref="Option{T}" />.
+    ///     Provides extension methods to join the values of multiple instances of <see cref="Option{T}" />.
     /// </summary>
     public static class JoinExt {
         /// <summary>
@@ -36,16 +36,17 @@ namespace NeverNull.Combinators {
                 None: () => Option<C>.None,
                 Some: a => secondOption.Match(
                     None: () => Option<C>.None,
-                    Some: b => {
-                        var keyA = firstKeySelector(a);
-                        var keyB = secondKeySelector(b);
+                    Some: b => Option.From(firstKeySelector(a)).Match(
+                        None: () => Option<C>.None,
+                        Some: keyA => Option.From(secondKeySelector(b)).Match(
+                            None: () => Option<C>.None,
+                            Some: keyB => {
+                                var equalityComparer = comparer ?? EqualityComparer<TKey>.Default;
 
-                        var equalityComparer = comparer ?? EqualityComparer<TKey>.Default;
-
-                        return equalityComparer.Equals(keyA, keyB)
-                            ? resultSelector(a, b)
-                            : Option<C>.None;
-                    }));
+                                return equalityComparer.Equals(keyA, keyB)
+                                    ? resultSelector(a, b)
+                                    : Option<C>.None;
+                            }))));
         }
     }
 }

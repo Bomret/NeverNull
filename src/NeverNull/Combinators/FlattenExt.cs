@@ -4,7 +4,7 @@
     /// </summary>
     public static class FlattenExt {
         /// <summary>
-        ///     Returns the nested option from the specified <paramref name="nestedOption"/> or None, if nothing is contained.
+        ///     Returns the nested <see cref="Option{T}"/> from the specified <paramref name="nestedOption"/> or None, if nothing is contained.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="nestedOption"></param>

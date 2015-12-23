@@ -11,7 +11,7 @@ namespace NeverNull.Tests.Combinators {
             Prop.ForAll<string, string>((a, b) =>
                 Option.From(a)
                     .Zip(Option.From(b), (va, vb) => va + vb)
-                    .Equals(a == null || b == null ? Option<string>.None : (a + b)))
+                    .Equals(a == null || b == null ? Option<string>.None : a + b))
             .QuickCheckThrowOnFailure();
     }
 }
