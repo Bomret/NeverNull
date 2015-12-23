@@ -195,6 +195,19 @@ Option<int> none = 3.ToOption();
 ```
 Converts any value to an `Option<T>` by calling `Option.From` on it. 
 
+### Using static imports in C# 6
+C# 6 offers the feature to statically import classes and use the static methods therein without having to prefix them with the class name.
+NeverNull provides a specific module for taking advantage of this feature.
+```csharp
+using static NeverNull.Predef
+
+Option<int> two = Option(2);
+// or
+Option<int> two = Some(2);
+// io for None
+Option<int> none = None;
+```
+
 ## Combinators
 Since `Some` and `None` are simple data structures, a couple of extension methods are provided that make working with both types easier.
 
