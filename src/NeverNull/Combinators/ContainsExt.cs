@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -15,7 +16,7 @@ namespace NeverNull.Combinators {
         /// <param name="desiredValue"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static bool Contains<T>(this Option<T> option, T desiredValue, IEqualityComparer<T> comparer = null) {
+        public static bool Contains<T>(this Option<T> option, [CanBeNull] T desiredValue, [CanBeNull] IEqualityComparer<T> comparer = null) {
             var c = comparer ?? EqualityComparer<T>.Default;
 
             return Contains(option, desiredValue, c.Equals);
@@ -23,7 +24,7 @@ namespace NeverNull.Combinators {
 
         /// <summary>
         ///     Returns a value that indicates if the specified <paramref name="option" /> contains the
-        ///     <paramref name="desiredValue" />.
+        ///     <paramref name="desiredValue" />. The specified <paramref name="compare" /> function is used to check for equality.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -33,7 +34,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="compare" /> is <see langword="null" />
         /// </exception>
-        public static bool Contains<T>(this Option<T> option, T desiredValue, Func<T, T, bool> compare) {
+        public static bool Contains<T>(this Option<T> option, [CanBeNull] T desiredValue, [NotNull] Func<T, T, bool> compare) {
             compare.ThrowIfNull(nameof(compare));
 
             return option.Match(

@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     public static class SelectManyExt {
@@ -11,8 +12,8 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="select"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="select"/> is null.</exception>
-        public static Option<B> SelectMany<A, B>(this Option<A> option, Func<A, Option<B>> @select) {
+        /// <exception cref="ArgumentNullException"><paramref name="select" /> is null.</exception>
+        public static Option<B> SelectMany<A, B>(this Option<A> option, [NotNull] Func<A, Option<B>> @select) {
             @select.ThrowIfNull(nameof(@select));
 
             return option.Match(
@@ -31,11 +32,15 @@ namespace NeverNull.Combinators {
         /// <param name="optionSelector"></param>
         /// <param name="resultSelector"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="optionSelector"/> or <paramref name="resultSelector"/> is null.</exception>
-        public static Option<C> SelectMany<A, B, C>(this Option<A> option, Func<A, Option<B>> optionSelector, Func<A, B, C> resultSelector) {
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="optionSelector" /> or <paramref name="resultSelector" /> is
+        ///     null.
+        /// </exception>
+        public static Option<C> SelectMany<A, B, C>(this Option<A> option, [NotNull] Func<A, Option<B>> optionSelector,
+            Func<A, B, C> resultSelector) {
             optionSelector.ThrowIfNull(nameof(optionSelector));
             resultSelector.ThrowIfNull(nameof(resultSelector));
-            
+
             return option.Match(
                 None: () => Option<C>.None,
                 Some: a => optionSelector(a).Match(

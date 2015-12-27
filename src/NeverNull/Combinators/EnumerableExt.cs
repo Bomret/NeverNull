@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -72,13 +73,13 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static IEnumerable<T> SelectValues<T>(this IEnumerable<Option<T>> enumerable) {
+        public static IEnumerable<T> SelectValues<T>([NotNull] this IEnumerable<Option<T>> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             return enumerable
                 .Select(o => o.Match(
-                    None: () => new {hasVal = false, val = default(T)},
-                    Some: x => new {hasVal = true, val = x}))
+                    None: () => new { hasVal = false, val = default(T) },
+                    Some: x => new { hasVal = true, val = x }))
                 .Where(o => o.hasVal)
                 .Select(o => o.val);
         }
@@ -92,13 +93,13 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static IEnumerable<T> SelectValues<T>(this IEnumerable<Option<T?>> enumerable) where T : struct {
+        public static IEnumerable<T> SelectValues<T>([NotNull] this IEnumerable<Option<T?>> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             return enumerable
                 .Select(o => o.Match(
-                    None: () => new {hasVal = false, val = default(T?)},
-                    Some: x => new {hasVal = x.HasValue, val = x}))
+                    None: () => new { hasVal = false, val = default(T?) },
+                    Some: x => new { hasVal = x.HasValue, val = x }))
                 .Where(o => o.hasVal)
                 .Select(o => o.val.Value);
         }
@@ -114,7 +115,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> or <paramref name="fold" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> AggregateOptional<T>(this IEnumerable<T> enumerable, Func<T, T, T> fold) {
+        public static Option<T> AggregateOptional<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, T, T> fold) {
             enumerable.ThrowIfNull(nameof(enumerable));
             fold.ThrowIfNull(nameof(fold));
 
@@ -141,7 +142,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> or <paramref name="fold" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> AggregateOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, T, T> fold)
+        public static Option<T> AggregateOptionalNullable<T>([NotNull] this IEnumerable<T?> enumerable, [NotNull] Func<T, T, T> fold)
             where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
             fold.ThrowIfNull(nameof(fold));
@@ -168,7 +169,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<IEnumerable<T>> AllOrNone<T>(this IEnumerable<Option<T>> enumerable) {
+        public static Option<IEnumerable<T>> AllOrNone<T>([NotNull] this IEnumerable<Option<T>> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var results = new List<T>();
@@ -176,9 +177,7 @@ namespace NeverNull.Combinators {
                 if (option.IsEmpty)
                     return Option.None;
 
-                option.Match(
-                    None: () => { },
-                    Some: x => results.Add(x));
+                option.IfSome(x => results.Add(x));
             }
 
             return results.Count == 0
@@ -196,7 +195,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<IEnumerable<T>> AllOrNone<T>(this IEnumerable<Option<T?>> enumerable) where T : struct {
+        public static Option<IEnumerable<T>> AllOrNone<T>([NotNull] this IEnumerable<Option<T?>> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var results = new List<T>();
@@ -204,9 +203,10 @@ namespace NeverNull.Combinators {
                 if (option.IsEmpty)
                     return Option.None;
 
-                option.Match(
-                    None: () => { },
-                    Some: x => { if (x.HasValue) results.Add(x.Value); });
+                option.IfSome(x => {
+                    if (x.HasValue)
+                        results.Add(x.Value);
+                });
             }
 
             return results.Count == 0
@@ -224,7 +224,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> FirstOptional<T>(this IEnumerable<T> enumerable) {
+        public static Option<T> FirstOptional<T>([NotNull] this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             foreach (var value in enumerable)
@@ -243,7 +243,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> FirstOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
+        public static Option<T> FirstOptional<T>([NotNull] this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             foreach (var value in enumerable)
@@ -262,7 +262,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> LastOptional<T>(this IEnumerable<T> enumerable) {
+        public static Option<T> LastOptional<T>([NotNull] this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var xs = enumerable.ToList();
@@ -281,7 +281,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="enumerable" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> LastOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
+        public static Option<T> LastOptional<T>([NotNull] this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var xs = enumerable.ToList();
@@ -304,7 +304,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="enumerable" /> contains more than one element.
         /// </exception>
-        public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable) {
+        public static Option<T> SingleOptional<T>([NotNull] this IEnumerable<T> enumerable) {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var xs = enumerable.ToList();
@@ -327,7 +327,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="enumerable" /> contains more than one element.
         /// </exception>
-        public static Option<T> SingleOptional<T>(this IEnumerable<T?> enumerable) where T : struct {
+        public static Option<T> SingleOptional<T>([NotNull] this IEnumerable<T?> enumerable) where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
 
             var xs = enumerable.ToList();
@@ -353,7 +353,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="enumerable" /> contains more than one element.
         /// </exception>
-        public static Option<T> SingleOptional<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate) {
+        public static Option<T> SingleOptional<T>([NotNull] this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate) {
             enumerable.ThrowIfNull(nameof(enumerable));
             predicate.ThrowIfNull(nameof(predicate));
 
@@ -380,7 +380,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="InvalidOperationException">
         ///     <paramref name="enumerable" /> contains more than one element.
         /// </exception>
-        public static Option<T> SingleOptionalNullable<T>(this IEnumerable<T?> enumerable, Func<T, bool> predicate)
+        public static Option<T> SingleOptionalNullable<T>([NotNull] this IEnumerable<T?> enumerable, [NotNull] Func<T, bool> predicate)
             where T : struct {
             enumerable.ThrowIfNull(nameof(enumerable));
             predicate.ThrowIfNull(nameof(predicate));

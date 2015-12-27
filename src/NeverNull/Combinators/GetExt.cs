@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -13,6 +14,7 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"><paramref name="option" /> contains no value</exception>
+        [NotNull]
         public static T Get<T>(this Option<T> option) =>
             option.Match(
                 None: () => { throw new InvalidOperationException("None does not contain a value."); },
@@ -25,7 +27,10 @@ namespace NeverNull.Combinators {
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        [Obsolete("This method is obsolete and will be removed in 2 releases. Use GetOrElse(default(T)) if need this behavior.")]
+        [Obsolete(
+            "This method is obsolete and will be removed in 2 releases. Use GetOrElse(default(T)) if need this behavior."
+            )]
+        [CanBeNull]
         public static T GetOrDefault<T>(this Option<T> option) =>
             GetOrElse(option, default(T));
 
@@ -37,7 +42,8 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
-        public static T GetOrElse<T>(this Option<T> option, T fallback) =>
+        [CanBeNull]
+        public static T GetOrElse<T>(this Option<T> option, [CanBeNull] T fallback) =>
             GetOrElse(option, () => fallback);
 
         /// <summary>
@@ -51,7 +57,8 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="fallback" /> is <see langword="null" />.
         /// </exception>
-        public static T GetOrElse<T>(this Option<T> option, Func<T> fallback) {
+        [CanBeNull]
+        public static T GetOrElse<T>(this Option<T> option, [NotNull] Func<T> fallback) {
             fallback.ThrowIfNull(nameof(fallback));
 
             return option.Match(

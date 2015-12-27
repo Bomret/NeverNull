@@ -1,18 +1,17 @@
-﻿using System;
+﻿using JetBrains.Annotations;
 
 namespace NeverNull {
     public static partial class Option {
         /// <summary>
-        ///     Executes the given delegate with the given argument and returns a new Option that represents the success or failure
-        ///     of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified <paramref name="arg"/> and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
         /// <param name="pattern"></param>
         /// <param name="arg"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<B> FromTryPattern<A, B>(TryPattern<A, B> pattern, A arg) {
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<B> FromTryPattern<A, B>([NotNull] TryPattern<A, B> pattern, A arg) {
             pattern.ThrowIfNull(nameof(pattern));
 
             B b;
@@ -20,8 +19,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -30,8 +28,8 @@ namespace NeverNull {
         /// <param name="arg"></param>
         /// <param name="arg1"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<C> FromTryPattern<A, B, C>(TryPattern<A, B, C> pattern, A arg, B arg1) {
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<C> FromTryPattern<A, B, C>([NotNull] TryPattern<A, B, C> pattern, A arg, B arg1) {
             pattern.ThrowIfNull(nameof(pattern));
 
             C c;
@@ -39,8 +37,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A">The type of the first argument</typeparam>
         /// <typeparam name="B">The type of the second argument</typeparam>
@@ -51,8 +48,8 @@ namespace NeverNull {
         /// <param name="arg1">The second argument</param>
         /// <param name="arg2">The third argument</param>
         /// <returns>A Some containing the result if the operation was successful, None otherwise</returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<D> FromTryPattern<A, B, C, D>(TryPattern<A, B, C, D> pattern, A arg, B arg1, C arg2) {
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<D> FromTryPattern<A, B, C, D>([NotNull] TryPattern<A, B, C, D> pattern, A arg, B arg1, C arg2) {
             pattern.ThrowIfNull(nameof(pattern));
 
             D d;
@@ -60,8 +57,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A">The type of the first argument</typeparam>
         /// <typeparam name="B">The type of the second argument</typeparam>
@@ -74,8 +70,9 @@ namespace NeverNull {
         /// <param name="arg2">The third argument</param>
         /// <param name="arg3">The fourth argument</param>
         /// <returns>A Some containing the result if the operation was successful, None otherwise</returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<E> FromTryPattern<A, B, C, D, E>(TryPattern<A, B, C, D, E> pattern, A arg, B arg1, C arg2, D arg3) {
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<E> FromTryPattern<A, B, C, D, E>([NotNull] TryPattern<A, B, C, D, E> pattern, A arg, B arg1, C arg2,
+            D arg3) {
             pattern.ThrowIfNull(nameof(pattern));
 
             E e;
@@ -83,8 +80,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A">The type of the first argument</typeparam>
         /// <typeparam name="B">The type of the second argument</typeparam>
@@ -99,8 +95,8 @@ namespace NeverNull {
         /// <param name="arg3">The fourth argument</param>
         /// <param name="arg4">The fifth argument</param>
         /// <returns>A Some containing the result if the operation was successful, None otherwise</returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<F> FromTryPattern<A, B, C, D, E, F>(TryPattern<A, B, C, D, E, F> pattern, A arg, B arg1,
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<F> FromTryPattern<A, B, C, D, E, F>([NotNull] TryPattern<A, B, C, D, E, F> pattern, A arg, B arg1,
             C arg2, D arg3, E arg4) {
             pattern.ThrowIfNull(nameof(pattern));
 
@@ -109,8 +105,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -127,8 +122,8 @@ namespace NeverNull {
         /// <param name="e"></param>
         /// <param name="f"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<G> FromTryPattern<A, B, C, D, E, F, G>(TryPattern<A, B, C, D, E, F, G> pattern, A a, B b,
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<G> FromTryPattern<A, B, C, D, E, F, G>([NotNull] TryPattern<A, B, C, D, E, F, G> pattern, A a, B b,
             C c, D d, E e, F f) {
             pattern.ThrowIfNull(nameof(pattern));
 
@@ -137,8 +132,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -157,8 +151,8 @@ namespace NeverNull {
         /// <param name="f"></param>
         /// <param name="g"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<H> FromTryPattern<A, B, C, D, E, F, G, H>(TryPattern<A, B, C, D, E, F, G, H> pattern, A a,
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<H> FromTryPattern<A, B, C, D, E, F, G, H>([NotNull] TryPattern<A, B, C, D, E, F, G, H> pattern, A a,
             B b, C c, D d, E e, F f, G g) {
             pattern.ThrowIfNull(nameof(pattern));
 
@@ -167,8 +161,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -189,8 +182,8 @@ namespace NeverNull {
         /// <param name="g"></param>
         /// <param name="h"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
-        public static Option<I> FromTryPattern<A, B, C, D, E, F, G, H, I>(TryPattern<A, B, C, D, E, F, G, H, I> pattern,
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
+        public static Option<I> FromTryPattern<A, B, C, D, E, F, G, H, I>([NotNull] TryPattern<A, B, C, D, E, F, G, H, I> pattern,
             A a, B b, C c, D d, E e, F f, G g, H h) {
             pattern.ThrowIfNull(nameof(pattern));
 
@@ -199,8 +192,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -223,9 +215,9 @@ namespace NeverNull {
         /// <param name="h"></param>
         /// <param name="i"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<J> FromTryPattern<A, B, C, D, E, F, G, H, I, J>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i) {
             pattern.ThrowIfNull(nameof(pattern));
 
             J j;
@@ -233,8 +225,7 @@ namespace NeverNull {
         }
 
         /// <summary>
-        ///     Executes the given delegate with the given arguments and returns a new Option that represents the success or
-        ///     failure of the operation.
+        ///     Executes the specified <paramref name="pattern"/> with the specified args and returns an <see cref="Option{T}"/> that represents the success or failure of the operation.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -259,9 +250,9 @@ namespace NeverNull {
         /// <param name="i"></param>
         /// <param name="j"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<K> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j) {
             pattern.ThrowIfNull(nameof(pattern));
 
             K k;
@@ -297,9 +288,10 @@ namespace NeverNull {
         /// <param name="j"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<L> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K, L>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K, L> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K, L> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j,
+            K k) {
             pattern.ThrowIfNull(nameof(pattern));
 
             L l;
@@ -337,9 +329,10 @@ namespace NeverNull {
         /// <param name="k"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<M> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j,
+            K k, L l) {
             pattern.ThrowIfNull(nameof(pattern));
 
             M m;
@@ -379,9 +372,10 @@ namespace NeverNull {
         /// <param name="l"></param>
         /// <param name="m"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<N> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i,
+            J j, K k, L l, M m) {
             pattern.ThrowIfNull(nameof(pattern));
 
             N n;
@@ -423,9 +417,10 @@ namespace NeverNull {
         /// <param name="m"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<O> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i,
+            J j, K k, L l, M m, N n) {
             pattern.ThrowIfNull(nameof(pattern));
 
             O o;
@@ -469,9 +464,10 @@ namespace NeverNull {
         /// <param name="n"></param>
         /// <param name="o"></param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="pattern"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException"><paramref name="pattern" /> is null.</exception>
         public static Option<P> FromTryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P>(
-            TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P> pattern, A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o) {
+            [NotNull] TryPattern<A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P> pattern, A a, B b, C c, D d, E e, F f, G g, H h,
+            I i, J j, K k, L l, M m, N n, O o) {
             pattern.ThrowIfNull(nameof(pattern));
 
             P p;

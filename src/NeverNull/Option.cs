@@ -54,6 +54,33 @@ namespace NeverNull {
         }
 
         /// <summary>
+        ///     Executes the specified <paramref name="sideEffect" /> on the value of this if it contains one.
+        /// </summary>
+        /// <param name="sideEffect"></param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="sideEffect" /> is <see langword="null" />.
+        /// </exception>
+        public void IfSome(Action<T> sideEffect) {
+            sideEffect.ThrowIfNull(nameof(sideEffect));
+
+            if (HasValue) sideEffect(_value);
+        }
+
+        /// <summary>
+        ///     Executes the specified <paramref name="sideEffect" /> if this is None.
+        /// </summary>
+        /// <param name="sideEffect"></param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="sideEffect" /> is <see langword="null" />.
+        /// </exception>
+        public void IfNone(Action sideEffect) {
+            sideEffect.ThrowIfNull(nameof(sideEffect));
+
+            if (IsEmpty)
+                sideEffect();
+        }
+
+        /// <summary>
         ///     Executes a given side effect if this option contains a value, otherwise a different side effect.
         /// </summary>
         /// <param name="Some"></param>

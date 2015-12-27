@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -13,7 +14,7 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
-        public static Option<T> OrElse<T>(this Option<T> option, T fallback) =>
+        public static Option<T> OrElse<T>(this Option<T> option, [CanBeNull] T fallback) =>
             OrElseWith(option, () => Option.From(fallback));
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace NeverNull.Combinators {
         /// <param name="fallback"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="fallback" /> is null.</exception>
-        public static Option<T> OrElse<T>(this Option<T> option, Func<T> fallback) =>
+        public static Option<T> OrElse<T>(this Option<T> option, [NotNull] Func<T> fallback) =>
             OrElseWith(option, () => Option.From(fallback()));
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="fallback" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> OrElseWith<T>(this Option<T> option, Func<Option<T>> fallback) {
+        public static Option<T> OrElseWith<T>(this Option<T> option, [NotNull] Func<Option<T>> fallback) {
             fallback.ThrowIfNull(nameof(fallback));
 
             return option.HasValue

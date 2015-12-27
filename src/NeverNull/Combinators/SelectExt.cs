@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     public static class SelectExt {
@@ -11,8 +12,8 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="selector"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="selector"/> is null.</exception>
-        public static Option<B> Select<A, B>(this Option<A> option, Func<A, B> selector) {
+        /// <exception cref="ArgumentNullException"><paramref name="selector" /> is null.</exception>
+        public static Option<B> Select<A, B>(this Option<A> option, [NotNull] Func<A, B> selector) {
             selector.ThrowIfNull(nameof(selector));
 
             return option.Match(

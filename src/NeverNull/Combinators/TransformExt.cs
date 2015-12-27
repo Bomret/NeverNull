@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
 
@@ -20,7 +21,7 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="Some" /> or <paramref name="None" /> is <see langword="null" />.
         /// </exception>
-        public static Option<B> Transform<A, B>(this Option<A> option, Func<A, B> Some, Func<B> None) {
+        public static Option<B> Transform<A, B>(this Option<A> option, [NotNull] Func<A, B> Some, [NotNull] Func<B> None) {
             Some.ThrowIfNull(nameof(Some));
             None.ThrowIfNull(nameof(None));
 

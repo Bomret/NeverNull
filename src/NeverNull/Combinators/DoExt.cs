@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -16,12 +17,10 @@ namespace NeverNull.Combinators {
         /// <exception cref="ArgumentNullException">
         ///     <paramref name="sideEffect" /> is <see langword="null" />.
         /// </exception>
-        public static Option<T> Do<T>(this Option<T> option, Action<T> sideEffect) {
+        public static Option<T> Do<T>(this Option<T> option, [NotNull] Action<T> sideEffect) {
             sideEffect.ThrowIfNull(nameof(sideEffect));
 
-            option.Match(
-                None: () => { },
-                Some: sideEffect);
+            option.IfSome(sideEffect);
 
             return option;
         }

@@ -9,4 +9,6 @@ nuget OpenCover
 nuget coveralls.net
 nuget SourceLink.Fake
 
+nuget JetBrains.Annotations
+
 github fsharp/FAKE modules/Octokit/Octokit.fsx

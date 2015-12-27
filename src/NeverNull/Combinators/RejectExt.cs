@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     public static class RejectExt {
@@ -9,12 +10,12 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
-        public static Option<T> Reject<T>(this Option<T> option, Func<T, bool> predicate) {
+        /// <exception cref="ArgumentNullException"><paramref name="predicate" /> is null.</exception>
+        public static Option<T> Reject<T>(this Option<T> option, [NotNull] Func<T, bool> predicate) {
             predicate.ThrowIfNull(nameof(predicate));
-            
+
             return option.Match(
-                None: () => Option<T>.None, 
+                None: () => Option<T>.None,
                 Some: x => predicate(x) ? Option<T>.None : option);
         }
     }

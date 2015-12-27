@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using JetBrains.Annotations;
 
 namespace NeverNull {
     /// <summary>
@@ -18,7 +18,7 @@ namespace NeverNull {
         /// <param name="value"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Option<T> Option<T>(T value) => 
+        public static Option<T> Option<T>([CanBeNull] T value) =>
             NeverNull.Option.From(value);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace NeverNull {
         /// <param name="nullable"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Option<T> Option<T>(T? nullable) where T : struct => 
+        public static Option<T> Option<T>([CanBeNull] T? nullable) where T : struct =>
             NeverNull.Option.From(nullable);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NeverNull {
         /// <param name="value"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Option<T> Some<T>(T value) => 
+        public static Option<T> Some<T>([NotNull] T value) =>
             NeverNull.Option.From(value);
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace NeverNull {
         /// <typeparam name="T"></typeparam>
         /// <param name="nullable"></param>
         /// <returns></returns>
-        public static Option<T> Some<T>(T? nullable) where T : struct => 
+        public static Option<T> Some<T>([NotNull] T? nullable) where T : struct =>
             NeverNull.Option.From(nullable);
     }
 }

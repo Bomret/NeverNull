@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
@@ -26,8 +27,9 @@ namespace NeverNull.Combinators {
         ///     is <see langword="null" />.
         /// </exception>
         public static Option<C> Join<A, B, C, TKey>(this Option<A> firstOption, Option<B> secondOption,
-            Func<A, TKey> firstKeySelector, Func<B, TKey> secondKeySelector, Func<A, B, C> resultSelector,
-            IEqualityComparer<TKey> comparer = null) {
+            [NotNull] Func<A, TKey> firstKeySelector, [NotNull] Func<B, TKey> secondKeySelector,
+            [NotNull] Func<A, B, C> resultSelector,
+            [CanBeNull] IEqualityComparer<TKey> comparer = null) {
             firstKeySelector.ThrowIfNull(nameof(firstKeySelector));
             secondKeySelector.ThrowIfNull(nameof(secondKeySelector));
             resultSelector.ThrowIfNull(nameof(resultSelector));
