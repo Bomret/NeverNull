@@ -1,4 +1,4 @@
-### 3.2.0 - Unreleased
+### 3.2.0 - December 27 2015
 * Match, IfSome and IfNone methods are implemented directly in Option<T> 
 * Deprecated TryGet in favor of Match, IfSome and IfNone
 * Deprecated GetOrDefault because it might reintroduce null
