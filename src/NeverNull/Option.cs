@@ -42,7 +42,7 @@ namespace NeverNull {
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        [Obsolete("This method is deprecated and will be removed in 2 releases. Use the Match method instead.")]
+        [Obsolete("This method is deprecated and will be removed in 2 releases. Use the Match, IfSome and IfNone methods instead.")]
         public bool TryGet(out T val) {
             if (HasValue) {
                 val = _value;
@@ -63,7 +63,8 @@ namespace NeverNull {
         public void IfSome(Action<T> sideEffect) {
             sideEffect.ThrowIfNull(nameof(sideEffect));
 
-            if (HasValue) sideEffect(_value);
+            if (HasValue)
+                sideEffect(_value);
         }
 
         /// <summary>
@@ -125,19 +126,14 @@ namespace NeverNull {
         ///     Retruns the <see cref="string" /> representation of this option.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() {
-            return HasValue
-                ? $"Some({_value})"
-                : "None";
-        }
+        public override string ToString() => 
+            HasValue ? $"Some({_value})" : "None";
 
         #endregion
 
         #region Equality
 
-        static int CombineHashCodes(int h1, int h2) {
-            return ((h1 << 5) + h1) ^ h2;
-        }
+        static int CombineHashCodes(int h1, int h2) => ((h1 << 5) + h1) ^ h2;
 
         bool IStructuralEquatable.Equals(object other, IEqualityComparer comparer) {
             if (!(other is Option<T>)) return false;
@@ -147,35 +143,31 @@ namespace NeverNull {
                    || HasValue == false && option.HasValue == false;
         }
 
-        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) {
-            return CombineHashCodes(comparer.GetHashCode(HasValue), comparer.GetHashCode(_value));
-        }
+        int IStructuralEquatable.GetHashCode(IEqualityComparer comparer) => 
+            CombineHashCodes(comparer.GetHashCode(HasValue), comparer.GetHashCode(_value));
 
         /// <summary>
         ///     Compares the specified <paramref name="other" /> <see cref="Option{T}" /> with this one for equality.
         /// </summary>
         /// <param name="other"></param>
         /// <returns></returns>
-        public bool Equals(Option<T> other) {
-            return ((IStructuralEquatable) this).Equals(other, EqualityComparer<object>.Default);
-        }
+        public bool Equals(Option<T> other) => 
+            ((IStructuralEquatable) this).Equals(other, EqualityComparer<object>.Default);
 
         /// <summary>
         ///     Compares the specified <paramref name="object" /> with this one for equality.
         /// </summary>
         /// <param name="object"></param>
         /// <returns></returns>
-        public override bool Equals(object @object) {
-            return ((IStructuralEquatable) this).Equals(@object, EqualityComparer<object>.Default);
-        }
+        public override bool Equals(object @object) => 
+            ((IStructuralEquatable) this).Equals(@object, EqualityComparer<object>.Default);
 
         /// <summary>
         ///     Returns the calculated hash code for this <see cref="Option{T}" />.
         /// </summary>
         /// <returns></returns>
-        public override int GetHashCode() {
-            return ((IStructuralEquatable) this).GetHashCode(EqualityComparer<object>.Default);
-        }
+        public override int GetHashCode() => 
+            ((IStructuralEquatable) this).GetHashCode(EqualityComparer<object>.Default);
 
         /// <summary>
         ///     Compares the specified <paramref name="left" /> and <paramref name="right" /> <see cref="Option{T}" /> for
@@ -184,9 +176,8 @@ namespace NeverNull {
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator ==(Option<T> left, Option<T> right) {
-            return ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
-        }
+        public static bool operator ==(Option<T> left, Option<T> right) => 
+            ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
 
         /// <summary>
         ///     Compares the specified <paramref name="left" /> and <paramref name="right" /> <see cref="Option{T}" /> for
@@ -195,9 +186,8 @@ namespace NeverNull {
         /// <param name="left"></param>
         /// <param name="right"></param>
         /// <returns></returns>
-        public static bool operator !=(Option<T> left, Option<T> right) {
-            return ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
-        }
+        public static bool operator !=(Option<T> left, Option<T> right) => 
+            ((IStructuralEquatable) left).Equals(right, EqualityComparer<object>.Default);
 
         #endregion
 
@@ -216,13 +206,11 @@ namespace NeverNull {
             return comparer.Compare(_value, otherOption._value);
         }
 
-        int IComparable<Option<T>>.CompareTo(Option<T> other) {
-            return ((IStructuralComparable) this).CompareTo(other, Comparer<object>.Default);
-        }
+        int IComparable<Option<T>>.CompareTo(Option<T> other) => 
+            ((IStructuralComparable) this).CompareTo(other, Comparer<object>.Default);
 
-        int IComparable.CompareTo(object obj) {
-            return ((IStructuralComparable) this).CompareTo(obj, Comparer<object>.Default);
-        }
+        int IComparable.CompareTo(object obj) => 
+            ((IStructuralComparable) this).CompareTo(obj, Comparer<object>.Default);
 
         #endregion
 

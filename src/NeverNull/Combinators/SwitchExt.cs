@@ -4,9 +4,13 @@ using System.Linq;
 using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    ///     Provides extension methods to select the first <see cref="Option{T}" /> in a collection that has a value.
+    /// </summary>
     public static class SwitchExt {
         /// <summary>
-        ///     Returns the first option that contains a value or None, if no option contains one.
+        ///     Returns the first <see cref="Option{T}" /> that contains a value or None, if no <see cref="Option{T}" /> contains
+        ///     one.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
@@ -16,7 +20,8 @@ namespace NeverNull.Combinators {
             Switch(option, options.AsEnumerable());
 
         /// <summary>
-        ///     Returns the first option that contains a value or None, if no option contains one.
+        ///     Returns the first <see cref="Option{T}" /> that contains a value or None, if no <see cref="Option{T}" /> contains
+        ///     one.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>

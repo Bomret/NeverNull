@@ -13,7 +13,9 @@ namespace NeverNull.Combinators {
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        /// <exception cref="InvalidOperationException"><paramref name="option" /> contains no value</exception>
+        /// <exception cref="InvalidOperationException">
+        ///     <paramref name="option" /> contains no value.
+        /// </exception>
         [NotNull]
         public static T Get<T>(this Option<T> option) =>
             option.Match(
@@ -27,12 +29,10 @@ namespace NeverNull.Combinators {
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
         /// <returns></returns>
-        [Obsolete(
-            "This method is obsolete and will be removed in 2 releases. Use GetOrElse(default(T)) if need this behavior."
-            )]
+        [Obsolete("This method is obsolete and will be removed in 2 releases. Use GetOrElse(default(T)) if you need this behavior.")]
         [CanBeNull]
         public static T GetOrDefault<T>(this Option<T> option) =>
-            GetOrElse(option, default(T));
+            GetOrElse(option, () => default(T));
 
         /// <summary>
         ///     Returns the value of the specified <paramref name="option" /> if it has one or the given

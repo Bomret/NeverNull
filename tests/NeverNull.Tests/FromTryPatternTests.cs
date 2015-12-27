@@ -11,7 +11,7 @@ namespace NeverNull.Tests {
 
                 return option.Match(
                     None: () => option.IsEmpty && option.Equals(Option<double>.None),
-                    Some: val => option.HasValue && double.Parse(x).Equals(val));
+                    Some: v => option.HasValue && double.Parse(x).Equals(v));
             }).QuickCheckThrowOnFailure();
     }
 }

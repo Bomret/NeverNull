@@ -1,8 +1,9 @@
 ### 3.2.0 - Unreleased
-* Match methods are implemented directly in Option<T> 
-* Deprecated TryGet in favor of Match
-* Deprecated GetOrDefault
+* Match, IfSome and IfNone methods are implemented directly in Option<T> 
+* Deprecated TryGet in favor of Match, IfSome and IfNone
+* Deprecated GetOrDefault because it might reintroduce null
 * Added Predef module for C# 6 static imports
+* Fixed a bug with AggregateOptional and AggregateOptionalNullable [Issue #6](https://github.com/Bomret/NeverNull/issues/6)
 
 ### 3.1.0 - December 12 2015
 * Additional lazy overloads for GetOrElse and OrElse

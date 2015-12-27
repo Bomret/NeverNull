@@ -2,17 +2,23 @@
 using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    ///     Provides extension methods to transform the value of <see cref="Option{T}" /> into new forms of
+    ///     <see cref="Option{T}" />.    ///
+    /// </summary>
     public static class SelectManyExt {
         /// <summary>
-        ///     Applies the given <paramref name="select" /> on the value of this option, if it has one, and returns the
-        ///     resulting option. Otherwise None is returned.
+        ///     Applies the specified <paramref name="select" /> function to the value of the specified <paramref name="option" />,
+        ///     if it has one, and returns the produced <see cref="Option{T}" />. Otherwise None is returned.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
         /// <param name="option"></param>
         /// <param name="select"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="select" /> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="select" /> is null.
+        /// </exception>
         public static Option<B> SelectMany<A, B>(this Option<A> option, [NotNull] Func<A, Option<B>> @select) {
             @select.ThrowIfNull(nameof(@select));
 
@@ -22,8 +28,8 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Applies the given <paramref name="optionSelector" /> and <paramref name="resultSelector" /> on the value of this
-        ///     option, if it contains one. Otherwise None is returned.
+        ///     Applies the specified <paramref name="optionSelector" /> and <paramref name="resultSelector" /> functions to the
+        ///     value of the specified <paramref name="option" />, if it contains one. Otherwise None is returned.
         /// </summary>
         /// <typeparam name="A"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -33,8 +39,7 @@ namespace NeverNull.Combinators {
         /// <param name="resultSelector"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">
-        ///     <paramref name="optionSelector" /> or <paramref name="resultSelector" /> is
-        ///     null.
+        ///     <paramref name="optionSelector" /> or <paramref name="resultSelector" /> is null.
         /// </exception>
         public static Option<C> SelectMany<A, B, C>(this Option<A> option, [NotNull] Func<A, Option<B>> optionSelector,
             Func<A, B, C> resultSelector) {

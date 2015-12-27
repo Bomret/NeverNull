@@ -5,13 +5,11 @@ using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
     /// <summary>
-    ///     Provides extension methods for working with <see cref="Option{T}" /> in conjunction with
-    ///     <see cref="IEnumerable{T}" />.
+    ///     Provides extension methods for working with instances of <see cref="Option{T}" /> in conjunction with instances of <see cref="IEnumerable{T}" />.
     /// </summary>
     public static class EnumerableExt {
         /// <summary>
-        ///     Returns all values in the specified <paramref name="optionalEnumerable" /> as
-        ///     <see cref="Option{T}" />, if it contains an enumerable.
+        ///     Returns all values in the specified <paramref name="optionalEnumerable" /> as <see cref="Option{T}" />, if it contains an enumerable.
         ///     If the contained enumerable is empty or <paramref name="optionalEnumerable" /> is None, an empty enumerable is
         ///     returned.
         /// </summary>
@@ -337,7 +335,7 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in the specified <paramref name="enumerable" /> taht matches a predicate wrapped in an
+        ///     Returns the only element in the specified <paramref name="enumerable" /> that matches a predicate wrapped in an
         ///     <see cref="Option{T}" />.
         ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" /> or the predicate does
         ///     not match any element, None is returned.
@@ -364,7 +362,7 @@ namespace NeverNull.Combinators {
         }
 
         /// <summary>
-        ///     Returns the only element in the specified <paramref name="enumerable" /> taht matches a predicate wrapped in an
+        ///     Returns the only element in the specified <paramref name="enumerable" /> that matches a predicate wrapped in an
         ///     <see cref="Option{T}" />.
         ///     If <paramref name="enumerable" /> is empty or the single element is <see langword="null" /> or the predicate does
         ///     not match any element, None is returned.

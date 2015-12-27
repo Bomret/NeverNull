@@ -25,9 +25,14 @@ namespace NeverNull.Combinators {
         /// <param name="option"></param>
         /// <param name="fallback"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException"><paramref name="fallback" /> is null.</exception>
-        public static Option<T> OrElse<T>(this Option<T> option, [NotNull] Func<T> fallback) =>
-            OrElseWith(option, () => Option.From(fallback()));
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="fallback" /> is null.
+        /// </exception>
+        public static Option<T> OrElse<T>(this Option<T> option, [NotNull] Func<T> fallback) {
+            fallback.ThrowIfNull(nameof(fallback));
+
+            return OrElseWith(option, () => Option.From(fallback()));
+        }
 
         /// <summary>
         ///     If the specified <paramref name="option" /> contains no value, the given <paramref name="fallback" />

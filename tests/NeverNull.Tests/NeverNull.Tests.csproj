@@ -47,8 +47,6 @@
     <Compile Include="Combinators\EnumerableExtTests.cs" />
     <Compile Include="Combinators\FlattenExtTests.cs" />
     <Compile Include="Combinators\GetExtTests.cs" />
-    <Compile Include="Combinators\IfNoneExtTests.cs" />
-    <Compile Include="Combinators\IfSomeExtTests.cs" />
     <Compile Include="Combinators\JoinExtTests.cs" />
     <Compile Include="Combinators\NormalizeExtTests.cs" />
     <Compile Include="Combinators\OrElseExtTests.cs" />

@@ -2,9 +2,13 @@
 using JetBrains.Annotations;
 
 namespace NeverNull.Combinators {
+    /// <summary>
+    ///     Provides extension methods to filter instances of <see cref="Option{T}" />.
+    /// </summary>
     public static class WhereExt {
         /// <summary>
-        ///     Returns the specified <paramref name="option" /> if the given <paramref name="predicate" /> holds, otherwise None.
+        ///     Returns the specified <paramref name="option" /> if the specified <paramref name="predicate" /> holds, otherwise
+        ///     None.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="option"></param>
