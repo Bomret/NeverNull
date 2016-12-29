@@ -77,6 +77,12 @@ Target "CleanDocs" <| fun _ ->
 // --------------------------------------------------------------------------------------
 // Build library & test project
 
+Target "Restore" <| fun _ ->
+  DotNetCli.Restore id
+
+// --------------------------------------------------------------------------------------
+// Build library & test project
+
 Target "Build" <| fun _ ->
   !! ("**" @@ "project.json")
   |> Seq.iter (fun proj ->
@@ -178,6 +184,7 @@ Target "Release" <| fun _ ->
 Target "All" DoNothing
 
 "Clean"
+  ==> "Restore"
   ==> "Build"
   ==> "RunTests"
   ==> "Pack"
