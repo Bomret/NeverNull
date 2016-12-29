@@ -3,7 +3,14 @@ language: csharp
 sudo: false  # use the new container-based Travis infrastructure
 
 before_script:
-  - chmod +x build.sh 
+  - chmod +x build.sh
 
 script:
   - ./build.sh All
+
+matrix:
+  include:
+    - dotnet: 1.0.0-preview2-1-003177
+      mono: none
+      env: DOTNETCORE=1
+    - mono: latest
