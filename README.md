@@ -2,16 +2,10 @@
 A Option type for .net that prevents using null or "magic values" (NullObject, exit code -1, index out of range, etc.) in your code.
 Licensed under the MIT License (http://opensource.org/licenses/MIT).
 
-[![NuGet Status](http://img.shields.io/nuget/v/NeverNull.svg)](https://www.nuget.org/packages/NeverNull/)
-[![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/pr?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
-[![Issue Stats](http://www.issuestats.com/github/bomret/nevernull/badge/issue?style=flat)](http://www.issuestats.com/github/bomret/nevernull)
-[![Stories in Ready](https://badge.waffle.io/Bomret/NeverNull.svg?label=ready&title=Ready)](http://waffle.io/Bomret/NeverNull)
-
-## Build status
-|  |  BuildScript | Status of last build |
-| :------ | :------: | :------: |
-| **Mono** | [build.sh](https://github.com/Bomret/NeverNull/blob/master/build.sh) | [![Travis build status](https://travis-ci.org/Bomret/NeverNull.svg)](https://travis-ci.org/Bomret/NeverNull) |
-| **Windows** | [build.cmd](https://github.com/Bomret/NeverNull/blob/master/build.cmd) | [![AppVeyor Build status](http://img.shields.io/appveyor/ci/stefanreichel/nevernull.svg)](https://ci.appveyor.com/project/StefanReichel/nevernull) |
+[![NuGet](https://img.shields.io/nuget/v/NeverNull.svg?style=flat-square)](https://www.nuget.org/packages/NeverNull/)
+[![Travis branch](https://img.shields.io/travis/Bomret/NeverNull/master.svg?style=flat-square)](https://travis-ci.org/Bomret/NeverNull)
+[![AppVeyor branch](https://img.shields.io/appveyor/ci/StefanReichel/nevernull/master.svg?style=flat-square)](https://ci.appveyor.com/project/StefanReichel/nevernull)
+[![license](https://img.shields.io/github/license/bomret/NeverNull.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## Example
 Reading the content type of a url as string and printing it to the console. If the safe cast to `HttpWebRequest` would return `null` the subsequent calls to `Select` and `Where` would not execute and *"No matching result"* would be printed to the console. The same would happen if any of the calls to `Select` would return null or the predicate `contentType.StartsWith("text")` would not hold in the Where predicate.
@@ -87,6 +81,9 @@ public bool TryGet(out value) => // ...
 
 ## Maintainers
 * [Stefan Reichel (@bomret)](https://github.com/Bomret)
+
+## Contributors
+* [@fdub](https://github.com/fdub)
 
 ------
 
