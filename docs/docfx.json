@@ -1,0 +1,45 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "**/*.cs"
+          ],
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**"
+          ],
+          "src": "../src"
+        }
+      ],
+      "dest": "_api",
+      "shouldSkipMarkup": true
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.yml"
+        ],
+        "src": "_api",
+        "dest": "api"
+      },
+      {
+        "files": [
+          "toc.yml",
+          "index.md"
+        ]
+      }
+    ],
+    "globalMetadata": {
+      "_appTitle": "NeverNull documentation",
+      "_appFooter": "NeverNull"
+    },
+    "dest": "_site",
+    "template": [
+      "default"
+    ]
+  }
+}

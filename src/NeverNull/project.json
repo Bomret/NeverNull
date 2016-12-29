@@ -1,0 +1,21 @@
+{
+  "title": "NeverNull",
+  "description": "A option type that prevents using null or 'magic values' (NullObject, exit code -1, index out of range, etc.) in your code.",
+  "version": "4.0.0-*",
+  "authors": [
+    "Stefan Reichel"
+  ],
+  "buildOptions": {
+    "debugType": "portable"
+  },
+  "dependencies": {
+    "JetBrains.Annotations": "10.2.1"
+  },
+  "frameworks": {
+    "netstandard1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.1"
+      }
+    }
+  }
+}
