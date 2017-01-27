@@ -198,6 +198,8 @@ Target "All" DoNothing
 
 "Pack"
   ==> "Publish"
+
+"Pack"
   ==> "Release"
 
 RunTargetOrDefault "All"
