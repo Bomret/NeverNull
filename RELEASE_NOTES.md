@@ -1,4 +1,10 @@
-## 4.0.0-rc - 2016-12-29
+## 5.0.0 - 2017-01-27
+* CHANGED: Using `IsEmpty` or `HasValue` now throws.
+* FEATURE: Added `net40` as compile target.
+* FEATURE: `netstandard1.0` does not target the whole library anymore, just `System.Linq` and `System.Diagnostics.Debug`.
+* FEATURE: Removed `TryGet` and `GetOrDefault`.
+
+## 4.0.0 - 2016-12-29
 * CHANGED: Using TryGet or GetOrDefault will not compile anymore.
 * FEATURE: Added a `FromTryPattern` method without arguments.
 * FEATURE: NeverNull is now a `netstandard 1.0` compatible library.

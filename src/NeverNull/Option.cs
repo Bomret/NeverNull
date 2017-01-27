@@ -26,7 +26,7 @@ namespace NeverNull
         ///     Indicates if this option contains a value.
         ///     Is true if a value is present, false otherwise.
         /// </summary>
-        [Obsolete("This property is deprecated and will be removed in 2 releases. Use IsSome instead.")]
+        [Obsolete("This property is deprecated and will be removed in the next release. Use IsSome instead.", true)]
         public bool HasValue { get; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace NeverNull
         ///     Indicates if this option is empty.
         ///     Is true if no value is present, false otherwise.
         /// </summary>
-        [Obsolete("This property is deprecated and will be removed in 2 releases. Use IsNone instead.")]
+        [Obsolete("This property is deprecated and will be removed in the next release. Use IsNone instead.", true)]
         public bool IsEmpty => !HasValue;
 
         /// <summary>
@@ -52,24 +52,6 @@ namespace NeverNull
         {
             _value = value;
             IsSome = true;
-        }
-
-        /// <summary>
-        ///     Gets the value contained in this option and returns a value that indicates if this has worked.
-        /// </summary>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        [Obsolete("This method is deprecated and will be removed in the next release. Use the Match, IfSome and IfNone methods instead.", true)]
-        public bool TryGet(out T val)
-        {
-            if (IsSome)
-            {
-                val = _value;
-                return true;
-            }
-
-            val = default(T);
-            return false;
         }
 
         /// <summary>

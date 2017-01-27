@@ -22,17 +22,6 @@ namespace NeverNull.Combinators {
                 Some: x => x);
 
         /// <summary>
-        ///     Returns the value of the specified option if it has one or the default of T.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="option"></param>
-        /// <returns></returns>
-        [Obsolete("This method is obsolete and will be removed in the next release. Use GetOrElse(default(T)) if you need this behavior.", true)]
-        [CanBeNull]
-        public static T GetOrDefault<T>(this Option<T> option) =>
-            GetOrElse(option, () => default(T));
-
-        /// <summary>
         ///     Returns the value of the specified option if it has one or the given fallback.
         /// </summary>
         /// <typeparam name="T"></typeparam>
