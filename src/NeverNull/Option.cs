@@ -186,7 +186,7 @@ namespace NeverNull
         /// <param name="right"></param>
         /// <returns></returns>
         public static bool operator !=(Option<T> left, Option<T> right) =>
-            ((IStructuralEquatable)left).Equals(right, EqualityComparer<object>.Default);
+            !((IStructuralEquatable)left).Equals(right, EqualityComparer<object>.Default);
 
         #endregion
 

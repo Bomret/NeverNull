@@ -1,6 +1,0 @@
-source https://nuget.org/api/v2
-
-nuget FAKE
-nuget docfx.console
-
-github fsharp/FAKE modules/Octokit/Octokit.fsx

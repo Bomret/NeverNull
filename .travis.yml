@@ -1,11 +1,9 @@
 language: csharp
-dist: trusty
-sudo: required
-dotnet: 1.0.0-preview2-1-003177
-mono: latest
+mono: none
+dotnet: 2.1.500
 
 before_script:
-  - chmod +x ./build.sh
+  - chmod +x ./fake.sh
 
 script:
-  - ./build.sh
+  - ./fake.sh
