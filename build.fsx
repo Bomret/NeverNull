@@ -1,14 +1,11 @@
 
 #r "paket:
-nuget NUnit.ConsoleRunner
 nuget Fake.IO.FileSystem
 nuget Fake.DotNet.Cli
-nuget Fake.DotNet.Testing.NUnit
 nuget Fake.Core.Target //"
 #load ".fake/build.fsx/intellisense.fsx"
 open Fake.Core
 open Fake.DotNet
-open Fake.DotNet.Testing
 open Fake.IO
 open Fake.IO.Globbing.Operators
 open Fake.Core.TargetOperators
