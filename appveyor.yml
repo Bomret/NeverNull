@@ -1,7 +1,7 @@
 init:
   - git config --global core.autocrlf input
 build_script:
-  - cmd: fake.cmd
+  - cmd: fake.cmd build
 test: off
 artifacts:
   - path: bin

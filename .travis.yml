@@ -6,4 +6,4 @@ before_script:
   - chmod +x ./fake.sh
 
 script:
-  - ./fake.sh
+  - ./fake.sh build
