@@ -1,6 +1,9 @@
-init:
-  - git config --global core.autocrlf input
 image: Visual Studio 2017
+install:
+  - cinst fake
 build_script:
-  - cmd: fake.cmd build
+  # See https://stackoverflow.com/a/12866669/1269722
+  # Problem is that colors are lost
+  # Don't blame me but powershell is the bigest crap on earth
+  - cmd: fake.exe run build.fsx --parallel 3
 test: off
