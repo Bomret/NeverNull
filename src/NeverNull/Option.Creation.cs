@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace NeverNull {
     /// <summary>
@@ -28,5 +28,5 @@ namespace NeverNull {
         /// <returns></returns>
         public static Option<T> From<T>([CanBeNull] T? nullable) where T : struct
             => nullable.HasValue ? new Option<T>(nullable.Value) : Option<T>.None;
-    }
+  }
 }

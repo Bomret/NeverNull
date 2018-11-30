@@ -210,6 +210,20 @@ Option<int> none = 3.ToOption();
 ```
 Converts any value to an `Option<T>` by calling `Option.From` on it. 
 
+### ToOptionMapped(mapFn)
+```csharp
+int? source = 3;
+Option<CustomType> value = source.ToOptionMapped(CustomType.Create);
+```
+Converts a nullable struct to `Option<CustomType>` (where CustomType is a wrapper for `T` with a factory method `Create(T)`) using given map function. 
+
+### ToOptionMappedOrNoneIf(mapfn)
+```csharp
+int source = 3;
+Option<CustomType> value = source.ToOptionMappedOrNoneIf(0, CustomType.Create);
+```
+Converts a struct to `Option<CustomType>` (where CustomType is a wrapper for `T` with a factory method `Create(T)`) using given map function. If given source value equals given magic value for none, `Option.None` ist returned.
+
 ### Using static imports in C# 6
 C# 6 offers the feature to statically import classes and use the static methods therein without having to prefix them with the class name.
 NeverNull provides a specific module for taking advantage of this feature.
@@ -246,6 +260,14 @@ Option<DateTime> nowOption = Option.From(DateTime.Now)
 DateTime? maybeNow = nowOption.ToNullable();
 ```
 Converts an `Option<T>` (where `T` is a value type) to a `Nullable<T>`.
+
+### ToNullable(selectFn)
+
+```csharp
+Option<CustomType> source = CustomType.Create(3).ToOption();
+int? result = source.ToNullable(ct => ct.Value);
+```
+Converts an `Option<CustomType>` (where `CustomType` is a wrapper for a `T` with property `public T Value {get;}`) to a `Nullable<T>`.
 
 ### Get
 ```csharp
